@@ -135,7 +135,7 @@ function ServiceCard({ item, idx }) {
 
   return (
     <div
-      className={`group relative flex flex-col py-8 px-6 lg:px-5 transition-colors duration-300 border-b sm:border-b-0 border-slate-200 lg:border-b-0 ${
+      className={`group relative cursor-pointer flex flex-col py-8 px-6 lg:px-5 transition-colors duration-300 border-b sm:border-b-0 border-slate-200 lg:border-b-0 ${
         idx > 0 ? 'sm:border-l border-slate-200' : ''
       } ${open ? 'bg-white' : 'hover:bg-slate-50/50'}`}
     >

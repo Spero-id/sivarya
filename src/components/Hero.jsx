@@ -8,6 +8,7 @@ const platforms = [
 ];
 
 export default function Hero() {
+
   return (
     <section className="relative h-screen min-h-[700px]" id="home">
       <div className="absolute inset-0 overflow-hidden">
@@ -51,13 +52,13 @@ export default function Hero() {
             </h1>
 
             <p className="hero-rise text-white/50 text-base sm:text-md leading-relaxed mb-8 max-w-md" style={{ animationDelay: '520ms' }}>
-              One Seamless Ecosystem. Infinite Possibilities for Your Brand."
-Sub-headline: "Sebagai Integrated Creative Ecosystem, kami merancang solusi end-to-end untuk mengakselerasi bisnis Anda. Dari arsitektur digital, produksi konten visual, hingga experiential events dan mobilitas korporat, semuanya terorkestrasi dalam satu pintu.
-
+              Sebagai Integrated Creative Ecosystem, kami merancang solusi end-to-end untuk mengakselerasi bisnis Anda. Dari arsitektur digital, produksi konten visual, hingga experiential events dan mobilitas korporat, semuanya terorkestrasi dalam satu pintu.
             </p>
 
             <a
-              href="#episodes"
+              href={`https://wa.me/6285110511403?text=Halo%20Sivarya%2C%20saya%20tertarik%20dengan%20case%20study%20Anda%20dan%20ingin%20mendiskusikan%20lebih%20Lanjut`}
+          target="_blank"
+          rel="noopener noreferrer"
               className="hero-rise group inline-flex items-center gap-3 bg-[#1A2E4C] text-white font-semibold px-7 py-3 rounded-md transition-all hover:-translate-y-0.5 hover:gap-4 shadow-lg"
               style={{ animationDelay: '680ms' }}
             >
