@@ -1,4 +1,4 @@
-import { useState, useRef, useLayoutEffect } from 'react';
+import { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 const services = [
@@ -32,7 +32,7 @@ const services = [
   },
   {
     id: "podcast",
-    title: "Produksi Podcast",
+    title: "Produksi & Manajemen Podcast",
     desc: "Kuasai thought leadership di industri Anda melalui audio.",
     longDesc: "Kami menangani keseluruhan pipeline—dari fasilitas studio recording, sound engineering, hingga post-production—untuk menghasilkan podcast premium yang jernih dan profesional.",
     icon: (
@@ -45,7 +45,7 @@ const services = [
   },
   {
     id: "social-media",
-    title: "Strategi Media Sosial",
+    title: "Strategi Konten & Media Sosial",
     desc: "Ubah followers menjadi brand advocates.",
     longDesc: "Tim kami meramu strategi omnichannel, creative copywriting, hingga optimasi algoritma untuk menjaga relevansi brand Anda dan mendorong matriks pertumbuhan organik di media sosial.",
     icon: (
@@ -71,7 +71,7 @@ const services = [
   },
   {
     id: "merchandise",
-    title: "Corporate Merchandise",
+    title: "Merchandise & Suvenir Promosi",
     desc: "Tinggalkan impresi fisik yang kuat.",
     longDesc: "Kami memproduksi corporate merchandise dan seragam kustom dengan material premium dan desain eksklusif, dirancang khusus untuk memperkuat brand identity dan loyalitas pemangku kepentingan.",
     icon: (
@@ -86,7 +86,7 @@ const services = [
   },
   {
     id: "travel-management",
-    title: "Curated Travel",
+    title: "Manajemen Perjalanan Wisata & Tematik",
     desc: "Hadirkan pengalaman perjalanan yang dirancang khusus untuk setiap audiens.",
     longDesc: "Mulai dari corporate outing profesional, open trip rekreasi yang aman dan nyaman untuk lansia (senior-friendly), hingga manajemen perjalanan konser (concert trip) yang enerjik. Sebagai travel planner & organizer, kami mengkurasi itinerary, akomodasi, dan mengelola seluruh koordinasi mobilitas logistik secara end-to-end agar Anda cukup duduk manis dan menikmati momen.",
     icon: (
@@ -103,9 +103,16 @@ const MAX_LINES = 5;
 
 function ServiceCard({ item, idx }) {
   const [open, setOpen] = useState(false);
+  const [overlayMounted, setOverlayMounted] = useState(false);
   const [overflows, setOverflows] = useState(false);
   const measureRef = useRef(null);
   const fullDesc = `${item.desc} ${item.longDesc}`;
+
+  useEffect(() => {
+    if (!overlayMounted) return;
+    const id = requestAnimationFrame(() => setOpen(true));
+    return () => cancelAnimationFrame(id);
+  }, [overlayMounted]);
 
   useLayoutEffect(() => {
     const el = measureRef.current;
@@ -133,11 +140,35 @@ function ServiceCard({ item, idx }) {
 
   const truncated = !open && overflows;
 
+  const headerBlock = (
+    <>
+      <div className="text-[#1A2E4C] mb-4">
+        {item.icon}
+      </div>
+      <h3 className="font-heading font-bold text-sm text-[#1A2E4C] leading-snug mb-2">
+        <a href={`/expertise#${item.id}`} className="hover:text-[#D87939] transition-colors">
+          {item.title}
+        </a>
+      </h3>
+    </>
+  );
+
+  const detailLink = (
+    <a
+      href={`/expertise#${item.id}`}
+      aria-label={`Lihat halaman ${item.title}`}
+      className="inline-flex items-center gap-1 text-[11px] font-bold text-[#1A2E4C] uppercase tracking-wider hover:text-[#D87939] transition-colors"
+    >
+      <span>Detail</span>
+      <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+    </a>
+  );
+
   return (
     <div
-      className={`group relative cursor-pointer flex flex-col py-8 px-6 lg:px-5 transition-colors duration-300 border-b sm:border-b-0 border-slate-200 lg:border-b-0 ${
+      className={`relative border-b sm:border-b-0 border-slate-200 ${
         idx > 0 ? 'sm:border-l border-slate-200' : ''
-      } ${open ? 'bg-white' : 'hover:bg-slate-50/50'}`}
+      }`}
     >
       <div
         ref={measureRef}
@@ -145,54 +176,58 @@ function ServiceCard({ item, idx }) {
         className="invisible absolute top-0 left-6 right-6 lg:left-5 lg:right-5 pointer-events-none text-slate-500 text-xs leading-relaxed"
       />
 
-      <div className="text-[#1A2E4C] mb-4">
-        {item.icon}
-      </div>
+      <div className="group h-full flex flex-col py-8 px-6 lg:px-5 transition-colors duration-300 hover:bg-slate-50/50">
+        {headerBlock}
 
-      <h3 className="font-heading font-bold text-sm text-[#1A2E4C] leading-snug mb-2">
-        <a href={`/expertise#${item.id}`} className="hover:text-[#D87939] transition-colors">
-          {item.title}
-        </a>
-      </h3>
-
-      <p
-        className={`text-slate-500 text-xs leading-relaxed mb-3 ${
-          truncated ? 'line-clamp-5' : ''
-        }`}
-      >
-        {fullDesc}
-      </p>
-
-      <div className="mt-auto flex flex-col items-end gap-1 pt-1">
-        {truncated && (
-          <button
-            type="button"
-            aria-expanded={open}
-            onClick={() => setOpen(true)}
-            className="border-0 p-0 m-0 text-xs leading-relaxed font-bold text-[#D87939] hover:text-[#C26527] hover:underline cursor-pointer"
-          >
-            Selengkapnya
-          </button>
-        )}
-        {open && (
-          <button
-            type="button"
-            aria-expanded={open}
-            onClick={() => setOpen(false)}
-            className="border-0 p-0 m-0 text-xs leading-relaxed font-bold text-[#D87939] hover:text-[#C26527] hover:underline cursor-pointer"
-          >
-            Tutup
-          </button>
-        )}
-        <a
-          href={`/expertise#${item.id}`}
-          aria-label={`Lihat halaman ${item.title}`}
-          className="inline-flex items-center gap-1 text-[11px] font-bold text-[#1A2E4C] uppercase tracking-wider hover:text-[#D87939] transition-colors"
+        <p
+          className={`text-slate-500 text-xs leading-relaxed mb-3 ${
+            truncated ? 'line-clamp-5' : ''
+          }`}
         >
-          <span>Detail</span>
-          <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-        </a>
+          {fullDesc}
+        </p>
+
+        <div className="mt-auto flex flex-col items-end gap-1 pt-1">
+          {truncated && (
+            <button
+              type="button"
+              onClick={() => setOverlayMounted(true)}
+              className="border-0 p-0 m-0 text-xs leading-relaxed font-bold text-[#D87939] hover:text-[#C26527] hover:underline cursor-pointer"
+            >
+              Selengkapnya
+            </button>
+          )}
+          {detailLink}
+        </div>
       </div>
+
+      {overlayMounted && (
+        <div
+          onTransitionEnd={(e) => {
+            if (e.target === e.currentTarget && !open) setOverlayMounted(false);
+          }}
+          className={`group absolute inset-x-0 top-0 z-20 flex flex-col py-8 px-6 lg:px-5 bg-white shadow-[0_12px_32px_rgba(26,46,76,0.14)] transition-all duration-300 ease-out ${
+            open ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
+          }`}
+        >
+          {headerBlock}
+
+          <p className="text-slate-500 text-xs leading-relaxed mb-3">
+            {fullDesc}
+          </p>
+
+          <div className="mt-auto flex flex-col items-end gap-1 pt-1">
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="border-0 p-0 m-0 text-xs leading-relaxed font-bold text-[#D87939] hover:text-[#C26527] hover:underline cursor-pointer"
+            >
+              Tutup
+            </button>
+            {detailLink}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
