@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
-import { 
-  Code, 
-  Video, 
-  Mic, 
-  Share2, 
-  Calendar, 
-  Gift, 
-  Compass, 
-  ChevronDown, 
-  ArrowRight, 
-  ArrowUpRight, 
-  Menu, 
+import {
+  Code,
+  Video,
+  Mic,
+  Share2,
+  Calendar,
+  Gift,
+  Compass,
+  ChevronDown,
+  ArrowRight,
+  ArrowUpRight,
+  Menu,
   X,
   ShieldCheck
 } from 'lucide-react';
@@ -40,30 +40,34 @@ export default function Navbar({ transparent = false }) {
   const navText = isWhite ? 'text-[#1A2E4C]' : 'text-white';
 
   return (
-    <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-      isWhite
+    <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isWhite
         ? 'bg-white/95 backdrop-blur-md shadow-md py-3'
         : 'bg-transparent py-5'
-    }`}>
+      }`}>
 
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         <a href="/" className="flex items-center gap-3 group">
-            <img src="/sivarya_logo.png" alt="Sivarya Logo" className='w-full h-12' />
+          <img src="/sivarya_logo.png" alt="Sivarya Logo" className={`w-full h-12
+              ${isWhite
+              ? 'w-full h-12'
+              : 'bg-white rounded-md'
+            }
+              `} />
         </a>
 
         <nav className="hidden lg:flex items-center gap-8">
           <a href="/#home" className={`${navText} font-semibold text-sm hover:text-[#D87939] transition-colors`}>
             Home
           </a>
-          
-          <div 
+
+          <div
             className="relative"
             onMouseEnter={() => setDropdownOpen(true)}
             onMouseLeave={() => setDropdownOpen(false)}
             onKeyDown={(e) => { if (e.key === 'Escape') setDropdownOpen(false); }}
           >
-            <a 
-              href="/#expertise" 
+            <a
+              href="/#expertise"
               aria-haspopup="true"
               aria-expanded={dropdownOpen}
               className={`${navText} font-semibold text-sm flex items-center gap-1 hover:text-[#D87939] transition-colors py-1`}
@@ -73,18 +77,17 @@ export default function Navbar({ transparent = false }) {
               <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${dropdownOpen ? 'rotate-180 text-[#D87939]' : ''}`} />
             </a>
 
-            <div 
-              className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 z-50 transition-all duration-300 ease-out origin-top ${
-                dropdownOpen
+            <div
+              className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 z-50 transition-all duration-300 ease-out origin-top ${dropdownOpen
                   ? 'opacity-100 translate-y-0 scale-100 visible'
                   : 'opacity-0 translate-y-3 scale-[0.97] invisible pointer-events-none'
-              }`}
+                }`}
             >
               <div className="w-[640px] max-w-[calc(100vw-3rem)] bg-white rounded-md shadow-2xl shadow-[#1A2E4C]/15 border border-slate-200/80 overflow-hidden">
 
                 <div className="relative bg-[#1A2E4C] px-7 py-5 overflow-hidden">
                   <div className="relative flex items-center justify-center gap-4">
-                      <h3 className="font-heading font-extrabold text-lg text-white leading-none">Tujuh Pilar Spesialisasi</h3>
+                    <h3 className="font-heading font-extrabold text-lg text-white leading-none">Tujuh Pilar Spesialisasi</h3>
                   </div>
                 </div>
 
@@ -92,12 +95,11 @@ export default function Navbar({ transparent = false }) {
                   {servicesList.map((service, idx) => {
                     const Icon = service.icon;
                     return (
-                      <a 
-                        key={idx} 
+                      <a
+                        key={idx}
                         // href={`/expertise#${service.slug}`} 
-                        className={`group/item flex items-start gap-3 p-3 rounded-xl hover:bg-[#D87939]/[0.06] transition-all duration-300 ${
-                          dropdownOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-                        }`}
+                        className={`group/item flex items-start gap-3 p-3 rounded-xl hover:bg-[#D87939]/[0.06] transition-all duration-300 ${dropdownOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                          }`}
                         style={{ transitionDelay: dropdownOpen ? `${80 + idx * 30}ms` : '0ms' }}
                         onClick={() => setDropdownOpen(false)}
                       >
@@ -120,7 +122,7 @@ export default function Navbar({ transparent = false }) {
                     );
                   })}
 
-                  
+
                 </div>
               </div>
             </div>
@@ -138,17 +140,16 @@ export default function Navbar({ transparent = false }) {
         <div className="flex items-center gap-4">
           <a
             href="/contact"
-            className={`hidden sm:inline-flex items-center gap-2 font-semibold text-sm px-5 py-2.5 rounded-full border transition-all hover:-translate-y-0.5 ${
-              isWhite
+            className={`hidden sm:inline-flex items-center gap-2 font-semibold text-sm px-5 py-2.5 rounded-full border transition-all hover:-translate-y-0.5 ${isWhite
                 ? 'border-[#1A2E4C]/20 text-[#1A2E4C] hover:bg-[#1A2E4C] hover:text-white'
                 : 'border-white/40 text-white hover:bg-white/10'
-            }`}
+              }`}
           >
             <span>Let's Talk</span>
             <ArrowRight className="w-4 h-4" />
           </a>
 
-          <button 
+          <button
             className={`lg:hidden p-1 transition-colors ${isWhite ? 'text-[#1A2E4C] hover:text-[#D87939]' : 'text-white hover:text-[#D87939]'}`}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"

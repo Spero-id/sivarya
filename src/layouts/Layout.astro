@@ -6,7 +6,7 @@ interface Props {
 	description?: string;
 }
 
-const { 
+const {
 	title = "Sivarya - Integrated Creative Ecosystem | PT Sinergi Inovasi Karya",
 	description = "PT Sinergi Inovasi Karya (Sivarya) - Integrated Creative Ecosystem yang merancang solusi end-to-end dari infrastruktur digital, produksi audiovisual, podcast, strategi media sosial, event management, merchandise, hingga travel experience."
 } = Astro.props;
@@ -17,23 +17,87 @@ const {
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+		<!-- Favicon -->
+		<link
+			rel="icon"
+			type="image/svg+xml"
+			href="/favicon.svg"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			href="/favicon-96x96.png"
+			sizes="96x96"
+		/>
+		<link
+			rel="shortcut icon"
+			href="/favicon.ico"
+		/>
+
+		<!-- Apple -->
+		<link
+			rel="apple-touch-icon"
+			sizes="180x180"
+			href="/apple-touch-icon.png"
+		/>
+		<meta
+			name="apple-mobile-web-app-title"
+			content="Sivarya"
+		/>
+
+		<!-- Web App Manifest -->
+		<link
+			rel="manifest"
+			href="/site.webmanifest"
+		/>
+
+		<!-- SEO -->
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
-		<meta name="keywords" content="PT Sinergi Inovasi Karya, Sivarya, Integrated Creative Ecosystem, Digital Infrastructure, Audiovisual Production, Podcast Management, Social Media Strategy, Event Management MICE, Corporate Merchandise, Curated Travel Experiences" />
-		<meta name="author" content="PT Sinergi Inovasi Karya" />
+		<meta
+			name="keywords"
+			content="PT Sinergi Inovasi Karya, Sivarya, Integrated Creative Ecosystem, Digital Infrastructure, Audiovisual Production, Podcast Management, Social Media Strategy, Event Management MICE, Corporate Merchandise, Curated Travel Experiences"
+		/>
+		<meta
+			name="author"
+			content="PT Sinergi Inovasi Karya"
+		/>
+
+		<!-- Open Graph -->
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:image" content="/images/hero_bg.jpg" />
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:title" content={title} />
-		<meta property="twitter:description" content={description} />
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+		<!-- Twitter -->
+		<meta
+			name="twitter:card"
+			content="summary_large_image"
+		/>
+		<meta
+			name="twitter:title"
+			content={title}
+		/>
+		<meta
+			name="twitter:description"
+			content={description}
+		/>
+
+		<!-- Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link
+			rel="preconnect"
+			href="https://fonts.gstatic.com"
+			crossorigin
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
+
 	<body>
 		<slot />
 	</body>
