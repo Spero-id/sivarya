@@ -11,16 +11,16 @@ import CTABanner from '../components/CTABanner.jsx';
 import Footer from '../components/Footer.jsx';
 ---
 
-<Layout title="Sivarya - Integrated Creative Ecosystem | PT Sinergi Inovasi Karya">
-	<Navbar client:load transparent={true} />
+<Layout>
+	<Navbar client:load transparent={true} lang="id" />
 	<main>
-		<Hero client:load />
-		<WhySivarya client:visible />
-		<ExpertiseGrid client:visible />
-		<CaseStudiesGrid client:visible />
-		<EcosystemSection client:visible />
-		<CTABanner client:visible />
-		<ContactSection client:visible />
+		<Hero client:load lang="id" />
+		<WhySivarya client:visible lang="id" />
+		<ExpertiseGrid client:visible lang="id" />
+		<CaseStudiesGrid client:visible lang="id" />
+		<EcosystemSection client:visible lang="id" />
+		<CTABanner client:visible lang="id" />
+		<ContactSection client:visible lang="id" />
 	</main>
-	<Footer client:visible />
+	<Footer client:visible lang="id" />
 </Layout>

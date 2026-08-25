@@ -1,26 +1,27 @@
 import { Award, MonitorSmartphone, Clapperboard, Megaphone, CalendarDays, Plane } from 'lucide-react';
 import Reveal from './Reveal.jsx';
+import { ui } from '../i18n/ui.js';
 
 const talents = [
-  { num: '01', name: 'Teknologi Inovatif', desc: 'Web, app & sistem internal' },
-  { num: '02', name: 'Kreator Visual', desc: 'Produksi audiovisual & desain' },
-  { num: '03', name: 'Sound Engineer', desc: 'Recording & manajemen podcast' },
-  { num: '04', name: 'Eksekutor Lapangan', desc: 'Event, merchandise & travel' },
+  { num: '01', name: { id: 'Teknologi Inovatif', en: 'Innovative Technology' }, desc: { id: 'Web, app & sistem internal', en: 'Web, app & internal systems' } },
+  { num: '02', name: { id: 'Kreator Visual', en: 'Visual Creators' }, desc: { id: 'Produksi audiovisual & desain', en: 'Audiovisual production & design' } },
+  { num: '03', name: { id: 'Sound Engineer', en: 'Sound Engineer' }, desc: { id: 'Recording & manajemen podcast', en: 'Recording & podcast management' } },
+  { num: '04', name: { id: 'Eksekutor Lapangan', en: 'Field Executors' }, desc: { id: 'Event, merchandise & travel', en: 'Event, merchandise & travel' } },
 ];
 
 const legalFacts = [
-  { label: 'Nama Entitas Legal', value: 'PT Sinergi Inovasi Karya' },
-  { label: 'Nomor AHU Kemenkumham', value: 'AHU-A007242.AH.01.31.Tahun 2026.' },
-  { label: 'Nomor Induk Berusaha (NIB)', value: '0307260016204' },
-  { label: 'Sertifikasi & Kemitraan', value: 'B2B Enterprise Certified' },
+  { label: { id: 'Nama Entitas Legal', en: 'Legal Entity Name' }, value: 'PT Sinergi Inovasi Karya' },
+  { label: { id: 'Nomor AHU Kemenkumham', en: 'Ministry of Law AHU Number' }, value: 'AHU-A007242.AH.01.31.Tahun 2026.' },
+  { label: { id: 'Nomor Induk Berusaha (NIB)', en: 'Business Identification Number (NIB)' }, value: '0307260016204' },
+  { label: { id: 'Sertifikasi & Kemitraan', en: 'Certification & Partnership' }, value: 'B2B Enterprise Certified' },
 ];
 
 const pipelineSteps = [
-  { num: '01', title: 'Digital Infra', desc: 'Website, aplikasi, dan sistem internal yang scalable sejak awal.', icon: MonitorSmartphone },
-  { num: '02', title: 'Audiovisual & Audio', desc: 'Video dan podcast berstandar studio untuk konten brand Anda.', icon: Clapperboard },
-  { num: '03', title: 'Social Strategy', desc: 'Distribusi konten terorkestrasi berbasis data untuk growth organik.', icon: Megaphone },
-  { num: '04', title: 'Event & Merch', desc: 'Aktivasi, konferensi, dan merchandise dieksekusi end-to-end.', icon: CalendarDays },
-  { num: '05', title: 'Travel Experience', desc: 'Perjalanan korporat terkurasi sebagai puncak pengalaman brand.', icon: Plane },
+  { num: '01', title: { id: 'Digital Infra', en: 'Digital Infra' }, desc: { id: 'Website, aplikasi, dan sistem internal yang scalable sejak awal.', en: 'Scalable websites, applications, and internal systems from day one.' }, icon: MonitorSmartphone },
+  { num: '02', title: { id: 'Audiovisual & Audio', en: 'Audiovisual & Audio' }, desc: { id: 'Video dan podcast berstandar studio untuk konten brand Anda.', en: 'Studio-standard videos and podcasts for your brand content.' }, icon: Clapperboard },
+  { num: '03', title: { id: 'Social Strategy', en: 'Social Strategy' }, desc: { id: 'Distribusi konten terorkestrasi berbasis data untuk growth organik.', en: 'Data-driven orchestrated content distribution for organic growth.' }, icon: Megaphone },
+  { num: '04', title: { id: 'Event & Merch', en: 'Event & Merch' }, desc: { id: 'Aktivasi, konferensi, dan merchandise dieksekusi end-to-end.', en: 'Activations, conferences, and merchandise executed end-to-end.' }, icon: CalendarDays },
+  { num: '05', title: { id: 'Travel Experience', en: 'Travel Experience' }, desc: { id: 'Perjalanan korporat terkurasi sebagai puncak pengalaman brand.', en: 'Curated corporate journeys as the pinnacle of brand experience.' }, icon: Plane },
 ];
 
 function CurvedConnector({ direction }) {
@@ -47,7 +48,8 @@ function CurvedConnector({ direction }) {
   );
 }
 
-export default function EcosystemSection() {
+export default function EcosystemSection({ lang = 'id' }) {
+  const t = ui[lang];
   return (
     <section className="py-10 lg:py-10 bg-white relative" id="ecosystem">
       <div className="max-w-7xl mx-auto px-6">
@@ -59,16 +61,16 @@ export default function EcosystemSection() {
             </h2>
           </div>
           <p className="lg:col-span-6 lg:col-start-8 text-slate-600 text-base lg:text-lg leading-relaxed mt-5 lg:mt-0">
-            Sivarya bukan sekadar vendor, melainkan <strong className="text-[#1A2E4C] font-semibold">Strategic Partner</strong>. Sebagai Integrated Creative Ecosystem, kami memadukan talenta teknologi inovatif, kreator visioner, dan eksekutor lapangan yang solid untuk mendeliver end-to-end
+            {t.eco.introPre}<strong className="text-[#1A2E4C] font-semibold">Strategic Partner</strong>{t.eco.introPost}
           </p>
         </div>
 
         <div className="lg:grid lg:grid-cols-12 lg:border-t lg:border-l border-t border-slate-200">
           <Reveal className="border-b lg:border-r border-slate-200 lg:col-span-7 p-8 lg:p-12 flex flex-col">
-            <span className="font-semibold text-xs tracking-widest text-[#D87939] uppercase">Filosofi Kemitraan</span>
+            <span className="font-semibold text-xs tracking-widest text-[#D87939] uppercase">{t.eco.partnershipLabel}</span>
             <h3 className="font-heading font-bold text-2xl lg:text-3xl text-[#1A2E4C] mt-3 mb-5">Strategic Partner Vision</h3>
             <p className="text-slate-600 text-base lg:text-lg leading-relaxed max-w-xl">
-              Sivarya memosisikan diri sebagai <strong className="text-[#D87939] font-semibold">Strategic Partner</strong> yang mendampingi brand dari tahap analisis objektif, perancangan arsitektur konsep, hingga eksekusi taktis di lapangan. Kami menyatu dengan visi pertumbuhan bisnis Anda.
+              {t.eco.partnerPre}<strong className="text-[#D87939] font-semibold">Strategic Partner</strong>{t.eco.partnerPost}
             </p>
             <span className="font-semibold text-7xl lg:text-8xl text-[#1A2E4C]/[0.05] leading-none select-none mt-10 lg:mt-auto pt-6">
               01
@@ -76,15 +78,15 @@ export default function EcosystemSection() {
           </Reveal>
 
           <Reveal delay={120} className="border-b lg:border-r border-slate-200 lg:col-span-5 p-8 lg:p-12">
-            <span className="font-semibold text-xs tracking-widest text-[#D87939] uppercase">Talenta Multidisiplin</span>
+            <span className="font-semibold text-xs tracking-widest text-[#D87939] uppercase">{t.eco.talentLabel}</span>
             <h3 className="font-heading font-bold text-2xl lg:text-3xl text-[#1A2E4C] mt-3 mb-4">Integrated Ecosystem</h3>
             <ul>
               {talents.map((talent) => (
                 <li key={talent.num} className="flex items-baseline gap-4 py-3 border-b border-slate-100 last:border-b-0">
                   <span className="font-semibold text-[13px]  text-[#D87939]/60 shrink-0">{talent.num}</span>
                   <div>
-                    <span className="block text-sm font-bold text-[#1A2E4C]">{talent.name}</span>
-                    <span className="block text-xs text-slate-500 mt-0.5">{talent.desc}</span>
+                    <span className="block text-sm font-bold text-[#1A2E4C]">{talent.name[lang]}</span>
+                    <span className="block text-xs text-slate-500 mt-0.5">{talent.desc[lang]}</span>
                   </div>
                 </li>
               ))}
@@ -102,13 +104,13 @@ export default function EcosystemSection() {
 
                 <div className="lg:max-w-xs shrink-0">
                   <span className="text-xs font-semibold tracking-widest text-[#D87939] uppercase block mb-3">
-                    Corporate Legitimacy
+                    {t.eco.legalityLabel}
                   </span>
                   <h3 className="font-heading font-bold text-2xl lg:text-3xl text-white leading-tight mb-4">
-                    Legalitas Perusahaan Terverifikasi Resmi
+                    {t.eco.legalityHeading}
                   </h3>
                   <p className="text-slate-400 text-sm leading-relaxed">
-                    Terdaftar dan diawasi langsung oleh Kementerian Hukum dan HAM Republik Indonesia untuk kemitraan B2B yang sah secara hukum.
+                    {t.eco.legalityBody}
                   </p>
                 </div>
 
@@ -116,11 +118,11 @@ export default function EcosystemSection() {
                   <dl className="space-y-0">
                     {legalFacts.map((fact, idx) => (
                       <div
-                        key={fact.label}
+                        key={fact.value}
                         className="flex items-baseline justify-between gap-6 py-4 border-b border-dashed border-white/15 last:border-b-0"
                       >
                         <dt className="font-semibold text-[10px] text-slate-400 tracking-widest uppercase shrink-0">
-                          {fact.label}
+                          {fact.label[lang]}
                         </dt>
                         <dd className="font-mono text-[13px] lg:text-sm text-white font-semibold text-right">
                           {fact.value}
@@ -137,10 +139,10 @@ export default function EcosystemSection() {
         <div className="mt-16 lg:mt-24">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 lg:mb-14">
             <div>
-              <h3 className="font-heading font-bold text-2xl lg:text-3xl text-[#1A2E4C] mt-3">Alur Kerja Terintegrasi Satu Pintu</h3>
+              <h3 className="font-heading font-bold text-2xl lg:text-3xl text-[#1A2E4C] mt-3">{t.eco.workflowHeading}</h3>
             </div>
             <p className="text-slate-500 text-sm leading-relaxed max-w-xs">
-              Satu tim orchestrator untuk seluruh kebutuhan tanpa kompleksitas koordinasi multi-vendor.
+              {t.eco.workflowSub}
             </p>
           </div>
 
@@ -169,8 +171,8 @@ export default function EcosystemSection() {
                   </div>
 
                   <div className="lg:mt-6 lg:mx-auto lg:max-w-[180px] lg:text-center">
-                    <h4 className="font-bold text-sm text-[#1A2E4C]">{step.title}</h4>
-                    <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">{step.desc}</p>
+                    <h4 className="font-bold text-sm text-[#1A2E4C]">{step.title[lang]}</h4>
+                    <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">{step.desc[lang]}</p>
                   </div>
                 </Reveal>
               );

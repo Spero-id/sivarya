@@ -1,6 +1,14 @@
 import { ArrowRight } from 'lucide-react';
+import { ui, langPath } from '../i18n/ui.js';
 
-export default function CTABanner() {
+const WHATSAPP_NUMBER = import.meta.env.PUBLIC_WHATSAPP_NUMBER;
+const WHATSAPP_MESSAGE = import.meta.env.PUBLIC_WHATSAPP_MESSAGE;
+
+export default function CTABanner({ lang = 'id' }) {
+  const t = ui[lang];
+
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+
   return (
     <section className="bg-[#1A2E4C] py-24 lg:py-32 relative overflow-hidden border-y border-[#D87939]/20">
 
@@ -24,30 +32,29 @@ export default function CTABanner() {
         </span> */}
 
         <h2 className="font-heading font-extrabold text-white text-4xl sm:text-6xl lg:text-7xl leading-[1.02] mb-12">
-          Ready to scale<br />
-          your <span className="text-[#D87939]">brand?</span>
+          {t.cta.heading1}<br />
+          {t.cta.heading2}<span className="text-[#D87939]">{t.cta.heading3}</span>
         </h2>
 
         <a
-          href="https://wa.me/6285110511403?text=Halo%20Sivarya%2C%20saya%20siap%20berkolaborasi%20dan%20diskusi%20objektif%20brand"
+          href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="group inline-flex items-center gap-4 bg-[#D87939] hover:bg-[#C26527] text-white font-bold text-lg px-10 py-5 rounded-full transition-all shadow-2xl shadow-[#D87939]/30 hover:-translate-y-1 hover:shadow-[#D87939]/50"
         >
-          <span>Konsultasikan Objektif Anda</span>
+          <span>{t.cta.ctaObjective}</span>
           <ArrowRight className="w-5 h-5 animate-[nudge_1.4s_ease-in-out_infinite] group-hover:animate-none group-hover:translate-x-1.5 transition-transform" />
         </a>
 
         <p className="text-slate-400 text-sm mt-7">
-          Mari berkolaborasi dan ciptakan impact bersama ekosistem kami.
-          atau <a href="/contact" className="text-white font-semibold underline decoration-slate-500 underline-offset-4 hover:decoration-white">isi brief online</a>
+          {t.cta.body}<a href={langPath(lang, '/contact')} className="text-white font-semibold underline decoration-slate-500 underline-offset-4 hover:decoration-white">{t.cta.briefLink}</a>
         </p>
 
         <div className="flex items-center justify-center gap-8 sm:gap-14 mt-16 pt-10 border-t border-white/10">
           {[
-            { label: '7 Disiplin Layanan' },
-            { label: 'Legal Terverifikasi Kemenkumham' },
-            { label: 'Respon < 1x24 Jam' },
+            { label: t.cta.label1 },
+            { label: t.cta.label2 },
+            { label: t.cta.label3 },
           ].map((item, idx) => (
             <span key={idx} className="font-mono text-[10px] sm:text-[11px] text-slate-500 uppercase tracking-widest">
               {item.label}

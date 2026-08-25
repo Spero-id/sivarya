@@ -1,12 +1,19 @@
 import { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { ui, langPath } from '../i18n/ui.js';
 
 const services = [
   {
     id: "digital-infra",
-    title: "Infrastruktur Digital",
-    desc: "Bangun presensi digital yang scalable dan responsif.",
-    longDesc: "Kami merancang arsitektur UI/UX dan sistem backend yang tangguh untuk website maupun aplikasi, memastikan brand Anda memberikan seamless digital experience bagi user di mana saja.",
+    title: { id: "Infrastruktur Digital", en: "Digital Infrastructure" },
+    desc: {
+      id: "Bangun presensi digital yang scalable dan responsif.",
+      en: "Build a scalable and responsive digital presence.",
+    },
+    longDesc: {
+      id: "Kami merancang arsitektur UI/UX dan sistem backend yang tangguh untuk website maupun aplikasi, memastikan brand Anda memberikan seamless digital experience bagi user di mana saja.",
+      en: "We design robust UI/UX architecture and backend systems for websites and applications, ensuring your brand delivers a seamless digital experience to users anywhere.",
+    },
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
         <rect x="2" y="3" width="20" height="14" rx="2" />
@@ -20,9 +27,15 @@ const services = [
   },
   {
     id: "audiovisual",
-    title: "Produksi Audiovisual",
-    desc: "Visual adalah bahasa universal brand Anda. ",
-    longDesc: "Mulai dari corporate profile, commercial TVC, hingga dokumentasi sinematik, tim spesialis kami memproduksi aset visual bernilai estetika tinggi yang didesain untuk mencuri perhatian dan engagement.",
+    title: { id: "Produksi Audiovisual", en: "Audiovisual Production" },
+    desc: {
+      id: "Visual adalah bahasa universal brand Anda. ",
+      en: "Visuals are your brand's universal language. ",
+    },
+    longDesc: {
+      id: "Mulai dari corporate profile, commercial TVC, hingga dokumentasi sinematik, tim spesialis kami memproduksi aset visual bernilai estetika tinggi yang didesain untuk mencuri perhatian dan engagement.",
+      en: "From corporate profiles, commercial TVCs, to cinematic documentation, our specialist team produces highly aesthetic visual assets designed to capture attention and engagement.",
+    },
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
         <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5" />
@@ -32,9 +45,15 @@ const services = [
   },
   {
     id: "podcast",
-    title: "Produksi & Manajemen Podcast",
-    desc: "Kuasai thought leadership di industri Anda melalui audio.",
-    longDesc: "Kami menangani keseluruhan pipeline—dari fasilitas studio recording, sound engineering, hingga post-production—untuk menghasilkan podcast premium yang jernih dan profesional.",
+    title: { id: "Produksi Podcast", en: "Podcast Production" },
+    desc: {
+      id: "Kuasai thought leadership di industri Anda melalui audio.",
+      en: "Master thought leadership in your industry through audio.",
+    },
+    longDesc: {
+      id: "Kami menangani keseluruhan pipeline—dari fasilitas studio recording, sound engineering, hingga post-production—untuk menghasilkan podcast premium yang jernih dan profesional.",
+      en: "We handle the entire pipeline—from recording studio facilities, sound engineering, to post-production—to produce premium, clear, and professional podcasts.",
+    },
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
         <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
@@ -45,9 +64,15 @@ const services = [
   },
   {
     id: "social-media",
-    title: "Strategi Konten & Media Sosial",
-    desc: "Ubah followers menjadi brand advocates.",
-    longDesc: "Tim kami meramu strategi omnichannel, creative copywriting, hingga optimasi algoritma untuk menjaga relevansi brand Anda dan mendorong matriks pertumbuhan organik di media sosial.",
+    title: { id: "Strategi Media Sosial", en: "Social Media Strategy" },
+    desc: {
+      id: "Ubah followers menjadi brand advocates.",
+      en: "Turn followers into brand advocates.",
+    },
+    longDesc: {
+      id: "Tim kami meramu strategi omnichannel, creative copywriting, hingga optimasi algoritma untuk menjaga relevansi brand Anda dan mendorong matriks pertumbuhan organik di media sosial.",
+      en: "Our team crafts omnichannel strategy, creative copywriting, and algorithm optimization to keep your brand relevant and drive organic growth metrics on social media.",
+    },
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -57,9 +82,15 @@ const services = [
   },
   {
     id: "event-management",
-    title: "Manajemen Event",
-    desc: "Ciptakan momen yang tak terlupakan.",
-    longDesc: "Dari grand launching, konferensi berskala besar, hingga pameran B2B, kami mengeksekusi konsep brand activation secara presisi dan end-to-end, memastikan setiap event berjalan spektakuler.",
+    title: { id: "Manajemen Event", en: "Event Management" },
+    desc: {
+      id: "Ciptakan momen yang tak terlupakan.",
+      en: "Create unforgettable moments.",
+    },
+    longDesc: {
+      id: "Dari grand launching, konferensi berskala besar, hingga pameran B2B, kami mengeksekusi konsep brand activation secara presisi dan end-to-end, memastikan setiap event berjalan spektakuler.",
+      en: "From grand launches, large-scale conferences, to B2B exhibitions, we execute brand activation concepts precisely and end-to-end, ensuring every event runs spectacularly.",
+    },
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
         <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -71,9 +102,15 @@ const services = [
   },
   {
     id: "merchandise",
-    title: "Merchandise & Suvenir Promosi",
-    desc: "Tinggalkan impresi fisik yang kuat.",
-    longDesc: "Kami memproduksi corporate merchandise dan seragam kustom dengan material premium dan desain eksklusif, dirancang khusus untuk memperkuat brand identity dan loyalitas pemangku kepentingan.",
+    title: { id: "Corporate Merchandise", en: "Corporate Merchandise" },
+    desc: {
+      id: "Tinggalkan impresi fisik yang kuat.",
+      en: "Leave a strong physical impression.",
+    },
+    longDesc: {
+      id: "Kami memproduksi corporate merchandise dan seragam kustom dengan material premium dan desain eksklusif, dirancang khusus untuk memperkuat brand identity dan loyalitas pemangku kepentingan.",
+      en: "We produce corporate merchandise and custom uniforms with premium materials and exclusive designs, specially crafted to strengthen brand identity and stakeholder loyalty.",
+    },
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
         <polyline points="20 12 20 22 4 22 4 12" />
@@ -86,9 +123,15 @@ const services = [
   },
   {
     id: "travel-management",
-    title: "Manajemen Perjalanan Wisata & Tematik",
-    desc: "Hadirkan pengalaman perjalanan yang dirancang khusus untuk setiap audiens.",
-    longDesc: "Mulai dari corporate outing profesional, open trip rekreasi yang aman dan nyaman untuk lansia (senior-friendly), hingga manajemen perjalanan konser (concert trip) yang enerjik. Sebagai travel planner & organizer, kami mengkurasi itinerary, akomodasi, dan mengelola seluruh koordinasi mobilitas logistik secara end-to-end agar Anda cukup duduk manis dan menikmati momen.",
+    title: { id: "Curated Travel", en: "Curated Travel" },
+    desc: {
+      id: "Hadirkan pengalaman perjalanan yang dirancang khusus untuk setiap audiens.",
+      en: "Deliver travel experiences specially designed for every audience.",
+    },
+    longDesc: {
+      id: "Mulai dari corporate outing profesional, open trip rekreasi yang aman dan nyaman untuk lansia (senior-friendly), hingga manajemen perjalanan konser (concert trip) yang enerjik. Sebagai travel planner & organizer, kami mengkurasi itinerary, akomodasi, dan mengelola seluruh koordinasi mobilitas logistik secara end-to-end agar Anda cukup duduk manis dan menikmati momen.",
+      en: "From professional corporate outings, safe and comfortable senior-friendly leisure open trips, to energetic concert trip management. As a travel planner & organizer, we curate itineraries and accommodation and manage all mobility logistics coordination end-to-end so you can simply sit back and enjoy the moment.",
+    },
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
         <circle cx="12" cy="12" r="10" />
@@ -101,12 +144,13 @@ const services = [
 
 const MAX_LINES = 5;
 
-function ServiceCard({ item, idx }) {
+function ServiceCard({ item, idx, lang = 'id' }) {
+  const t = ui[lang];
   const [open, setOpen] = useState(false);
   const [overlayMounted, setOverlayMounted] = useState(false);
   const [overflows, setOverflows] = useState(false);
   const measureRef = useRef(null);
-  const fullDesc = `${item.desc} ${item.longDesc}`;
+  const fullDesc = `${item.desc[lang]} ${item.longDesc[lang]}`;
 
   useEffect(() => {
     if (!overlayMounted) return;
@@ -146,8 +190,8 @@ function ServiceCard({ item, idx }) {
         {item.icon}
       </div>
       <h3 className="font-heading font-bold text-sm text-[#1A2E4C] leading-snug mb-2">
-        <a href={`/expertise#${item.id}`} className="hover:text-[#D87939] transition-colors">
-          {item.title}
+        <a href={langPath(lang, `/expertise#${item.id}`)} className="hover:text-[#D87939] transition-colors">
+          {item.title[lang]}
         </a>
       </h3>
     </>
@@ -155,11 +199,11 @@ function ServiceCard({ item, idx }) {
 
   const detailLink = (
     <a
-      href={`/expertise#${item.id}`}
-      aria-label={`Lihat halaman ${item.title}`}
+      href={langPath(lang, `/expertise#${item.id}`)}
+      aria-label={`Lihat halaman ${item.title[lang]}`}
       className="inline-flex items-center gap-1 text-[11px] font-bold text-[#1A2E4C] uppercase tracking-wider hover:text-[#D87939] transition-colors"
     >
-      <span>Detail</span>
+      <span>{t.expertise.detail}</span>
       <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
     </a>
   );
@@ -194,7 +238,7 @@ function ServiceCard({ item, idx }) {
               onClick={() => setOverlayMounted(true)}
               className="border-0 p-0 m-0 text-xs leading-relaxed font-bold text-[#D87939] hover:text-[#C26527] hover:underline cursor-pointer"
             >
-              Selengkapnya
+              {t.expertise.readMore}
             </button>
           )}
           {detailLink}
@@ -222,7 +266,7 @@ function ServiceCard({ item, idx }) {
               onClick={() => setOpen(false)}
               className="border-0 p-0 m-0 text-xs leading-relaxed font-bold text-[#D87939] hover:text-[#C26527] hover:underline cursor-pointer"
             >
-              Tutup
+              {t.expertise.close}
             </button>
             {detailLink}
           </div>
@@ -232,23 +276,24 @@ function ServiceCard({ item, idx }) {
   );
 }
 
-export default function ExpertiseGrid() {
+export default function ExpertiseGrid({ lang = 'id' }) {
+  const t = ui[lang];
   return (
     <section className="py-14 bg-white relative" id="expertise">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#1A2E4C] mt-3 mb-4">
-            Solusi Terpadu Ekosistem Sivarya
+            {t.expertise.heading}
           </h2>
           <p className="text-slate-600 text-lg leading-relaxed">
-            7 pilar spesialisasi yang terorkestrasi untuk menjawab seluruh kebutuhan presensi, konten, dan mobilitas brand Anda.
+            {t.expertise.sub}
           </p>
         </div>
 
         <div className="border-t border-slate-200">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7">
             {services.map((item, idx) => (
-              <ServiceCard key={idx} item={item} idx={idx} />
+              <ServiceCard key={idx} item={item} idx={idx} lang={lang} />
             ))}
           </div>
         </div>

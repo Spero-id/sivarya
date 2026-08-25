@@ -8,5 +8,12 @@ export default defineConfig({
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()]
+  },
+  i18n: {
+    locales: ['id', 'en'],
+    defaultLocale: 'id',
+    routing: {
+      prefixDefaultLocale: false
+    }
   }
 });
