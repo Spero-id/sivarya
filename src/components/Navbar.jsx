@@ -11,30 +11,38 @@ import {
   ArrowRight,
   ArrowUpRight,
   Menu,
-  X,
-  ShieldCheck
+  X
 } from 'lucide-react';
+import { ui, langPath } from '../i18n/ui.js';
 
-const servicesList = [
-  { title: "Infrastruktur Teknologi & Digital", desc: "Scalable Web & App UI/UX Architecture", slug: "digital-infra", icon: Code },
-  { title: "Produksi Audiovisual", desc: "Corporate Profile, TVC & Visual Assets", slug: "audiovisual", icon: Video },
-  { title: "Produksi & Manajemen Podcast", desc: "Immersive Audio Recording & Studio", slug: "podcast", icon: Mic },
-  { title: "Strategi Konten & Media Sosial", desc: "Data-Driven Omnichannel Growth", slug: "social-media", icon: Share2 },
-  { title: "Manajemen Event", desc: "Brand Activation & MICE Conferences", slug: "event-management", icon: Calendar },
-  { title: "Merchandise & Suvenir Promosi", desc: "Premium Corporate Executive Gifting", slug: "merchandise", icon: Gift },
-  { title: "Manajemen Perjalanan Wisata", desc: "Curated Senior Trips & Concert Outings", slug: "travel-management", icon: Compass }
+const serviceMeta = [
+  { slug: 'digital-infra', icon: Code },
+  { slug: 'audiovisual', icon: Video },
+  { slug: 'podcast', icon: Mic },
+  { slug: 'social-media', icon: Share2 },
+  { slug: 'event-management', icon: Calendar },
+  { slug: 'merchandise', icon: Gift },
+  { slug: 'travel-management', icon: Compass }
 ];
 
-export default function Navbar({ transparent = false }) {
+export default function Navbar({ transparent = false, lang = 'id' }) {
+  const t = ui[lang];
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [currentPath, setCurrentPath] = useState('/');
 
   useEffect(() => {
+    setCurrentPath(window.location.pathname);
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const switchLangHref = () => {
+    if (lang === 'id') return `/en${currentPath === '/' ? '/' : currentPath}`;
+    return currentPath.replace(/^\/en/, '') || '/';
+  };
 
   const isWhite = transparent ? scrolled : true;
   const navText = isWhite ? 'text-[#1A2E4C]' : 'text-white';
@@ -56,8 +64,8 @@ export default function Navbar({ transparent = false }) {
         </a>
 
         <nav className="hidden lg:flex items-center gap-8">
-          <a href="/#home" className={`${navText} font-semibold text-sm hover:text-[#D87939] transition-colors`}>
-            Home
+          <a href={langPath(lang, '/#home')} className={`${navText} font-semibold text-sm hover:text-[#D87939] transition-colors`}>
+            {t.nav.home}
           </a>
 
           <div
@@ -67,13 +75,13 @@ export default function Navbar({ transparent = false }) {
             onKeyDown={(e) => { if (e.key === 'Escape') setDropdownOpen(false); }}
           >
             <a
-              href="/#expertise"
+              href={langPath(lang, '/#expertise')}
               aria-haspopup="true"
               aria-expanded={dropdownOpen}
               className={`${navText} font-semibold text-sm flex items-center gap-1 hover:text-[#D87939] transition-colors py-1`}
               onClick={() => setDropdownOpen(false)}
             >
-              <span>Expertise</span>
+              <span>{t.nav.expertise}</span>
               <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${dropdownOpen ? 'rotate-180 text-[#D87939]' : ''}`} />
             </a>
 
@@ -87,17 +95,17 @@ export default function Navbar({ transparent = false }) {
 
                 <div className="relative bg-[#1A2E4C] px-7 py-5 overflow-hidden">
                   <div className="relative flex items-center justify-center gap-4">
-                    <h3 className="font-heading font-extrabold text-lg text-white leading-none">Tujuh Pilar Spesialisasi</h3>
+                    <h3 className="font-heading font-extrabold text-lg text-white leading-none">{t.nav.dropdownTitle}</h3>
                   </div>
                 </div>
 
                 <div className="p-2.5 grid grid-cols-1 sm:grid-cols-2 gap-1">
-                  {servicesList.map((service, idx) => {
-                    const Icon = service.icon;
+                  {t.navServices.map((service, idx) => {
+                    const Icon = serviceMeta[idx].icon;
                     return (
                       <a
                         key={idx}
-                        // href={`/expertise#${service.slug}`} 
+                        // href={`/expertise#${serviceMeta[idx].slug}`} 
                         className={`group/item flex items-start gap-3 p-3 rounded-xl hover:bg-[#D87939]/[0.06] transition-all duration-300 ${dropdownOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
                           }`}
                         style={{ transitionDelay: dropdownOpen ? `${80 + idx * 30}ms` : '0ms' }}
@@ -128,24 +136,44 @@ export default function Navbar({ transparent = false }) {
             </div>
           </div>
 
-          <a href="/#works" className={`${navText} font-semibold text-sm hover:text-[#D87939] transition-colors`}>
-            Our Works
+          <a href={langPath(lang, '/#works')} className={`${navText} font-semibold text-sm hover:text-[#D87939] transition-colors`}>
+            {t.nav.works}
           </a>
 
-          <a href="/#ecosystem" className={`${navText} font-semibold text-sm hover:text-[#D87939] transition-colors`}>
-            The Ecosystem
+          <a href={langPath(lang, '/#ecosystem')} className={`${navText} font-semibold text-sm hover:text-[#D87939] transition-colors`}>
+            {t.nav.ecosystem}
           </a>
         </nav>
 
         <div className="flex items-center gap-4">
+          <div className={`flex items-center rounded-full border text-xs font-bold overflow-hidden ${isWhite ? 'border-[#1A2E4C]/20' : 'border-white/40'}`}>
+            {['id', 'en'].map((l) => (
+              <a
+                key={l}
+                href={l === lang ? '#' : (l === 'en'
+                  ? `/en${currentPath === '/' ? '/' : currentPath}`
+                  : currentPath.replace(/^\/en/, '') || '/')}
+                onClick={l === lang ? (e) => e.preventDefault() : undefined}
+                aria-current={l === lang ? 'true' : undefined}
+                className={`px-2.5 py-1.5 transition-colors ${
+                  l === lang
+                    ? `bg-[#D87939] text-white`
+                    : `${isWhite ? 'text-[#1A2E4C] hover:bg-[#D87939]/10 hover:text-[#D87939]' : 'text-white/80 hover:bg-white/10 hover:text-white'}`
+                }`}
+              >
+                {l.toUpperCase()}
+              </a>
+            ))}
+          </div>
+
           <a
-            href="/contact"
+            href={langPath(lang, '/contact')}
             className={`hidden sm:inline-flex items-center gap-2 font-semibold text-sm px-5 py-2.5 rounded-full border transition-all hover:-translate-y-0.5 ${isWhite
                 ? 'border-[#1A2E4C]/20 text-[#1A2E4C] hover:bg-[#1A2E4C] hover:text-white'
                 : 'border-white/40 text-white hover:bg-white/10'
               }`}
           >
-            <span>Let's Talk</span>
+            <span>{t.nav.letsTalk}</span>
             <ArrowRight className="w-4 h-4" />
           </a>
 
@@ -170,15 +198,15 @@ export default function Navbar({ transparent = false }) {
             </div>
 
             <div className="flex flex-col gap-4">
-              <a href="/#home" onClick={() => setMobileOpen(false)} className="text-[#1A2E4C] font-bold text-lg hover:text-[#D87939]">
-                Home
+              <a href={langPath(lang, '/#home')} onClick={() => setMobileOpen(false)} className="text-[#1A2E4C] font-bold text-lg hover:text-[#D87939]">
+                {t.nav.home}
               </a>
 
               <div>
-                <span className="font-mono text-xs font-bold text-[#D87939] uppercase block mb-2">SERVICES & EXPERTISE</span>
+                <span className="font-mono text-xs font-bold text-[#D87939] uppercase block mb-2">{t.nav.mobileServicesLabel}</span>
                 <div className="flex flex-col gap-2 pl-3 border-l-2 border-[#D87939]">
-                  {servicesList.map((s, i) => (
-                    <a key={i} href={`/expertise#${s.slug}`} onClick={() => setMobileOpen(false)} className="flex items-baseline gap-2.5 text-slate-600 font-medium text-sm hover:text-[#1A2E4C] transition-colors">
+                  {t.navServices.map((s, i) => (
+                    <a key={i} href={langPath(lang, `/expertise#${serviceMeta[i].slug}`)} onClick={() => setMobileOpen(false)} className="flex items-baseline gap-2.5 text-slate-600 font-medium text-sm hover:text-[#1A2E4C] transition-colors">
                       <span className="font-mono text-[10px] font-bold text-[#D87939]/60">{String(i + 1).padStart(2, '0')}</span>
                       {s.title}
                     </a>
@@ -186,16 +214,33 @@ export default function Navbar({ transparent = false }) {
                 </div>
               </div>
 
-              <a href="/works" onClick={() => setMobileOpen(false)} className="text-[#1A2E4C] font-bold text-lg hover:text-[#D87939]">
-                Our Works / Case Studies
+              <a href={langPath(lang, '/works')} onClick={() => setMobileOpen(false)} className="text-[#1A2E4C] font-bold text-lg hover:text-[#D87939]">
+                {t.nav.mobileWorks}
               </a>
 
-              <a href="/ecosystem" onClick={() => setMobileOpen(false)} className="text-[#1A2E4C] font-bold text-lg hover:text-[#D87939]">
-                The Ecosystem
+              <a href={langPath(lang, '/ecosystem')} onClick={() => setMobileOpen(false)} className="text-[#1A2E4C] font-bold text-lg hover:text-[#D87939]">
+                {t.nav.ecosystem}
               </a>
 
-              <a href="/contact" onClick={() => setMobileOpen(false)} className="w-full bg-[#D87939] text-white font-semibold text-center py-3 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-[#D87939]/25 mt-4">
-                <span>Let's Talk</span>
+              <div className="flex items-center gap-2 mt-2">
+                {['id', 'en'].map((l) => (
+                  <a
+                    key={l}
+                    href={l === lang ? '#' : switchLangHref()}
+                    onClick={(e) => { if (l === lang) e.preventDefault(); else setMobileOpen(false); }}
+                    className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ${
+                      l === lang
+                        ? 'bg-[#D87939] text-white border-[#D87939]'
+                        : 'border-slate-200 text-slate-600 hover:border-[#D87939] hover:text-[#D87939]'
+                    }`}
+                  >
+                    {l.toUpperCase()}
+                  </a>
+                ))}
+              </div>
+
+              <a href={langPath(lang, '/contact')} onClick={() => setMobileOpen(false)} className="w-full bg-[#D87939] text-white font-semibold text-center py-3 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-[#D87939]/25 mt-4">
+                <span>{t.nav.letsTalk}</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
             </div>

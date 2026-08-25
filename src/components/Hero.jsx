@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react';
+import { ui } from '../i18n/ui.js';
 
 const platforms = [
   { name: 'WhatsApp', color: '#1DB954', images: "/whatsapp-logo-2.png" },
@@ -7,7 +8,13 @@ const platforms = [
   { name: 'Gmail', color: '#FF5500', images: "/gmail.png" },
 ];
 
-export default function Hero() {
+const WHATSAPP_NUMBER = import.meta.env.PUBLIC_WHATSAPP_NUMBER;
+const WHATSAPP_MESSAGE = import.meta.env.PUBLIC_WHATSAPP_MESSAGE;
+
+export default function Hero({ lang = 'id' }) {
+  const t = ui[lang];
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+
 
   return (
     <section className="relative h-screen min-h-[700px]" id="home">
@@ -38,31 +45,31 @@ export default function Hero() {
           <div className="max-w-lg">
             <div className="hero-rise inline-flex items-center gap-2.5 mb-5" style={{ animationDelay: '100ms' }}>
               <span className="text-white/60 text-sm font-medium tracking-wide">
-                Ready to Build Something Bigger?
+                {t.hero.kicker}
               </span>
             </div>
 
             <h1 className="font-heading font-black text-white text-4xl sm:text-5xl lg:text-[3.5rem] uppercase leading-[1.05] tracking-tight mb-6">
               <span className="block overflow-hidden pb-1">
-                <span className="hero-line block" style={{ animationDelay: '220ms' }}>One Seamless Ecosystem.</span>
+                <span className="hero-line block" style={{ animationDelay: '220ms' }}>{t.hero.line1}</span>
               </span>
               <span className="block overflow-hidden pb-1">
-                <span className="hero-line block" style={{ animationDelay: '360ms' }}>Infinite Possibilities.</span>
+                <span className="hero-line block" style={{ animationDelay: '360ms' }}>{t.hero.line2}</span>
               </span>
             </h1>
 
             <p className="hero-rise text-white/50 text-base sm:text-md leading-relaxed mb-8 max-w-md" style={{ animationDelay: '520ms' }}>
-              Sebagai Integrated Creative Ecosystem, kami merancang solusi end-to-end untuk mengakselerasi bisnis Anda. Dari arsitektur digital, produksi konten visual, hingga experiential events dan mobilitas korporat, semuanya terorkestrasi dalam satu pintu.
+              {t.hero.paragraph}
             </p>
 
             <a
-              href={`https://wa.me/6285110511403?text=Halo%20Sivarya%2C%20saya%20tertarik%20dengan%20case%20study%20Anda%20dan%20ingin%20mendiskusikan%20lebih%20Lanjut`}
-          target="_blank"
-          rel="noopener noreferrer"
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="hero-rise group inline-flex items-center gap-3 bg-[#1A2E4C] text-white font-semibold px-7 py-3 rounded-md transition-all hover:-translate-y-0.5 hover:gap-4 shadow-lg"
               style={{ animationDelay: '680ms' }}
             >
-              <span>Konsultasikan Objektif Anda</span>
+              <span>{t.hero.ctaObjective}</span>
               <ArrowRight className="w-5 h-5 arrow-nudge group-hover:animate-none group-hover:translate-x-1 transition-transform duration-300" />
             </a>
           </div>

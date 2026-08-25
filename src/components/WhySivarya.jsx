@@ -1,51 +1,60 @@
 import { Layers, ShieldCheck, Zap, BarChart3 } from 'lucide-react';
+import { ui } from '../i18n/ui.js';
 
 const pillars = [
   {
     num: "01",
-    title: "Tri-Pilar Integrasi Strategis",
-    desc: "Integrasi tanpa batas antara Technology, Visual Content, dan Live Experiences dalam satu ekosistem yang terorkestrasi presisi.",
+    title: { id: "Tri-Pilar Integrasi Strategis", en: "Tri-Pillar Strategic Integration" },
+    desc: {
+      id: "Integrasi tanpa batas antara Technology, Visual Content, dan Live Experiences dalam satu ekosistem yang terorkestrasi presisi.",
+      en: "Seamless integration between Technology, Visual Content, and Live Experiences in one precisely orchestrated ecosystem.",
+    },
     icon: Layers
   },
   {
     num: "02",
-    title: "Legalitas & Kemitraan B2B Terpercaya",
-    desc: "PT Sinergi Inovasi Karya adalah entitas legal resmi bersertifikasi Kemenkumham untuk kemitraan B2B yang aman.",
+    title: { id: "Legalitas & Kemitraan B2B Terpercaya", en: "Trusted Legality & B2B Partnership" },
+    desc: {
+      id: "PT Sinergi Inovasi Karya adalah entitas legal resmi bersertifikasi Kemenkumham untuk kemitraan B2B yang aman.",
+      en: "PT Sinergi Inovasi Karya is an officially legal entity certified by the Ministry of Law and Human Rights for safe B2B partnerships.",
+    },
     icon: ShieldCheck
   },
   {
     num: "03",
-    title: "Single Point of Orchestration",
-    desc: "Hilangkan kompleksitas mengelola banyak vendor terpisah. Sivarya menangani end-to-end execution dengan standar kualitas konsisten.",
+    title: { id: "Single Point of Orchestration", en: "Single Point of Orchestration" },
+    desc: {
+      id: "Hilangkan kompleksitas mengelola banyak vendor terpisah. Sivarya menangani end-to-end execution dengan standar kualitas konsisten.",
+      en: "Eliminate the complexity of managing multiple separate vendors. Sivarya handles end-to-end execution with consistent quality standards.",
+    },
     icon: Zap
   },
   {
     num: "04",
-    title: "Data-Driven & High Impact",
-    desc: "Setiap strategi dirancang berbasis analitik data, riset audiens mendalam, serta eksekusi kreatif bernilai estetika tinggi untuk ROI terukur.",
+    title: { id: "Data-Driven & High Impact", en: "Data-Driven & High Impact" },
+    desc: {
+      id: "Setiap strategi dirancang berbasis analitik data, riset audiens mendalam, serta eksekusi kreatif bernilai estetika tinggi untuk ROI terukur.",
+      en: "Every strategy is designed based on data analytics, in-depth audience research, and high-aesthetic creative execution for measurable ROI.",
+    },
     icon: BarChart3
   }
 ];
 
-const stats = [
-  { value: "7", label: "Pilar Layanan" },
-  { value: "100%", label: "End-to-End" },
-  { value: "B2B", label: "Enterprise" },
-];
+export default function WhySivarya({ lang = 'id' }) {
+  const t = ui[lang];
 
-export default function WhySivarya() {
   return (
     <section className="py-28 bg-white" id="why-sivarya">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-20">
           <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#1A2E4C] mt-3 mb-4">
-            Mengapa Memilih Ekosistem Sivarya?
+            {t.why.heading}
           </h2>
           <p className="text-slate-600 text-lg leading-relaxed">
-            Integrasi strategis antara Technology, Content, dan Live Experiences.
+            {t.why.sub1}
           </p>
           <p className="text-slate-600 text-lg leading-relaxed">
-            Kami memadukan kapabilitas agensi kreatif, rumah produksi audio-visual, konsultan teknologi, dan planner event ke dalam satu kemitraan strategis.
+            {t.why.sub2}
           </p>
         </div>
 
@@ -68,10 +77,10 @@ export default function WhySivarya() {
 
                     <div className="flex-1">
                       <h3 className="font-heading font-bold text-xl sm:text-2xl text-[#1A2E4C] mb-2">
-                        {item.title}
+                        {item.title[lang]}
                       </h3>
                       <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl">
-                        {item.desc}
+                        {item.desc[lang]}
                       </p>
                     </div>
 
@@ -95,14 +104,18 @@ export default function WhySivarya() {
 
             <div className="absolute inset-0 flex flex-col justify-end p-7">
               <span className="font-medium text-[10px] text-[#D87939] tracking-widest uppercase block mb-3">
-                Our Philosophy
+                {t.why.philosophyLabel}
               </span>
               <p className="font-heading font-bold text-lg text-white leading-snug mb-8">
-                Bukan sekadar vendor, kami adalah strategic partner pertumbuhan jangka panjang brand Anda.
+                {t.why.quote}
               </p>
 
               <div className="grid grid-cols-3 gap-3">
-                {stats.map((s) => (
+                {[
+                  { value: "7", label: t.why.statPillars },
+                  { value: "100%", label: "End-to-End" },
+                  { value: "B2B", label: "Enterprise" },
+                ].map((s) => (
                   <div key={s.label} className="bg-[#D87939] backdrop-blur-sm rounded-xl py-4 text-center">
                     <span className="font-heading font-extrabold text-xl text-white block leading-none mb-1">
                       {s.value}

@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { Building2, Target, Lightbulb, TrendingUp, X, ArrowRight, MessageSquare, Sparkles } from 'lucide-react';
 
+const WHATSAPP_NUMBER = import.meta.env.PUBLIC_WHATSAPP_NUMBER;
+
 export default function CaseStudyModal({ project, isOpen, onClose }) {
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -27,7 +29,7 @@ export default function CaseStudyModal({ project, isOpen, onClose }) {
   const waText = encodeURIComponent(
     `Halo Sivarya, saya tertarik dengan case study "${project.title}" (${project.client}) dan ingin mendiskusikan konsultasi untuk proyek serupa.`
   );
-  const waUrl = `https://wa.me/6285110511403?text=${waText}`;
+  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
 
   const ctaLabel = project.ctaText || `Konsultasikan Proyek ${project.categoryName} Serupa`;
 

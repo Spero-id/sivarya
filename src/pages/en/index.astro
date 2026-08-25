@@ -1,0 +1,26 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.jsx';
+import Hero from '../../components/Hero.jsx';
+import WhySivarya from '../../components/WhySivarya.jsx';
+import ExpertiseGrid from '../../components/ExpertiseGrid.jsx';
+import CaseStudiesGrid from '../../components/CaseStudiesGrid.jsx';
+import EcosystemSection from '../../components/EcosystemSection.jsx';
+import ContactSection from '../../components/ContactSection.jsx';
+import CTABanner from '../../components/CTABanner.jsx';
+import Footer from '../../components/Footer.jsx';
+---
+
+<Layout>
+	<Navbar client:load transparent={true} lang="en" />
+	<main>
+		<Hero client:load lang="en" />
+		<WhySivarya client:visible lang="en" />
+		<ExpertiseGrid client:visible lang="en" />
+		<CaseStudiesGrid client:visible lang="en" />
+		<EcosystemSection client:visible lang="en" />
+		<CTABanner client:visible lang="en" />
+		<ContactSection client:visible lang="en" />
+	</main>
+	<Footer client:visible lang="en" />
+</Layout>

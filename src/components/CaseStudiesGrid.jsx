@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { projectsData, categories } from '../data/projects.js';
+import { ui, langPath } from '../i18n/ui.js';
 
-export default function CaseStudiesGrid() {
+export default function CaseStudiesGrid({ lang = 'id' }) {
+  const t = ui[lang];
   const [activeFilter, setActiveFilter] = useState("all");
 
   const filteredProjects = activeFilter === "all"
@@ -14,10 +16,10 @@ export default function CaseStudiesGrid() {
       <div className="max-w-7xl mx-auto px-6 pb-10 sm:pb-15 lg:border-b border-b border-slate-400">
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#1A2E4C] mt-3 mb-4">
-            Rekam Jejak &amp; Hasil Nyata
+            {t.cases.heading}
           </h2>
           <p className="text-slate-600 text-lg leading-relaxed">
-            Jelajahi proyek unggulan kami yang telah membantu berbagai brand mencapai pertumbuhan terukur melalui ekosistem kreatif Sivarya.
+            {t.cases.sub}
           </p>
         </div>
 
@@ -41,7 +43,7 @@ export default function CaseStudiesGrid() {
           {filteredProjects.map((proj) => (
             <a
               key={proj.id}
-              href={`/work/${proj.id}`}
+              href={langPath(lang, `/work/${proj.id}`)}
               className="break-inside-avoid mb-6 group block"
             >
               <div className={`relative overflow-hidden rounded-xl mb-4 ${proj.aspect}`}>
@@ -54,7 +56,7 @@ export default function CaseStudiesGrid() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <span className="absolute top-3 left-3 font-semibold text-[10px] font-bold bg-white/90 backdrop-blur-sm text-[#1A2E4C] px-2.5 py-1 rounded-md">
-                  {proj.categoryName}
+                  {proj.categoryName[lang]}
                 </span>
 
                 <div className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
@@ -70,7 +72,7 @@ export default function CaseStudiesGrid() {
                   {proj.title}
                 </h3>
                 <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">
-                  {proj.summary}
+                  {proj.summary[lang]}
                 </p>
               </div>
             </a>

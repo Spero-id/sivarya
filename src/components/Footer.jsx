@@ -1,6 +1,12 @@
 import { Phone, Mail, ShieldCheck, Globe, Share2, Video } from 'lucide-react';
+import { ui, langPath } from '../i18n/ui.js';
 
-export default function Footer() {
+const pillarSlugs = ['digital-infra', 'audiovisual', 'podcast', 'social-media', 'event-management', 'merchandise', 'travel-management'];
+
+const WHATSAPP_NUMBER = import.meta.env.PUBLIC_WHATSAPP_NUMBER;
+
+export default function Footer({ lang = 'id' }) {
+  const t = ui[lang];
   const currentYear = new Date().getFullYear();
 
   return (
@@ -8,38 +14,41 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16">
           <div className="lg:col-span-4 flex flex-col items-start">
-            <a href="/" className="flex items-center gap-3 mb-5">
+            <a href={langPath(lang, '/')} className="flex items-center gap-3 mb-5">
               <img src="/sivarya_logo.png" alt="Sivarya Logo" className="h-10 w-auto" />
             </a>
 
             <p className="text-slate-600 text-sm leading-relaxed mb-6">
-              Integrated Creative Ecosystem yang merancang solusi end-to-end dari infrastruktur digital, aset audio-visual, hingga experiential events dan perjalanan korporat.
+              {t.footer.description}
             </p>
 
             
           </div>
 
           <div className="lg:col-span-2">
-            <h4 className="font-heading font-bold text-[#1A2E4C] text-base mb-5">Navigasi Utama</h4>
+            <h4 className="font-heading font-bold text-[#1A2E4C] text-base mb-5">{t.footer.mainNav}</h4>
             <ul className="flex flex-col gap-3 text-sm">
-              <li><a href="/#home" className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">Home</a></li>
-              <li><a href="/expertise" className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">Expertise & Services</a></li>
-              <li><a href="/works" className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">Case Studies</a></li>
-              <li><a href="/ecosystem" className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">The Ecosystem</a></li>
-              <li><a href="/contact" className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">Let's Talk</a></li>
+              <li><a href={langPath(lang, '/#home')} className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">{t.footer.navHome}</a></li>
+              <li><a href={langPath(lang, '/expertise')} className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">{t.footer.navExpertise}</a></li>
+              <li><a href={langPath(lang, '/works')} className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">{t.footer.navCases}</a></li>
+              <li><a href={langPath(lang, '/ecosystem')} className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">{t.footer.navEcosystem}</a></li>
+              <li><a href={langPath(lang, '/contact')} className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">{t.footer.navLetsTalk}</a></li>
             </ul>
           </div>
 
           <div className="lg:col-span-3">
-            <h4 className="font-heading font-bold text-[#1A2E4C] text-base mb-5">7 Pilar Layanan</h4>
+            <h4 className="font-heading font-bold text-[#1A2E4C] text-base mb-5">{t.footer.pillarsTitle}</h4>
             <ul className="flex flex-col gap-3 text-sm">
-              <li><a href="/expertise#digital-infra" className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">Infrastruktur Digital</a></li>
-              <li><a href="/expertise#audiovisual" className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">Produksi Audiovisual</a></li>
-              <li><a href="/expertise#podcast" className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">Produksi & Manajemen Podcast</a></li>
-              <li><a href="/expertise#social-media" className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">Strategi Media Sosial</a></li>
-              <li><a href="/expertise#event-management" className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">Manajemen Event & MICE</a></li>
-              <li><a href="/expertise#merchandise" className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">Merchandise Promosi</a></li>
-              <li><a href="/expertise#travel-management" className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">Manajemen Perjalanan Wisata</a></li>
+              {t.footer.pillarLinks.map((name, i) => (
+                <li key={i}>
+                  <a
+                    href={langPath(lang, `/expertise#${pillarSlugs[i]}`)}
+                    className="text-slate-600 hover:text-[#D87939] font-medium transition-colors"
+                  >
+                    {name}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -51,7 +60,7 @@ export default function Footer() {
             <ul className="flex flex-col gap-3 text-sm">
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-[#D87939] shrink-0" />
-                <a href="https://wa.me/6285110511403" target="_blank" rel="noopener noreferrer" className="font-bold text-[#1A2E4C] hover:text-[#D87939] transition-colors">+62 851-1051-1403</a>
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="font-bold text-[#1A2E4C] hover:text-[#D87939] transition-colors">+62 851-1051-1403</a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-[#D87939] shrink-0" />
@@ -63,7 +72,7 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
           <p className="text-slate-500">
-            &copy; {currentYear} <strong className="text-[#1A2E4C] font-bold">PT Sinergi Inovasi Karya (Sivarya)</strong>. All rights reserved. Built with precision.
+            &copy; {currentYear} <strong className="text-[#1A2E4C] font-bold">{t.footer.copyright}</strong>. All rights reserved. Built with precision.
           </p>
 
           <div className="flex items-center gap-3">

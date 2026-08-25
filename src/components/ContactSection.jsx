@@ -1,18 +1,11 @@
 import { useState } from 'react';
 import { Phone, Mail, MapPin, Send, CheckCircle } from 'lucide-react';
+import { ui } from '../i18n/ui.js';
 
-const serviceOptions = [
-  "Infrastruktur Teknologi & Digital",
-  "Produksi Audiovisual",
-  "Produksi & Manajemen Podcast",
-  "Strategi Konten & Media Sosial",
-  "Manajemen Event (Brand Activation & MICE)",
-  "Merchandise & Suvenir Promosi",
-  "Manajemen Perjalanan Wisata & Tematik",
-  "Integrated Multi-Service Ecosystem"
-];
+const WHATSAPP_NUMBER = import.meta.env.PUBLIC_WHATSAPP_NUMBER;
 
-export default function ContactSection() {
+export default function ContactSection({ lang = 'id' }) {
+  const t = ui[lang];
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -32,7 +25,7 @@ export default function ContactSection() {
     );
 
     setTimeout(() => {
-      window.open(`https://wa.me/6285110511403?text=${waText}`, '_blank');
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`, '_blank');
     }, 1200);
   };
 
@@ -41,25 +34,25 @@ export default function ContactSection() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#1A2E4C] mt-3 mb-4">
-            Diskusikan Visi & Objektif Brand Anda
+            {t.contact.heading}
           </h2>
           <p className="text-slate-600 text-lg leading-relaxed">
-            Tim spesialis kami siap merancang formulasi ekosistem kreatif yang presisi untuk kebutuhan bisnis Anda.
+            {t.contact.sub}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           <div className="lg:col-span-7 bg-white rounded-lg p-8 sm:p-10 border border-slate-200 shadow-sm">
-            <h3 className="font-heading font-bold text-2xl text-[#1A2E4C] mb-1">Lead Capture & Project Brief</h3>
-            <p className="text-slate-500 text-sm mb-8">Isi formulir di bawah ini untuk menerima proposal awal & penawaran khusus.</p>
+            <h3 className="font-heading font-bold text-2xl text-[#1A2E4C] mb-1">{t.contact.formTitle}</h3>
+            <p className="text-slate-500 text-sm mb-8">{t.contact.formSub}</p>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">Nama Lengkap *</label>
+                <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">{t.contact.nameLabel}</label>
                 <input 
                   type="text" 
                   required 
-                  placeholder="Contoh: Budi Santoso"
+                  placeholder={t.contact.namePlaceholder}
                   value={formData.name}
                   onChange={e => setFormData({...formData, name: e.target.value})}
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[#1A2E4C] text-sm font-medium focus:outline-none focus:border-[#D87939] focus:bg-white focus:ring-2 focus:ring-[#D87939]/20 transition-all"
@@ -68,7 +61,7 @@ export default function ContactSection() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">Email Korporat *</label>
+                  <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">{t.contact.emailLabel}</label>
                   <input 
                     type="email" 
                     required 
@@ -80,7 +73,7 @@ export default function ContactSection() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">Nama Perusahaan *</label>
+                  <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">{t.contact.companyLabel}</label>
                   <input 
                     type="text" 
                     required 
@@ -93,26 +86,26 @@ export default function ContactSection() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">Minat Pilar Layanan *</label>
+                <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">{t.contact.serviceLabel}</label>
                 <select 
                   required 
                   value={formData.service}
                   onChange={e => setFormData({...formData, service: e.target.value})}
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[#1A2E4C] text-sm font-medium focus:outline-none focus:border-[#D87939] focus:bg-white focus:ring-2 focus:ring-[#D87939]/20 transition-all"
                 >
-                  <option value="" disabled>Pilih Layanan Utama...</option>
-                  {serviceOptions.map((opt, i) => (
+                  <option value="" disabled>{t.contact.servicePlaceholder}</option>
+                  {t.contact.serviceOptions.map((opt, i) => (
                     <option key={i} value={opt}>{opt}</option>
                   ))}
                 </select>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">Brief Proyek & Objektif *</label>
+                <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">{t.contact.briefLabel}</label>
                 <textarea 
                   rows={4} 
                   required 
-                  placeholder="Jelaskan kebutuhan, lini masa, atau objektif bisnis yang ingin dicapai..."
+                  placeholder={t.contact.briefPlaceholder}
                   value={formData.brief}
                   onChange={e => setFormData({...formData, brief: e.target.value})}
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[#1A2E4C] text-sm font-medium focus:outline-none focus:border-[#D87939] focus:bg-white focus:ring-2 focus:ring-[#D87939]/20 transition-all"
@@ -120,7 +113,7 @@ export default function ContactSection() {
               </div>
 
               <button type="submit" className="w-full bg-[#D87939] hover:bg-[#C26527] text-white font-semibold py-4 rounded-xl transition-all shadow-md shadow-[#D87939]/30 flex items-center justify-center gap-2 mt-2">
-                <span>Kirim Brief & Konsultasi Now</span>
+                <span>{t.contact.submit}</span>
                 <Send className="w-4 h-4" />
               </button>
             </form>
@@ -129,8 +122,8 @@ export default function ContactSection() {
               <div className="bg-emerald-50 border border-emerald-300 rounded-2xl p-5 mt-6 flex items-center gap-4 text-emerald-900">
                 <CheckCircle className="w-6 h-6 text-emerald-600 shrink-0" />
                 <div>
-                  <strong className="block text-sm font-bold">Brief Anda Berhasil Terkirim!</strong>
-                  <span className="text-xs text-emerald-700 block mt-0.5">Anda akan dihubungkan ke WhatsApp Sivarya dalam 1 detik...</span>
+                  <strong className="block text-sm font-bold">{t.contact.successTitle}</strong>
+                  <span className="text-xs text-emerald-700 block mt-0.5">{t.contact.successBody}</span>
                 </div>
               </div>
             )}
@@ -138,8 +131,8 @@ export default function ContactSection() {
 
           <div className="lg:col-span-5 flex flex-col gap-8">
             <div className="bg-white rounded-lg p-8 border border-slate-200 shadow-sm">
-              <span className="text-xs font-semibold text-[#D87939] tracking-widest uppercase">DIRECT CONTACT</span>
-              <h3 className="font-heading font-bold text-xl text-[#1A2E4C] mt-1 mb-6">Informasi Kontak Respon Cepat</h3>
+              <span className="text-xs font-semibold text-[#D87939] tracking-widest uppercase">{t.contact.directContact}</span>
+              <h3 className="font-heading font-bold text-xl text-[#1A2E4C] mt-1 mb-6">{t.contact.contactHeading}</h3>
 
               <div className="flex flex-col gap-4">
                 <a href="https://wa.me/6285110511403" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200/80 hover:bg-[#D87939]/10 hover:border-[#D87939]/40 transition-all group">
@@ -147,7 +140,7 @@ export default function ContactSection() {
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="text-xs text-slate-500 font-medium block">Telepon & WhatsApp</span>
+                    <span className="text-xs text-slate-500 font-medium block">{t.contact.phoneLabel}</span>
                     <span className="font-bold text-[#1A2E4C] text-base group-hover:text-[#D87939] transition-colors">+62 851-1051-1403</span>
                   </div>
                 </a>
@@ -157,7 +150,7 @@ export default function ContactSection() {
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="text-xs text-slate-500 font-medium block">Email Respon Cepat</span>
+                    <span className="text-xs text-slate-500 font-medium block">{t.contact.emailFastLabel}</span>
                     <span className="font-bold text-[#1A2E4C] text-base group-hover:text-[#D87939] transition-colors">halosivarya@gmail.com</span>
                   </div>
                 </a>

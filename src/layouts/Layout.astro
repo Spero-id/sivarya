@@ -1,24 +1,29 @@
 ---
 import '../styles/global.css';
+import { getLangFromUrl, ui } from '../i18n/ui.js';
 
 interface Props {
 	title?: string;
 	description?: string;
 }
 
+const lang = getLangFromUrl(Astro.url);
+const t = ui[lang as keyof typeof ui];
 const {
-	title = "Sivarya - Integrated Creative Ecosystem | PT Sinergi Inovasi Karya",
-	description = "PT Sinergi Inovasi Karya (Sivarya) - Integrated Creative Ecosystem yang merancang solusi end-to-end dari infrastruktur digital, produksi audiovisual, podcast, strategi media sosial, event management, merchandise, hingga travel experience."
+	title = t.meta.title,
+	description = t.meta.description
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="id">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-		<!-- Favicon -->
+		<link rel="alternate" hreflang="id" href={Astro.site ? new URL('/', Astro.site).href : '/'} />
+		<link rel="alternate" hreflang="en" href={Astro.site ? new URL('/en/', Astro.site).href : '/en/'} />
+
 		<link
 			rel="icon"
 			type="image/svg+xml"
@@ -35,7 +40,6 @@ const {
 			href="/favicon.ico"
 		/>
 
-		<!-- Apple -->
 		<link
 			rel="apple-touch-icon"
 			sizes="180x180"
@@ -46,13 +50,11 @@ const {
 			content="Sivarya"
 		/>
 
-		<!-- Web App Manifest -->
 		<link
 			rel="manifest"
 			href="/site.webmanifest"
 		/>
 
-		<!-- SEO -->
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
@@ -85,7 +87,6 @@ const {
 			content={description}
 		/>
 
-		<!-- Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link
 			rel="preconnect"
