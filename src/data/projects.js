@@ -8,7 +8,7 @@ export const projectsData = [
     image: "/images/portfolio_digital.jpg",
     aspect: "aspect-[4/5]",
     summary: {
-      id: "Re-architecting internal digital portal & customer touchpoints for high traffic scalability and modern UI.",
+      id: "Merancang ulang arsitektur portal digital internal & customer touchpoints agar mampu menangani traffic tinggi dengan skalabilitas dan UI modern.",
       en: "Re-architecting internal digital portal & customer touchpoints for high traffic scalability and modern UI.",
     },
     challenge: {
@@ -33,7 +33,7 @@ export const projectsData = [
     image: "/images/portfolio_audiovisual.jpg",
     aspect: "aspect-square",
     summary: {
-      id: "Conveying corporate trust and futuristic digital banking innovation in a compelling 60-second video campaign.",
+      id: "Menyampaikan kepercayaan korporat dan inovasi digital banking futuristik melalui kampanye video berdurasi 60 detik yang memikat.",
       en: "Conveying corporate trust and futuristic digital banking innovation in a compelling 60-second video campaign.",
     },
     challenge: {
@@ -58,7 +58,7 @@ export const projectsData = [
     image: "/images/portfolio_podcast.jpg",
     aspect: "aspect-[3/4]",
     summary: {
-      id: "Building authority in corporate tech landscape through high-quality audio & video podcast content.",
+      id: "Membangun otoritas di lanskap teknologi korporat melalui konten podcast audio & video berkualitas tinggi.",
       en: "Building authority in corporate tech landscape through high-quality audio & video podcast content.",
     },
     challenge: {
@@ -83,7 +83,7 @@ export const projectsData = [
     image: "/images/portfolio_audiovisual.jpg",
     aspect: "aspect-[4/3]",
     summary: {
-      id: "Transforming social media channels from formal feeds into engaging community conversations.",
+      id: "Mentransformasikan kanal media sosial dari feed formal menjadi percakapan komunitas yang interaktif.",
       en: "Transforming social media channels from formal feeds into engaging community conversations.",
     },
     challenge: {
@@ -108,7 +108,7 @@ export const projectsData = [
     image: "/images/portfolio_event.jpg",
     aspect: "aspect-[4/5]",
     summary: {
-      id: "Executing a flawless hybrid summit for 2,500+ C-level delegates with zero technical glitches.",
+      id: "Menyelenggarakan summit hybrid tanpa cela untuk 2.500+ delegasi C-level tanpa kendala teknis.",
       en: "Executing a flawless hybrid summit for 2,500+ C-level delegates with zero technical glitches.",
     },
     challenge: {
@@ -133,7 +133,7 @@ export const projectsData = [
     image: "/images/portfolio_merch.jpg",
     aspect: "aspect-square",
     summary: {
-      id: "Creating memorable, premium custom merchandise boxes for 500 VIP partners & executive stakeholders.",
+      id: "Menciptakan boks merchandise custom premium yang berkesan untuk 500 mitra VIP & pemangku kepentingan eksekutif.",
       en: "Creating memorable, premium custom merchandise boxes for 500 VIP partners & executive stakeholders.",
     },
     challenge: {
@@ -158,7 +158,7 @@ export const projectsData = [
     image: "/images/portfolio_event.jpg",
     aspect: "aspect-[3/4]",
     summary: {
-      id: "Designing an accessible, comfortable yet energetic travel itinerary for senior corporate leaders.",
+      id: "Merancang itinerary perjalanan yang mudah diakses, nyaman, namun tetap enerjik untuk para pemimpin korporat senior.",
       en: "Designing an accessible, comfortable yet energetic travel itinerary for senior corporate leaders.",
     },
     challenge: {
