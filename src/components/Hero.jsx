@@ -4,7 +4,7 @@ import { ui } from '../i18n/ui.js';
 const platforms = [
   { name: 'WhatsApp', color: '#1DB954', images: "/whatsapp-logo-2.png" },
   { name: 'Instagram', color: '#9933CC', images: "/instagram.png" },
-  { name: 'Linkedin', color: '#4285F4', images: "/linkedin.png", iconClass: "w-8 h-8 sm:w-11 sm:h-11" },
+  { name: 'Linkedin', color: '#4285F4', images: "/linkedin.png", iconClass: "w-8 h-8 sm:w-9 sm:h-9" },
   { name: 'Gmail', color: '#FF5500', images: "/gmail.png" },
 ];
 

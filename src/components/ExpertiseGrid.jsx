@@ -226,7 +226,6 @@ function ServiceCard({ item, idx, lang = 'id' }) {
               {t.expertise.readMore}
             </button>
           )}
-          {detailLink}
         </div>
       </div>
 
@@ -253,7 +252,6 @@ function ServiceCard({ item, idx, lang = 'id' }) {
             >
               {t.expertise.close}
             </button>
-            {detailLink}
           </div>
         </div>
       )}
