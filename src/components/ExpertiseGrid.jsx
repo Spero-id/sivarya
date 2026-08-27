@@ -11,7 +11,7 @@ const services = [
       en: "Build a scalable and responsive digital presence.",
     },
     longDesc: {
-      id: "Kami merancang arsitektur UI/UX dan sistem backend yang tangguh untuk website maupun aplikasi, memastikan brand Anda memberikan seamless digital experience bagi user di mana saja.",
+      id: "Kami bantu bisnis Anda untuk go digital dengan bikin aplikasi, website, dan sistem toko online yang canggih tapi tetap gampang dipakai oleh siapa saja.",
       en: "We design robust UI/UX architecture and backend systems for websites and applications, ensuring your brand delivers a seamless digital experience to users anywhere.",
     },
     icon: (
@@ -27,14 +27,14 @@ const services = [
   },
   {
     id: "audiovisual",
-    title: { id: "Produksi Audiovisual", en: "Audiovisual Production" },
+    title: { id: "Produksi & Editing Vidio/Foto", en: "Production & Editing Vidio/Foto" },
     desc: {
-      id: "Visual adalah bahasa universal brand Anda. ",
-      en: "Visuals are your brand's universal language. ",
+      id: "Butuh video profil, iklan, atau dokumentasi?",
+      en: "Need a profile video, advertisement, or documentation?",
     },
     longDesc: {
-      id: "Mulai dari corporate profile, commercial TVC, hingga dokumentasi sinematik, tim spesialis kami memproduksi aset visual bernilai estetika tinggi yang didesain untuk mencuri perhatian dan engagement.",
-      en: "From corporate profiles, commercial TVCs, to cinematic documentation, our specialist team produces highly aesthetic visual assets designed to capture attention and engagement.",
+      id: "Kami siap layani dari syuting hingga post-produksi (efek visual, warna, suara). Hasil dijamin hidup, profesional, dan nggak ngebosenin!",
+      en: "We're ready to serve you from filming to post-production (visual effects, color, sound). The results are guaranteed to be vibrant, professional, and engaging!",
     },
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
@@ -44,72 +44,15 @@ const services = [
     ),
   },
   {
-    id: "podcast",
-    title: { id: "Produksi Podcast", en: "Podcast Production" },
-    desc: {
-      id: "Kuasai thought leadership di industri Anda melalui audio.",
-      en: "Master thought leadership in your industry through audio.",
-    },
-    longDesc: {
-      id: "Kami menangani keseluruhan pipeline—dari fasilitas studio recording, sound engineering, hingga post-production—untuk menghasilkan podcast premium yang jernih dan profesional.",
-      en: "We handle the entire pipeline—from recording studio facilities, sound engineering, to post-production—to produce premium, clear, and professional podcasts.",
-    },
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-        <line x1="12" x2="12" y1="19" y2="22" />
-      </svg>
-    ),
-  },
-  {
-    id: "social-media",
-    title: { id: "Strategi Media Sosial", en: "Social Media Strategy" },
-    desc: {
-      id: "Ubah followers menjadi brand advocates.",
-      en: "Turn followers into brand advocates.",
-    },
-    longDesc: {
-      id: "Tim kami meramu strategi omnichannel, creative copywriting, hingga optimasi algoritma untuk menjaga relevansi brand Anda dan mendorong matriks pertumbuhan organik di media sosial.",
-      en: "Our team crafts omnichannel strategy, creative copywriting, and algorithm optimization to keep your brand relevant and drive organic growth metrics on social media.",
-    },
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-      </svg>
-    ),
-  },
-  {
-    id: "event-management",
-    title: { id: "Manajemen Event", en: "Event Management" },
-    desc: {
-      id: "Ciptakan momen yang tak terlupakan.",
-      en: "Create unforgettable moments.",
-    },
-    longDesc: {
-      id: "Dari grand launching, konferensi berskala besar, hingga pameran B2B, kami mengeksekusi konsep brand activation secara presisi dan end-to-end, memastikan setiap event berjalan spektakuler.",
-      en: "From grand launches, large-scale conferences, to B2B exhibitions, we execute brand activation concepts precisely and end-to-end, ensuring every event runs spectacularly.",
-    },
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-        <line x1="16" x2="16" y1="2" y2="6" />
-        <line x1="8" x2="8" y1="2" y2="6" />
-        <line x1="3" x2="21" y1="10" y2="10" />
-      </svg>
-    ),
-  },
-  {
     id: "merchandise",
-    title: { id: "Corporate Merchandise", en: "Corporate Merchandise" },
+    title: { id: "Souvenir & Promosi", en: "Souvenir & Promotion" },
     desc: {
-      id: "Tinggalkan impresi fisik yang kuat.",
-      en: "Leave a strong physical impression.",
+      id: "Butuh merchandise custom seperti seragam atau suvenir?",
+      en: "Need custom merchandise such as uniforms or souvenirs?",
     },
     longDesc: {
-      id: "Kami memproduksi corporate merchandise dan seragam kustom dengan material premium dan desain eksklusif, dirancang khusus untuk memperkuat brand identity dan loyalitas pemangku kepentingan.",
-      en: "We produce corporate merchandise and custom uniforms with premium materials and exclusive designs, specially crafted to strengthen brand identity and stakeholder loyalty.",
+      id: "Kami siap produksi dengan material berkualitas dan desain menarik agar brand Anda makin berkesan bagi klien dan tim!",
+      en: "We are ready to produce with quality materials and attractive designs to make your brand more memorable for clients and teams!",
     },
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
@@ -122,15 +65,56 @@ const services = [
     ),
   },
   {
-    id: "travel-management",
-    title: { id: "Curated Travel", en: "Curated Travel" },
+    id: "marketing",
+    title: { id: "Digital Marketing", en: "Digital Marketing" },
     desc: {
-      id: "Hadirkan pengalaman perjalanan yang dirancang khusus untuk setiap audiens.",
-      en: "Deliver travel experiences specially designed for every audience.",
+      id: "Kuasai thought leadership di industri Anda melalui audio.",
+      en: "Master thought leadership in your industry through audio.",
     },
     longDesc: {
-      id: "Mulai dari corporate outing profesional, open trip rekreasi yang aman dan nyaman untuk lansia (senior-friendly), hingga manajemen perjalanan konser (concert trip) yang enerjik. Sebagai travel planner & organizer, kami mengkurasi itinerary, akomodasi, dan mengelola seluruh koordinasi mobilitas logistik secara end-to-end agar Anda cukup duduk manis dan menikmati momen.",
-      en: "From professional corporate outings, safe and comfortable senior-friendly leisure open trips, to energetic concert trip management. As a travel planner & organizer, we curate itineraries and accommodation and manage all mobility logistics coordination end-to-end so you can simply sit back and enjoy the moment.",
+      id: "Biar bisnis Anda makin dikenal banyak orang, kami bantu ngelolain akun media sosial, ngebangun image merek, sampai jalanin iklan strategis di Google dan Instagram.",
+      en: "To make your business more widely known, we help manage social media accounts, build brand image, and run strategic advertising on Google and Instagram.",
+    },
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+        <line x1="12" x2="12" y1="19" y2="22" />
+      </svg>
+    ),
+  },
+  
+  {
+    id: "event-management",
+    title: { id: "Penyelenggaraan Acara", en: "Event Management" },
+    desc: {
+      id: "Ciptakan momen yang tak terlupakan.",
+      en: "Create unforgettable moments.",
+    },
+    longDesc: {
+      id: "Mulai dari cari ide, persiapan, sampai hari H di lapangan, kami yang urus semuanya. Mau bikin seminar, live streaming, atau launching produk? Anda tinggal duduk manis dan terima beres!",
+      en: "From idea generation and preparation to the actual event itself, we take care of everything. Whether you're planning a seminar, livestream, or product launch, just sit back and relax!",
+    },
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+        <line x1="16" x2="16" y1="2" y2="6" />
+        <line x1="8" x2="8" y1="2" y2="6" />
+        <line x1="3" x2="21" y1="10" y2="10" />
+      </svg>
+    ),
+  },
+  
+  {
+    id: "travel-management",
+    title: { id: "Trip Bisnis & Perjalanan", en: "Business Travel & Tourism" },
+    desc: {
+      id: "Hadirkan pengalaman perjalanan yang dirancang khusus untuk setiap audiens.",
+      en: "Deliver travel experiences tailored to each audience.",
+    },
+    longDesc: {
+      id: "Kami juga bisa bantu urusin urusan tiket, pesen akomodasi hotel, dan nyusun jadwal lengkap buat perjalanan dinas atau reward trip santai buat tim di perusahaan Anda.",
+      en: "We can also help you with ticketing, hotel bookings, and create a complete itinerary for business trips or a relaxing reward trip for your company team.",
     },
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
@@ -161,6 +145,7 @@ function ServiceCard({ item, idx, lang = 'id' }) {
   useLayoutEffect(() => {
     const el = measureRef.current;
     if (!el) return;
+
 
     const measure = () => {
       const cs = getComputedStyle(el);
@@ -291,7 +276,7 @@ export default function ExpertiseGrid({ lang = 'id' }) {
         </div>
 
         <div className="border-t border-slate-200">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
             {services.map((item, idx) => (
               <ServiceCard key={idx} item={item} idx={idx} lang={lang} />
             ))}

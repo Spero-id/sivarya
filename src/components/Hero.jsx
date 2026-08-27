@@ -58,7 +58,7 @@ export default function Hero({ lang = 'id' }) {
               </span>
             </h1>
 
-            <p className="hero-rise text-white/50 text-base sm:text-md leading-relaxed mb-8 max-w-md" style={{ animationDelay: '520ms' }}>
+            <p className="hero-rise text-[#D87939] font-semibold sm:text-md leading-relaxed mb-8 max-w-md" style={{ animationDelay: '520ms' }}>
               {t.hero.paragraph}
             </p>
 

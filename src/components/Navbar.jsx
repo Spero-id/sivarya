@@ -105,7 +105,7 @@ export default function Navbar({ transparent = false, lang = 'id' }) {
                     return (
                       <a
                         key={idx}
-                        // href={`/expertise#${serviceMeta[idx].slug}`} 
+                        href={`/#expertise`} 
                         className={`group/item flex items-start gap-3 p-3 rounded-xl hover:bg-[#D87939]/[0.06] transition-all duration-300 ${dropdownOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
                           }`}
                         style={{ transitionDelay: dropdownOpen ? `${80 + idx * 30}ms` : '0ms' }}
@@ -115,14 +115,14 @@ export default function Navbar({ transparent = false, lang = 'id' }) {
                           {String(idx + 1).padStart(2, '0')}
                         </span>
 
-                        <div className="flex-1 min-w-0">
-                          <span className="flex items-center gap-1.5 mb-0.5">
+                        <div className="flex-1 min-w-xl">
+                          <span className="flex items-center gap-2 mb-0.5">
                             <Icon className="w-3.5 h-3.5 text-[#1A2E4C]/60 group-hover/item:text-[#D87939] transition-colors shrink-0" />
                             <span className="text-[13px] font-bold text-[#1A2E4C] leading-snug group-hover/item:text-[#C26527] transition-colors">
                               {service.title}
                             </span>
                           </span>
-                          <span className="block text-[11px] text-slate-500 leading-relaxed">{service.desc}</span>
+                          <span className="block text-[11px] text-black leading-relaxed">{service.desc}</span>
                         </div>
 
                         <ArrowUpRight className="w-4 h-4 text-[#D87939] opacity-0 -translate-x-1 translate-y-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 group-hover/item:translate-y-0 transition-all duration-300 mt-0.5 shrink-0" />
@@ -168,9 +168,9 @@ export default function Navbar({ transparent = false, lang = 'id' }) {
 
           <a
             href={langPath(lang, '/contact')}
-            className={`hidden sm:inline-flex items-center gap-2 font-semibold text-sm px-5 py-2.5 rounded-full border transition-all hover:-translate-y-0.5 ${isWhite
-                ? 'border-[#1A2E4C]/20 text-[#1A2E4C] hover:bg-[#1A2E4C] hover:text-white'
-                : 'border-white/40 text-white hover:bg-white/10'
+            className={`hidden sm:inline-flex items-center gap-2 font-semibold text-sm px-5 py-2.5 rounded-full transition-all hover:-translate-y-0.5 ${isWhite
+                ? 'bg-[#1A2E4C] text-white hover:bg-[#1A2E4C] hover:text-white'
+                : 'bg-white text-black hover:bg-[#1A2E4C] hover:text-white'
               }`}
           >
             <span>{t.nav.letsTalk}</span>
@@ -206,7 +206,7 @@ export default function Navbar({ transparent = false, lang = 'id' }) {
                 <span className="font-mono text-xs font-bold text-[#D87939] uppercase block mb-2">{t.nav.mobileServicesLabel}</span>
                 <div className="flex flex-col gap-2 pl-3 border-l-2 border-[#D87939]">
                   {t.navServices.map((s, i) => (
-                    <a key={i} href={langPath(lang, `/expertise#${serviceMeta[i].slug}`)} onClick={() => setMobileOpen(false)} className="flex items-baseline gap-2.5 text-slate-600 font-medium text-sm hover:text-[#1A2E4C] transition-colors">
+                    <a key={i} href={langPath(lang, `/expertise#${serviceMeta[i].slug}`)} onClick={() => setMobileOpen(false)} className="flex items-baseline gap-2 text-slate-600 font-medium text-sm hover:text-[#1A2E4C] transition-colors">
                       <span className="font-mono text-[10px] font-bold text-[#D87939]/60">{String(i + 1).padStart(2, '0')}</span>
                       {s.title}
                     </a>
@@ -239,7 +239,7 @@ export default function Navbar({ transparent = false, lang = 'id' }) {
                 ))}
               </div>
 
-              <a href={langPath(lang, '/contact')} onClick={() => setMobileOpen(false)} className="w-full bg-[#D87939] text-white font-semibold text-center py-3 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-[#D87939]/25 mt-4">
+              <a href={langPath(lang, '/contact')} onClick={() => setMobileOpen(false)} className="w-full bg-[#D87933] text-white font-semibold text-center py-3 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-[#D87939]/25 mt-4">
                 <span>{t.nav.letsTalk}</span>
                 <ArrowRight className="w-4 h-4" />
               </a>

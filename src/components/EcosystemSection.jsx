@@ -119,12 +119,12 @@ export default function EcosystemSection({ lang = 'id' }) {
                     {legalFacts.map((fact, idx) => (
                       <div
                         key={fact.value}
-                        className="flex items-baseline justify-between gap-6 py-4 border-b border-dashed border-white/15 last:border-b-0"
+                        className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-6 py-4 border-b border-dashed border-white/15 last:border-b-0"
                       >
                         <dt className="font-semibold text-[10px] text-slate-400 tracking-widest uppercase shrink-0">
                           {fact.label[lang]}
                         </dt>
-                        <dd className="font-mono text-[13px] lg:text-sm text-white font-semibold text-right">
+                        <dd className="font-mono text-[12px] lg:text-sm text-white font-semibold sm:text-right break-words">
                           {fact.value}
                         </dd>
                       </div>
