@@ -29,10 +29,10 @@ export default function Footer({ lang = 'id' }) {
             <h4 className="font-heading font-bold text-[#1A2E4C] text-base mb-5">{t.footer.mainNav}</h4>
             <ul className="flex flex-col gap-3 text-sm">
               <li><a href={langPath(lang, '/#home')} className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">{t.footer.navHome}</a></li>
-              <li><a href={langPath(lang, '/expertise')} className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">{t.footer.navExpertise}</a></li>
-              <li><a href={langPath(lang, '/works')} className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">{t.footer.navCases}</a></li>
-              <li><a href={langPath(lang, '/ecosystem')} className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">{t.footer.navEcosystem}</a></li>
-              <li><a href={langPath(lang, '/contact')} className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">{t.footer.navLetsTalk}</a></li>
+              <li><a href={langPath(lang, '/#expertise')} className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">{t.footer.navExpertise}</a></li>
+              <li><a href={langPath(lang, '/#works')} className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">{t.footer.navCases}</a></li>
+              <li><a href={langPath(lang, '/#ecosystem')} className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">{t.footer.navEcosystem}</a></li>
+              <li><a href={langPath(lang, '/#contact')} className="text-slate-600 hover:text-[#D87939] font-medium transition-colors">{t.footer.navLetsTalk}</a></li>
             </ul>
           </div>
 
@@ -42,7 +42,7 @@ export default function Footer({ lang = 'id' }) {
               {t.footer.pillarLinks.map((name, i) => (
                 <li key={i}>
                   <a
-                    href={langPath(lang, `/expertise#${pillarSlugs[i]}`)}
+                    href={langPath(lang, `/#expertise`)}
                     className="text-slate-600 hover:text-[#D87939] font-medium transition-colors"
                   >
                     {name}
