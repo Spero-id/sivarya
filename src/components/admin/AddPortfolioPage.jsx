@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import { ArrowLeft, Send, Save, Loader2, Image as ImageIcon, Sparkles } from 'lucide-react';
 import AdminLayout from './layout/AdminLayout.jsx';
 import ImageUpload from './ui/ImageUpload.jsx';
-import GalleryManager from './ui/GalleryManager.jsx';
 import Toast from './ui/Toast.jsx';
 import { categories } from '../../data/projects.js';
 import {
@@ -16,18 +15,30 @@ import {
 
 const EMPTY_FORM = {
   title: '',
-  client: '',
   category: '',
-  year: new Date().getFullYear(),
-  url: '',
-  summary: '',
-  description: '',
-  challenge: '',
-  strategy: '',
-  result: '',
+  client: '',
+  aspect: '4/5',
   status: 'draft',
   featured: false,
+  summary: { id: '', en: '' },
+  challenge: { id: '', en: '' },
+  strategy: { id: '', en: '' },
+  result: { id: '', en: '' },
 };
+
+const ASPECTS = [
+  { value: '4/5', label: '4:5 \u2014 Potret' },
+  { value: '1/1', label: '1:1 \u2014 Persegi' },
+  { value: '3/4', label: '3:4 \u2014 Potret' },
+  { value: '4/3', label: '4:3 \u2014 Lanskap' },
+];
+
+const CONTENT_FIELDS = [
+  { key: 'summary', rows: 2, required: true, label: 'Ringkasan', placeholders: { id: 'Tulis ringkasan singkat proyek...', en: 'Write a short project summary...' } },
+  { key: 'challenge', rows: 3, label: 'Tantangan', placeholders: { id: 'Apa tantangan utama klien sebelum proyek dimulai?', en: "What was the client's main challenge before the project?" } },
+  { key: 'strategy', rows: 3, label: 'Strategi', placeholders: { id: 'Bagaimana pendekatan dan eksekusi yang dilakukan?', en: 'How was the approach and execution carried out?' } },
+  { key: 'result', rows: 3, label: 'Hasil', placeholders: { id: 'Dampak atau metrik keberhasilan proyek.', en: 'Impact or success metrics of the project.' } },
+];
 
 function EditorBlock({ label, hint, children, id }) {
   return (
@@ -54,7 +65,34 @@ function SettingsGroup({ title, id, children }) {
   );
 }
 
-function PreviewCard({ title, description, categoryName, cover, status }) {
+function LangToggle({ lang, onChange }) {
+  return (
+    <div className="grid w-fit grid-cols-2 gap-1 rounded-lg bg-slate-100 p-1">
+      <button
+        type="button"
+        onClick={() => onChange('id')}
+        aria-pressed={lang === 'id'}
+        className={`rounded-md px-3 py-1 text-xs font-bold transition-colors ${
+          lang === 'id' ? 'bg-white text-[#1A2E4C] shadow-sm' : 'text-slate-500 hover:text-[#1A2E4C]'
+        } ${focusRingVisible}`}
+      >
+        ID
+      </button>
+      <button
+        type="button"
+        onClick={() => onChange('en')}
+        aria-pressed={lang === 'en'}
+        className={`rounded-md px-3 py-1 text-xs font-bold transition-colors ${
+          lang === 'en' ? 'bg-white text-[#1A2E4C] shadow-sm' : 'text-slate-500 hover:text-[#1A2E4C]'
+        } ${focusRingVisible}`}
+      >
+        EN
+      </button>
+    </div>
+  );
+}
+
+function PreviewCard({ title, description, categoryName, cover, status, aspect }) {
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
       <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-4 py-2.5">
@@ -75,13 +113,15 @@ function PreviewCard({ title, description, categoryName, cover, status }) {
         )}
       </div>
 
-      {cover ? (
-        <img src={cover} alt="" className="aspect-[4/3] w-full object-cover" />
-      ) : (
-        <div className="flex aspect-[4/3] items-center justify-center bg-slate-100 text-slate-300">
-          <ImageIcon className="h-8 w-8" aria-hidden="true" />
-        </div>
-      )}
+      <div style={{ aspectRatio: aspect }} className="relative w-full overflow-hidden bg-slate-100">
+        {cover ? (
+          <img src={cover} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        ) : (
+          <span className="absolute inset-0 flex items-center justify-center text-slate-300">
+            <ImageIcon className="h-9 w-9" aria-hidden="true" />
+          </span>
+        )}
+      </div>
 
       <div className="p-4">
         <span className="rounded-full bg-[#D87939]/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#C26527]">
@@ -100,6 +140,7 @@ function PreviewCard({ title, description, categoryName, cover, status }) {
 
 export default function AddPortfolioPage() {
   const [form, setForm] = useState(EMPTY_FORM);
+  const [lang, setLang] = useState('id');
   const [errors, setErrors] = useState({});
   const [toast, setToast] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -120,10 +161,15 @@ export default function AddPortfolioPage() {
     setErrors(prev => ({ ...prev, [key]: undefined }));
   };
 
+  const setContent = (field, value) => {
+    setForm(prev => ({ ...prev, [field]: { ...prev[field], [lang]: value } }));
+    if (field === 'summary') setErrors(prev => ({ ...prev, summary: undefined }));
+  };
+
   const validate = () => {
     const next = {};
     if (!form.title.trim()) next.title = 'Judul proyek wajib diisi.';
-    if (!form.summary.trim()) next.summary = 'Ringkasan singkat wajib diisi.';
+    if (!form.summary.id.trim()) next.summary = 'Ringkasan (bahasa Indonesia) wajib diisi.';
     if (!form.category) next.category = 'Pilih salah satu kategori.';
     if (!form.client.trim()) next.client = 'Nama klien wajib diisi.';
     setErrors(next);
@@ -198,7 +244,7 @@ export default function AddPortfolioPage() {
 
       <form onSubmit={e => e.preventDefault()} noValidate className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-8">
-          <div className="space-y-12">
+          <div className="space-y-4">
             <section aria-labelledby="hero-title-label" className="space-y-2">
               <label
                 id="hero-title-label"
@@ -219,94 +265,48 @@ export default function AddPortfolioPage() {
               {errors.title && <p className={`${helperCls} text-red-600`}>{errors.title}</p>}
             </section>
 
-            <EditorBlock label="Ringkasan" hint="Satu-dua kalimat untuk kartu portfolio." id="block-summary">
-              <textarea
-                rows={2}
-                value={form.summary}
-                onChange={e => set('summary', e.target.value)}
-                placeholder="Tulis ringkasan singkat proyek..."
-                aria-invalid={Boolean(errors.summary)}
-                className={`${inputCls} resize-none ${errorField('summary')}`}
-              />
-              {errors.summary && <p className={`${helperCls} text-red-600`}>{errors.summary}</p>}
-            </EditorBlock>
+            <section aria-labelledby="lang-toggle-label" className="flex items-center gap-3">
+              <span id="lang-toggle-label" className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
+                Bahasa konten
+              </span>
+              <LangToggle lang={lang} onChange={setLang} />
+            </section>
 
-            <EditorBlock label="Cover Image" hint="Gambar utama yang paling merepresentasikan proyek." id="block-cover">
+            {CONTENT_FIELDS.map(field => (
+              <EditorBlock
+                key={field.key}
+                label={field.required ? `${field.label} *` : field.label}
+                hint={
+                  field.key === 'summary'
+                    ? 'Tampil sebagai ringkasan di kartu portfolio & halaman detail.'
+                    : 'Tampil pada bagian case study di halaman detail.'
+                }
+                id={`block-${field.key}`}
+              >
+                <textarea
+                  rows={field.rows}
+                  value={form[field.key][lang]}
+                  onChange={e => setContent(field.key, e.target.value)}
+                  placeholder={field.placeholders[lang]}
+                  aria-invalid={Boolean(errors[field.key])}
+                  className={`${inputCls} resize-none ${errorField(field.key)}`}
+                />
+                {errors[field.key] && <p className={`${helperCls} text-red-600`}>{errors[field.key]}</p>}
+              </EditorBlock>
+            ))}
+
+            <EditorBlock label="Cover Image" hint="Gambar utama untuk kartu portfolio — ikuti rasio aspek yang dipilih." id="block-cover">
               <ImageUpload
                 key={`cover-${resetKey}`}
                 label="Upload cover image"
                 onChange={({ status, src }) => setCover(status === 'preview' ? src : null)}
               />
             </EditorBlock>
-
-            <EditorBlock label="Deskripsi Proyek" hint="Cerita lengkap dan konteks di balik proyek." id="block-description">
-              <textarea
-                rows={7}
-                value={form.description}
-                onChange={e => set('description', e.target.value)}
-                placeholder="Tulis deskripsi project..."
-                className={`${inputCls} resize-y text-[15px] leading-relaxed`}
-              />
-            </EditorBlock>
-
-            <EditorBlock label="Gallery" hint="Gambar pendukung untuk memperkaya case study." id="block-gallery">
-              <GalleryManager key={`gallery-${resetKey}`} />
-            </EditorBlock>
-
-            <section aria-labelledby="block-casestudy" className="space-y-5">
-              <div>
-                <h2 id="block-casestudy" className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
-                  Case Study <span className="ml-1 normal-case tracking-normal text-slate-300">(opsional)</span>
-                </h2>
-                <p className="mt-0.5 text-xs text-slate-400">Merinci tantangan, strategi, dan hasil untuk halaman detail.</p>
-              </div>
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="cs-challenge" className="mb-1.5 block text-xs font-semibold text-slate-600">
-                    Tantangan
-                  </label>
-                  <textarea
-                    id="cs-challenge"
-                    rows={3}
-                    value={form.challenge}
-                    onChange={e => set('challenge', e.target.value)}
-                    placeholder="Apa tantangan utama klien sebelum proyek dimulai?"
-                    className={inputCls}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="cs-strategy" className="mb-1.5 block text-xs font-semibold text-slate-600">
-                    Strategi
-                  </label>
-                  <textarea
-                    id="cs-strategy"
-                    rows={3}
-                    value={form.strategy}
-                    onChange={e => set('strategy', e.target.value)}
-                    placeholder="Bagaimana pendekatan dan eksekusi yang dilakukan?"
-                    className={inputCls}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="cs-result" className="mb-1.5 block text-xs font-semibold text-slate-600">
-                    Hasil
-                  </label>
-                  <textarea
-                    id="cs-result"
-                    rows={3}
-                    value={form.result}
-                    onChange={e => set('result', e.target.value)}
-                    placeholder="Dampak atau metrik keberhasilan proyek."
-                    className={inputCls}
-                  />
-                </div>
-              </div>
-            </section>
           </div>
         </div>
 
         <aside className="lg:col-span-4">
-          <div className="space-y-8 lg:sticky lg:top-24">
+          <div className="space-y-4 lg:sticky lg:top-24">
             <SettingsGroup title="Penerbitan" id="settings-publishing">
               <div>
                 <span className="mb-1.5 block text-xs font-semibold text-slate-600">Status</span>
@@ -366,6 +366,10 @@ export default function AddPortfolioPage() {
             <span className="block border-t border-slate-200" aria-hidden="true" />
 
             <SettingsGroup title="Detail Proyek" id="settings-details">
+              <p className="text-xs leading-relaxed text-slate-400">
+                Field ini tampil sebagai metadata pada kartu &amp; halaman detail publik.
+              </p>
+
               <div>
                 <label htmlFor="setting-category" className={labelCls}>
                   Kategori <span className="text-[#D87939]">*</span>
@@ -402,41 +406,28 @@ export default function AddPortfolioPage() {
               </div>
 
               <div>
-                <label htmlFor="setting-year" className={labelCls}>Tahun</label>
-                <input
-                  id="setting-year"
-                  type="number"
-                  min={2000}
-                  max={2099}
-                  value={form.year}
-                  onChange={e => set('year', Number(e.target.value))}
+                <label htmlFor="setting-aspect" className={labelCls}>Rasio Aspek</label>
+                <select
+                  id="setting-aspect"
+                  value={form.aspect}
+                  onChange={e => set('aspect', e.target.value)}
                   className={inputCls}
-                />
-              </div>
-            </SettingsGroup>
-
-            <span className="block border-t border-slate-200" aria-hidden="true" />
-
-            <SettingsGroup title="Link Proyek" id="settings-links">
-              <div>
-                <label htmlFor="setting-url" className={labelCls}>Project URL</label>
-                <input
-                  id="setting-url"
-                  type="url"
-                  value={form.url}
-                  onChange={e => set('url', e.target.value)}
-                  placeholder="https://..."
-                  className={inputCls}
-                />
+                >
+                  {ASPECTS.map(item => (
+                    <option key={item.value} value={item.value}>{item.label}</option>
+                  ))}
+                </select>
+                <p className={helperCls}>Menentukan rasio kartu di grid landing page.</p>
               </div>
             </SettingsGroup>
 
             <PreviewCard
               title={form.title}
-              description={form.summary}
+              description={form.summary.id}
               categoryName={categoryName}
               cover={cover}
               status={form.status}
+              aspect={form.aspect}
             />
           </div>
         </aside>
