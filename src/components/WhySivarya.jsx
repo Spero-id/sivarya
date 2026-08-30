@@ -1,5 +1,5 @@
 import { Layers, ShieldCheck, Zap, BarChart3 } from 'lucide-react';
-import { ui } from '../i18n/ui.js';
+import { getUi } from '../i18n/ui.js';
 
 const pillars = [
   {
@@ -41,7 +41,7 @@ const pillars = [
 ];
 
 export default function WhySivarya({ lang = 'id' }) {
-  const t = ui[lang];
+  const t = getUi(lang);
 
   return (
     <section className="py-28 bg-white" id="why-sivarya">

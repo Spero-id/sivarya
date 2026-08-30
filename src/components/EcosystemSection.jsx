@@ -1,6 +1,6 @@
 import { Award, MonitorSmartphone, Clapperboard, Megaphone, CalendarDays, Plane } from 'lucide-react';
 import Reveal from './Reveal.jsx';
-import { ui } from '../i18n/ui.js';
+import { getUi } from '../i18n/ui.js';
 
 const talents = [
   { num: '01', name: { id: 'Teknologi Inovatif', en: 'Innovative Technology' }, desc: { id: 'Web, app & sistem internal', en: 'Web, app & internal systems' } },
@@ -49,7 +49,7 @@ function CurvedConnector({ direction }) {
 }
 
 export default function EcosystemSection({ lang = 'id' }) {
-  const t = ui[lang];
+  const t = getUi(lang);
   return (
     <section className="py-10 lg:py-10 bg-white relative" id="ecosystem">
       <div className="max-w-7xl mx-auto px-6">

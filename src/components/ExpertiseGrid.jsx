@@ -1,6 +1,6 @@
 import { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { ui, langPath } from '../i18n/ui.js';
+import { getUi, langPath } from '../i18n/ui.js';
 
 const services = [
   {
@@ -129,7 +129,7 @@ const services = [
 const MAX_LINES = 5;
 
 function ServiceCard({ item, idx, lang = 'id' }) {
-  const t = ui[lang];
+  const t = getUi(lang);
   const [open, setOpen] = useState(false);
   const [overlayMounted, setOverlayMounted] = useState(false);
   const [overflows, setOverflows] = useState(false);
@@ -260,7 +260,7 @@ function ServiceCard({ item, idx, lang = 'id' }) {
 }
 
 export default function ExpertiseGrid({ lang = 'id' }) {
-  const t = ui[lang];
+  const t = getUi(lang);
   return (
     <section className="py-14 bg-white relative" id="expertise">
       <div className="max-w-7xl mx-auto px-6">

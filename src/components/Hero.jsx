@@ -1,5 +1,5 @@
 import { ArrowRight } from 'lucide-react';
-import { ui } from '../i18n/ui.js';
+import { getUi } from '../i18n/ui.js';
 
 const platforms = [
   { name: 'WhatsApp', color: '#1DB954', images: "/whatsapp-logo-2.png" },
@@ -12,7 +12,7 @@ const WHATSAPP_NUMBER = import.meta.env.PUBLIC_WHATSAPP_NUMBER;
 const WHATSAPP_MESSAGE = import.meta.env.PUBLIC_WHATSAPP_MESSAGE;
 
 export default function Hero({ lang = 'id' }) {
-  const t = ui[lang];
+  const t = getUi(lang);
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 
 

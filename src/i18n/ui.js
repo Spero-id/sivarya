@@ -270,6 +270,10 @@ export function getLangFromUrl(url) {
   return defaultLocale;
 }
 
+export function getUi(lang) {
+  return ui[lang] || ui[defaultLocale];
+}
+
 export function langPath(lang, path = '/') {
   if (lang === 'en') return `/en${path === '/' ? '/' : path}`;
   return path;

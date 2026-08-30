@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { projectsData, categories } from '../data/projects.js';
-import { ui, langPath } from '../i18n/ui.js';
+import { getUi, langPath } from '../i18n/ui.js';
 
 export default function CaseStudiesGrid({ lang = 'id' }) {
-  const t = ui[lang];
+  const t = getUi(lang);
   const [activeFilter, setActiveFilter] = useState("all");
 
   const filteredProjects = activeFilter === "all"

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Phone, Mail, MapPin, Send, CheckCircle } from 'lucide-react';
-import { ui } from '../i18n/ui.js';
+import { getUi } from '../i18n/ui.js';
 
 const WHATSAPP_NUMBER = import.meta.env.PUBLIC_WHATSAPP_NUMBER;
 
 export default function ContactSection({ lang = 'id' }) {
-  const t = ui[lang];
+  const t = getUi(lang);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
