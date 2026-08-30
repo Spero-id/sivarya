@@ -1,7 +1,7 @@
 export const inputCls =
-  'w-full rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-[#1A2E4C] placeholder:text-slate-400 transition-colors focus:border-[#D87939] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#D87939]/20 disabled:cursor-not-allowed disabled:opacity-60';
+  'w-full group-hover/item:text-[#C26527] transition-colors font-bold rounded-lg border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-[13px] text-[#1A2E4C] placeholder:text-slate-400 focus:border-[#D87939] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#D87939]/20 disabled:cursor-not-allowed disabled:opacity-60';
 
-export const labelCls =
+  export const labelCls =
   'mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-600';
 
 export const helperCls = 'mt-1.5 text-xs text-slate-500';

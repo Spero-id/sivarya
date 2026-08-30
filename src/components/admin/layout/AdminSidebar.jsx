@@ -19,13 +19,6 @@ export default function AdminSidebar({ active, collapsed, mobileOpen, onClose, o
       <div className="flex h-16 items-center justify-between border-b border-slate-100 px-4">
         <a href="/" className="flex min-w-0 items-center gap-3" title="Lihat situs Sivarya">
           <img src="/sivarya_logo.png" alt="Sivarya" className="h-8 w-auto shrink-0" />
-          <span
-            className={`whitespace-nowrap font-heading text-sm font-extrabold tracking-tight text-[#1A2E4C] transition-opacity ${
-              collapsed ? 'lg:hidden' : ''
-            }`}
-          >
-            Sivarya Admin
-          </span>
         </a>
         <button
           type="button"

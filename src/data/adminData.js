@@ -10,14 +10,14 @@ export const portfolioStatus = {
   'proj-7': 'draft',
 };
 
-export const portfolioViews = {
-  'proj-1': 124800,
-  'proj-2': 98200,
-  'proj-3': 0,
-  'proj-4': 21490,
-  'proj-5': 612300,
-  'proj-6': 38500,
-  'proj-7': 0,
+export const portfolioCategory = {
+  'proj-1': 'Podcast & Audio',
+  'proj-2': 'Strategi Social Media',
+  'proj-3': 'Curated Travel Experience',
+  'proj-4': 'Corporate Merchandise',
+  'proj-5': 'Produksi Audiovisual',
+  'proj-6': 'Manajemen Event & MICE',
+  'proj-7': 'Infrastruktur Digital',
 };
 
 export const portfolioYear = {
@@ -53,7 +53,7 @@ export const portfolioUpdated = {
 export const portfolioItems = projectsData.map(project => ({
   ...project,
   status: portfolioStatus[project.id],
-  views: portfolioViews[project.id],
+  category: portfolioCategory[project.id],
   year: portfolioYear[project.id],
   featured: portfolioFeatured[project.id],
   updatedAt: portfolioUpdated[project.id],
