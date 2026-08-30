@@ -3,7 +3,7 @@ import Layout from '../../../layouts/Layout.astro';
 import Navbar from '../../../components/Navbar.jsx';
 import Footer from '../../../components/Footer.jsx';
 import { projectsData } from '../../../data/projects.js';
-import { ui, langPath } from '../../../i18n/ui.js';
+import { getUi, langPath } from '../../../i18n/ui.js';
 
 export function getStaticPaths() {
   return projectsData.map(project => ({
@@ -13,7 +13,7 @@ export function getStaticPaths() {
 }
 
 const lang = 'en';
-const t = ui[lang];
+const t = getUi(lang);
 const { project } = Astro.props;
 ---
 

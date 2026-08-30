@@ -1,11 +1,11 @@
 import { ArrowRight } from 'lucide-react';
-import { ui, langPath } from '../i18n/ui.js';
+import { getUi, langPath } from '../i18n/ui.js';
 
 const WHATSAPP_NUMBER = import.meta.env.PUBLIC_WHATSAPP_NUMBER;
 const WHATSAPP_MESSAGE = import.meta.env.PUBLIC_WHATSAPP_MESSAGE;
 
 export default function CTABanner({ lang = 'id' }) {
-  const t = ui[lang];
+  const t = getUi(lang);
 
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 

@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { getLangFromUrl, ui } from '../i18n/ui.js';
+import { getLangFromUrl, getUi } from '../i18n/ui.js';
 
 interface Props {
 	title?: string;
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const lang = getLangFromUrl(Astro.url);
-const t = ui[lang as keyof typeof ui];
+const t = getUi(lang);
 const {
 	title = t.meta.title,
 	description = t.meta.description

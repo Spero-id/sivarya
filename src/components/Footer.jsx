@@ -1,12 +1,12 @@
 import { Phone, Mail, ShieldCheck, Globe, Share2, Video } from 'lucide-react';
-import { ui, langPath } from '../i18n/ui.js';
+import { getUi, langPath } from '../i18n/ui.js';
 
 const pillarSlugs = ['digital-infra', 'audiovisual', 'podcast', 'social-media', 'event-management', 'merchandise', 'travel-management'];
 
 const WHATSAPP_NUMBER = import.meta.env.PUBLIC_WHATSAPP_NUMBER;
 
 export default function Footer({ lang = 'id' }) {
-  const t = ui[lang];
+  const t = getUi(lang);
   const currentYear = new Date().getFullYear();
 
   return (

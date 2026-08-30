@@ -13,7 +13,7 @@ import {
   Menu,
   X
 } from 'lucide-react';
-import { ui, langPath } from '../i18n/ui.js';
+import { getUi, langPath } from '../i18n/ui.js';
 
 const serviceMeta = [
   { slug: 'digital-infra', icon: Code },
@@ -26,7 +26,7 @@ const serviceMeta = [
 ];
 
 export default function Navbar({ transparent = false, lang = 'id' }) {
-  const t = ui[lang];
+  const t = getUi(lang);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
