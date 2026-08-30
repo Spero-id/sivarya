@@ -20,12 +20,10 @@ export default function AdminLogin() {
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <header className="mb-6 text-center">
+        <header className="text-center">
           <a href="/" className="flex items-center gap-2 justify-center mb-4">
-            <img src="/sivarya_logo.png" alt="Sivarya" className="h-8 w-auto" />
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Sivarya</span>
+            <img src="/sivarya_logo.png" alt="Sivarya" className="h-12 w-auto" />
           </a>
-          <p className="text-slate-500 text-sm">Kembali ke Beranda</p>
         </header>
 
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 md:p-10">
@@ -54,7 +52,7 @@ export default function AdminLogin() {
               <label className="block text-sm font-medium text-slate-700 mb-2">Kata sandi</label>
               <input
                 type={showPassword ? 'text' : 'password'}
-                className="w-full px-4 py-3 border border-slate-300 rounded-xl pl-10 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
+                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder={PLACEHOLDER_PASSWORD}
@@ -64,7 +62,7 @@ export default function AdminLogin() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm cursor-pointer"
+                className="absolute right-3 bottom-1 -translate-y-1/2 text-slate-500 text-sm cursor-pointer"
               >
                 {showPassword ? 'Sembunyikan' : 'Tampilkan'}
               </button>
@@ -85,7 +83,7 @@ export default function AdminLogin() {
 
             <button
               type="submit"
-              className={`w-full py-3 px-6 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-colors shadow-lg shadow-primary-500/20 ${isLoading ? 'opacity-70 cursor-not-allowed' : ''} disabled=${isLoading}`}
+              className={`w-full py-3 px-6 bg-primary-600 text-white bg-[#1A2E4C] hover:bg-[#C26527] transition-colors rounded-xl font-semibold hover:bg-primary-700 transition-colors shadow-lg shadow-primary-500/20 ${isLoading ? 'opacity-70 cursor-not-allowed' : ''} disabled=${isLoading}`}
               disabled={isLoading}
             >
               {isLoading ? 'Masuk...' : 'Masuk'}

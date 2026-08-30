@@ -25,11 +25,7 @@ export default function AdminNavbar({ title, onMenu }) {
           >
             <Menu className="h-5 w-5" aria-hidden="true" />
           </button>
-          <nav aria-label="Breadcrumb" className="hidden min-w-0 items-center gap-1.5 text-sm sm:flex">
-            <span className="font-medium text-slate-400">Admin</span>
-            <ChevronRight className="h-3.5 w-3.5 text-slate-300" aria-hidden="true" />
-            <span className="truncate font-semibold text-[#1A2E4C]">{title}</span>
-          </nav>
+         
           <span className="truncate font-semibold text-[#1A2E4C] sm:hidden">{title}</span>
         </div>
 

@@ -34,7 +34,7 @@ const STATUS_OPTIONS = [
 const SORT_OPTIONS = [
   { value: 'updated', label: 'Diperbarui terbaru' },
   { value: 'title', label: 'Judul (A-Z)' },
-  { value: 'views', label: 'Tampilan terbanyak' },
+  { value: 'category', label: 'Tampilan terbanyak' },
 ];
 
 export default function PortfolioPage() {
@@ -74,7 +74,7 @@ export default function PortfolioPage() {
 
     result = [...result].sort((a, b) => {
       if (sort === 'title') return a.title.localeCompare(b.title);
-      if (sort === 'views') return b.views - a.views;
+      if (sort === 'category') return b.category - a.category;
       return b.updatedAt.localeCompare(a.updatedAt);
     });
 
@@ -100,7 +100,7 @@ export default function PortfolioPage() {
           className={`${inputCls} pl-10`}
         />
       </div>
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex items-center gap-3">
         <select value={category} onChange={e => setCategory(e.target.value)} aria-label="Filter kategori" className={inputCls}>
           <option value="all">Semua kategori</option>
           {categories.filter(c => c.id !== 'all').map(c => (
@@ -154,14 +154,10 @@ export default function PortfolioPage() {
       </div>
 
       <div className={`${cardCls} overflow-hidden`}>
-        <div className="flex items-center justify-between border-b border-slate-100 px-6 py-3">
+        <div className="flex items-center justify-start border-b border-slate-100 px-6 py-3">
           <p className="text-sm font-medium text-slate-500">
             {loading ? 'Memuat...' : `${visibleItems.length} proyek ditampilkan`}
           </p>
-          <span className="hidden items-center gap-1.5 text-xs text-slate-400 sm:inline-flex">
-            <LayoutGrid className="h-3.5 w-3.5" aria-hidden="true" />
-            Tampilan tabel
-          </span>
         </div>
 
         {loading ? (
@@ -172,7 +168,7 @@ export default function PortfolioPage() {
                 <th scope="col" className="w-[80px] py-3 pl-6 font-semibold">Cover</th>
                 <th scope="col" className="py-3 font-semibold">Proyek</th>
                 <th scope="col" className="w-[110px] py-3 font-semibold">Status</th>
-                <th scope="col" className="w-[100px] py-3 font-semibold">Tampilan</th>
+                <th scope="col" className="w-[100px] py-3 font-semibold">Category</th>
                 <th scope="col" className="w-[120px] py-3 font-semibold">Diperbarui</th>
                 <th scope="col" className="w-[60px] py-3 pr-6"><span className="sr-only">Aksi</span></th>
               </tr>
@@ -198,13 +194,13 @@ export default function PortfolioPage() {
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full table-fixed text-left text-sm">
                 <thead>
-                  <tr className="border-b border-slate-100 text-xs uppercase tracking-wider text-slate-400">
+                  <tr className="border-b border-slate-100 text-[10px] uppercase tracking-wider text-slate-400">
                     <th scope="col" className="w-[80px] py-3 pl-6 font-semibold">Cover</th>
                     <th scope="col" className="py-3 font-semibold">Proyek</th>
                     <th scope="col" className="w-[110px] py-3 font-semibold">Status</th>
-                    <th scope="col" className="w-[100px] py-3 font-semibold">Tampilan</th>
+                    <th scope="col" className="w-[100px] py-3 font-semibold">Category</th>
                     <th scope="col" className="w-[120px] py-3 font-semibold">Diperbarui</th>
-                    <th scope="col" className="w-[60px] py-3 pr-6"><span className="sr-only">Aksi</span></th>
+                    <th scope="col" className="w-[60px] py-3 pr-6">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -213,18 +209,18 @@ export default function PortfolioPage() {
                       <td className="py-3 pl-6">
                         <img src={item.image} alt="" className="h-10 w-14 rounded-md border border-slate-200 object-cover" />
                       </td>
-                      <td className="py-3">
+                      <td className="py-3 pl-2">
                         <a href={`/admin/portfolio-detail`} className="block max-w-full truncate font-semibold text-[#1A2E4C] transition-colors hover:text-[#D87939]">
                           {item.title}
                         </a>
                         <p className="mt-0.5 max-w-full truncate text-xs text-slate-400">
-                          {item.categoryName.id} &middot; {item.client}
+                          {item.client}
                         </p>
                       </td>
                       <td className="py-3">
                         <StatusBadge status={item.status} />
                       </td>
-                      <td className="py-3 font-medium text-slate-600">{formatCompact(item.views)}</td>
+                      <td className="py-3 font-medium text-slate-600 text-xs">{formatCompact(item.category)}</td>
                       <td className="py-3 text-xs text-slate-500">{item.updatedAt}</td>
                       <td className="relative py-3 pr-6 text-right">
                         <button
@@ -294,7 +290,7 @@ export default function PortfolioPage() {
                     <p className="mt-0.5 truncate text-xs text-slate-400">{item.categoryName.id}</p>
                     <div className="mt-1.5 flex items-center gap-2">
                       <StatusBadge status={item.status} />
-                      <span className="text-xs text-slate-400">{formatCompact(item.views)} lihat</span>
+                      <span className="text-xs text-slate-400">{formatCompact(item.category)} lihat</span>
                     </div>
                   </div>
                   <div className="flex shrink-0 gap-1">
