@@ -2,19 +2,16 @@
 import Layout from '../../../layouts/Layout.astro';
 import Navbar from '../../../components/Navbar.jsx';
 import Footer from '../../../components/Footer.jsx';
-import { projectsData } from '../../../data/projects.js';
+import { getProjectBySlug } from '../../../db/queries.js';
 import { getUi, langPath } from '../../../i18n/ui.js';
-
-export function getStaticPaths() {
-  return projectsData.map(project => ({
-    params: { id: project.id },
-    props: { project }
-  }));
-}
 
 const lang = 'en';
 const t = getUi(lang);
-const { project } = Astro.props;
+
+const project = await getProjectBySlug(Astro.params.id ?? '');
+if (!project) {
+  return Astro.redirect('/en');
+}
 ---
 
 <Layout title={`${project.title} | Sivarya`}>
@@ -47,17 +44,17 @@ const { project } = Astro.props;
       <div class="space-y-10">
         <div>
           <h2 class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#D87939] mb-3">The Challenge</h2>
-          <p class="text-slate-600 leading-[1.8]">{project.challenge[lang]}</p>
+          <p class="text-slate-600 leading-[1.8]">{project.challenge?.[lang]}</p>
         </div>
 
         <div>
           <h2 class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#D87939] mb-3">Our Strategy</h2>
-          <p class="text-slate-600 leading-[1.8]">{project.strategy[lang]}</p>
+          <p class="text-slate-600 leading-[1.8]">{project.strategy?.[lang]}</p>
         </div>
 
         <div>
           <h2 class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#D87939] mb-3">The Result</h2>
-          <p class="text-[#1A2E4C] leading-[1.8] font-medium">{project.result[lang]}</p>
+          <p class="text-[#1A2E4C] leading-[1.8] font-medium">{project.result?.[lang]}</p>
         </div>
       </div>
 

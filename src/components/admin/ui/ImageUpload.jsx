@@ -7,19 +7,28 @@ export default function ImageUpload({ label = 'Upload cover image', helper, prev
   const [src, setSrc] = useState(previewSrc || null);
   const [dragOver, setDragOver] = useState(false);
 
-  const handleFile = file => {
+  const handleFile = async file => {
     if (!file) return;
     if (!file.type.startsWith('image/')) {
       setStatus('error');
       return;
     }
     setStatus('loading');
-    window.setTimeout(() => {
-      const objectUrl = URL.createObjectURL(file);
-      setSrc(objectUrl);
+    try {
+      const body = new FormData();
+      body.append('file', file);
+      const res = await fetch('/api/upload', { method: 'POST', body });
+      const data = await res.json();
+      if (!res.ok || !data.url) {
+        setStatus('error');
+        return;
+      }
+      setSrc(data.url);
       setStatus('preview');
-      onChange?.({ status: 'preview', src: objectUrl });
-    }, 900);
+      onChange?.({ status: 'preview', src: data.url });
+    } catch {
+      setStatus('error');
+    }
   };
 
   const reset = () => {

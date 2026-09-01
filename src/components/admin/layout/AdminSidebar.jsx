@@ -1,4 +1,4 @@
-import { LayoutDashboard, FolderKanban, PlusSquare, Eye, LogOut, PanelLeftClose, PanelLeftOpen, ArrowLeft } from 'lucide-react';
+import { LayoutDashboard, FolderKanban, PlusSquare, Eye, Users, LogOut, PanelLeftClose, PanelLeftOpen, ArrowLeft } from 'lucide-react';
 import { focusRingVisible } from '../ui/styles.js';
 
 const NAV = [
@@ -6,6 +6,7 @@ const NAV = [
   { key: 'portfolio', label: 'Portfolio', href: '/admin/portfolio', icon: FolderKanban },
   { key: 'add', label: 'Tambah Portfolio', href: '/admin/add-portfolio', icon: PlusSquare },
   { key: 'detail', label: 'Detail Portfolio', href: '/admin/portfolio-detail', icon: Eye },
+  { key: 'users', label: 'Users', href: '/admin/users', icon: Users },
 ];
 
 export default function AdminSidebar({ active, collapsed, mobileOpen, onClose, onToggle }) {

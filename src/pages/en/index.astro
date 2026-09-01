@@ -9,6 +9,10 @@ import EcosystemSection from '../../components/EcosystemSection.jsx';
 import ContactSection from '../../components/ContactSection.jsx';
 import CTABanner from '../../components/CTABanner.jsx';
 import Footer from '../../components/Footer.jsx';
+import { getPublishedProjects, getPublicCategories } from '../../db/queries.js';
+
+const projects = await getPublishedProjects();
+const categories = await getPublicCategories();
 ---
 
 <Layout>
@@ -17,7 +21,7 @@ import Footer from '../../components/Footer.jsx';
 		<Hero client:load lang="en" />
 		<WhySivarya client:visible lang="en" />
 		<ExpertiseGrid client:visible lang="en" />
-		<CaseStudiesGrid client:visible lang="en" />
+		<CaseStudiesGrid client:visible lang="en" projects={projects} categories={categories} />
 		<EcosystemSection client:visible lang="en" />
 		<CTABanner client:visible lang="en" />
 		<ContactSection client:visible lang="en" />

@@ -8,6 +8,14 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+## Image uploads
+
+Admin cover images are uploaded through `POST /api/upload` (multipart) and saved to
+`storage/uploads/` (gitignored). Served back via `GET /uploads/[file]`. The public URL
+(`/uploads/xxx.jpg`) is stored in `projects.cover_image`, never a `blob:` URL (blob URLs
+break outside the creating tab). On the landing grid, cards render images at natural
+height (`w-full h-auto`, no forced aspect) so the masonry staggers by image height.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build
