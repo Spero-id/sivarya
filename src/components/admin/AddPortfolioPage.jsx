@@ -16,7 +16,6 @@ const EMPTY_FORM = {
   title: '',
   categoryId: '',
   client: '',
-  aspect: '4/5',
   status: 'draft',
   featured: false,
   summary: { id: '', en: '' },
@@ -25,18 +24,11 @@ const EMPTY_FORM = {
   result: { id: '', en: '' },
 };
 
-const ASPECTS = [
-  { value: '4/5', label: '4:5 \u2014 Potret' },
-  { value: '1/1', label: '1:1 \u2014 Persegi' },
-  { value: '3/4', label: '3:4 \u2014 Potret' },
-  { value: '4/3', label: '4:3 \u2014 Lanskap' },
-];
-
 const CONTENT_FIELDS = [
-  { key: 'summary', rows: 2, required: true, label: 'Ringkasan', placeholders: { id: 'Tulis ringkasan singkat proyek...', en: 'Write a short project summary...' } },
-  { key: 'challenge', rows: 3, label: 'Tantangan', placeholders: { id: 'Apa tantangan utama klien sebelum proyek dimulai?', en: "What was the client's main challenge before the project?" } },
-  { key: 'strategy', rows: 3, label: 'Strategi', placeholders: { id: 'Bagaimana pendekatan dan eksekusi yang dilakukan?', en: 'How was the approach and execution carried out?' } },
-  { key: 'result', rows: 3, label: 'Hasil', placeholders: { id: 'Dampak atau metrik keberhasilan proyek.', en: 'Impact or success metrics of the project.' } },
+  { key: 'summary', rows: 2, required: true, label: 'Deskripsi', placeholders: { id: 'Tulis ringkasan singkat proyek...', en: 'Write a short project summary...' } },
+  { key: 'challenge', rows: 3, label: 'Tantangan (The Challenge)', placeholders: { id: 'Apa tantangan utama klien sebelum proyek dimulai?', en: "What was the client's main challenge before the project?" } },
+  { key: 'strategy', rows: 3, label: 'Strategi (Our Strategy)', placeholders: { id: 'Bagaimana pendekatan dan eksekusi yang dilakukan?', en: 'How was the approach and execution carried out?' } },
+  { key: 'result', rows: 3, label: 'Hasil (Result)', placeholders: { id: 'Dampak atau metrik keberhasilan proyek.', en: 'Impact or success metrics of the project.' } },
 ];
 
 function EditorBlock({ label, hint, children, id }) {
@@ -91,7 +83,7 @@ function LangToggle({ lang, onChange }) {
   );
 }
 
-function PreviewCard({ title, description, categoryName, cover, status, aspect }) {
+function PreviewCard({ title, description, categoryName, cover, status }) {
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
       <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-4 py-2.5">
@@ -112,7 +104,7 @@ function PreviewCard({ title, description, categoryName, cover, status, aspect }
         )}
       </div>
 
-      <div style={{ aspectRatio: aspect }} className="relative w-full overflow-hidden bg-slate-100">
+      <div style={{ aspectRatio: '4/5' }} className="relative w-full overflow-hidden bg-slate-100">
         {cover ? (
           <img src={cover} alt="" className="absolute inset-0 h-full w-full object-cover" />
         ) : (
@@ -167,7 +159,6 @@ export default function AddPortfolioPage() {
               title: project.title,
               categoryId: String(project.categoryId),
               client: project.client,
-              aspect: project.aspect || '4/5',
               status: project.status,
               featured: project.featured,
               summary: project.summary || { id: '', en: '' },
@@ -337,7 +328,7 @@ export default function AddPortfolioPage() {
                 label={field.required ? `${field.label} *` : field.label}
                 hint={
                   field.key === 'summary'
-                    ? 'Tampil sebagai ringkasan di kartu portfolio & halaman detail.'
+                    ? 'Tampil sebagai deskripsi di card portfolio & halaman detail.'
                     : 'Tampil pada bagian case study di halaman detail.'
                 }
                 id={`block-${field.key}`}
@@ -464,20 +455,6 @@ export default function AddPortfolioPage() {
                 {errors.client && <p className={`${helperCls} text-red-600`}>{errors.client}</p>}
               </div>
 
-              <div>
-                <label htmlFor="setting-aspect" className={labelCls}>Rasio Aspek</label>
-                <select
-                  id="setting-aspect"
-                  value={form.aspect}
-                  onChange={e => set('aspect', e.target.value)}
-                  className={inputCls}
-                >
-                  {ASPECTS.map(item => (
-                    <option key={item.value} value={item.value}>{item.label}</option>
-                  ))}
-                </select>
-                <p className={helperCls}>Menentukan rasio kartu di grid landing page.</p>
-              </div>
             </SettingsGroup>
 
             <PreviewCard
@@ -486,7 +463,6 @@ export default function AddPortfolioPage() {
               categoryName={categoryName}
               cover={cover}
               status={form.status}
-              aspect={form.aspect}
             />
           </div>
         </aside>

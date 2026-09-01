@@ -3,13 +3,43 @@ import { ArrowRight } from 'lucide-react';
 import { projectsData, categories } from '../data/projects.js';
 import { getUi, langPath } from '../i18n/ui.js';
 
-export default function CaseStudiesGrid({ lang = 'id' }) {
+type GridCategory = {
+  id: string;
+  name: string;
+};
+
+type GridProject = {
+  id: number | string;
+  slug?: string;
+  category: string;
+  categoryName: Record<string, string>;
+  title: string;
+  client: string;
+  image: string | null;
+  aspect?: string;
+  summary: Record<string, string>;
+  challenge?: Record<string, string> | null;
+  strategy?: Record<string, string> | null;
+  result?: Record<string, string> | null;
+};
+
+type Props = {
+  lang?: string;
+  projects?: GridProject[];
+  categories?: GridCategory[];
+};
+
+export default function CaseStudiesGrid({
+  lang = 'id',
+  projects = projectsData,
+  categories: categoriesProp = categories,
+}: Props) {
   const t = getUi(lang);
   const [activeFilter, setActiveFilter] = useState("all");
 
   const filteredProjects = activeFilter === "all"
-    ? projectsData
-    : projectsData.filter(p => p.category === activeFilter);
+    ? projects
+    : projects.filter(p => p.category === activeFilter);
 
   return (
     <section className="py-20 bg-white relative" id="works">
@@ -24,7 +54,7 @@ export default function CaseStudiesGrid({ lang = 'id' }) {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-2 mb-14">
-          {categories.map(cat => (
+          {categoriesProp.map(cat => (
             <button
               key={cat.id}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
@@ -43,15 +73,15 @@ export default function CaseStudiesGrid({ lang = 'id' }) {
           {filteredProjects.map((proj) => (
             <a
               key={proj.id}
-              href={langPath(lang, `/work/${proj.id}`)}
+              href={langPath(lang, `/work/${proj.slug || proj.id}`)}
               className="break-inside-avoid mb-6 group block"
             >
-              <div className={`relative overflow-hidden rounded-xl mb-4 ${proj.aspect}`}>
+              <div className="relative overflow-hidden rounded-xl mb-4">
                 <img
                   src={proj.image}
                   alt={proj.title}
                   loading="lazy"
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-auto block group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 

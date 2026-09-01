@@ -4,11 +4,15 @@ import Navbar from '../components/Navbar.jsx';
 import Hero from '../components/Hero.jsx';
 import WhySivarya from '../components/WhySivarya.jsx';
 import ExpertiseGrid from '../components/ExpertiseGrid.jsx';
-import CaseStudiesGrid from '../components/CaseStudiesGrid.jsx';
+import CaseStudiesGrid from '../components/CaseStudiesGrid.tsx';
 import EcosystemSection from '../components/EcosystemSection.jsx';
 import ContactSection from '../components/ContactSection.jsx';
 import CTABanner from '../components/CTABanner.jsx';
 import Footer from '../components/Footer.jsx';
+import { getPublishedProjects, getPublicCategories } from '../db/queries.js';
+
+const projects = await getPublishedProjects();
+const categories = await getPublicCategories();
 ---
 
 <Layout>
@@ -17,7 +21,7 @@ import Footer from '../components/Footer.jsx';
 		<Hero client:load lang="id" />
 		<WhySivarya client:visible lang="id" />
 		<ExpertiseGrid client:visible lang="id" />
-		<CaseStudiesGrid client:visible lang="id" />
+		<CaseStudiesGrid client:visible lang="id" projects={projects} categories={categories} />
 		<EcosystemSection client:visible lang="id" />
 		<CTABanner client:visible lang="id" />
 		<ContactSection client:visible lang="id" />

@@ -105,7 +105,7 @@ export const PUT: APIRoute = async ({ params, request }) => {
     const existing = rows[0];
 
     const body = await request.json();
-    const patch: ProjectInsert = {};
+    const patch: Partial<ProjectInsert> = {};
     const s = (v: any) => String(v ?? "").trim();
 
     if ("title" in body) {

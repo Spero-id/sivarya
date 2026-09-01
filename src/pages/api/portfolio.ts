@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import { db } from "../../db";
 import { projects, categories } from "../../db/schema";
 
@@ -77,19 +77,17 @@ export const GET: APIRoute = async ({ url }) => {
     const category = url.searchParams.get("category");
     const q = url.searchParams.get("q")?.toLowerCase() ?? "";
 
-    let query = db
+    const statusFilter =
+      status === "published" || status === "draft"
+        ? eq(projects.status, status)
+        : undefined;
+
+    const rows = await db
       .select(SELECT_COLS)
       .from(projects)
-      .leftJoin(categories, eq(projects.categoryId, categories.id));
-
-    const conditions = [];
-    if (status === "published" || status === "draft") {
-      conditions.push(eq(projects.status, status));
-    }
-    query = query.where(conditions.length ? conditions[0] : undefined);
-    query = query.orderBy(desc(projects.updatedAt));
-
-    const rows = await query;
+      .leftJoin(categories, eq(projects.categoryId, categories.id))
+      .where(and(statusFilter))
+      .orderBy(desc(projects.updatedAt));
     let result = rows.map(mapProject);
 
     if (category && category !== "all") {
