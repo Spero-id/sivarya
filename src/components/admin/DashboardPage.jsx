@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from 'react';
 import {
   FolderOpen,
   CheckCircle2,
@@ -13,7 +14,6 @@ import AdminLayout from './layout/AdminLayout.jsx';
 import PageHeader from './ui/PageHeader.jsx';
 import StatCard from './ui/StatCard.jsx';
 import StatusBadge from './ui/StatusBadge.jsx';
-import { dashboardStats, portfolioItems, recentActivity, formatCompact } from '../../data/adminData.js';
 import { btnPrimary, cardCls, focusRingVisible } from './ui/styles.js';
 
 const ACTIVITY_ICON = {
@@ -30,8 +30,73 @@ const STAT_CARD_META = {
   views: { icon: Eye, tone: 'default' },
 };
 
+const formatDate = value => {
+  if (!value) return '—';
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return value;
+  return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+};
+
+const formatCompact = value => {
+  value = Number(value) || 0;
+  if (value >= 1000000) return `${(value / 1000000).toFixed(1).replace('.', ',')} jt`;
+  if (value >= 1000) return `${(value / 1000).toFixed(1).replace('.', ',')} rb`;
+  return String(value);
+};
+
 export default function DashboardPage() {
-  const latest = portfolioItems.slice(0, 4);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/portfolio')
+      .then(async res => {
+        const data = await res.json();
+        if (active && res.ok) setItems(Array.isArray(data) ? data : []);
+      })
+      .catch(() => {})
+      .finally(() => active && setLoading(false));
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const stats = useMemo(() => {
+    const total = items.length;
+    const published = items.filter(p => p.status === 'published').length;
+    const draft = items.filter(p => p.status === 'draft').length;
+    const views = items.reduce((sum, p) => sum + (Number(p.views) || 0), 0);
+    return { total, published, draft, views };
+  }, [items]);
+
+  const latest = useMemo(() => {
+    return [...items]
+      .sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0))
+      .slice(0, 4);
+  }, [items]);
+
+  const activity = useMemo(() => {
+    return [...items]
+      .sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0))
+      .slice(0, 5)
+      .map(item => ({
+        id: item.id,
+        type: item.status === 'published' ? 'publish' : 'draft',
+        text:
+          item.status === 'published'
+            ? `Menerbitkan \u201c${item.title}\u201d`
+            : `${item.title} disimpan sebagai draft`,
+        time: formatDate(item.updatedAt),
+      }));
+  }, [items]);
+
+  const dashboardStats = [
+    { key: 'total', label: 'Total Portfolio', value: loading ? '—' : stats.total, hint: 'Semua proyek' },
+    { key: 'published', label: 'Published', value: loading ? '—' : stats.published, hint: 'Sudah tayang' },
+    { key: 'draft', label: 'Draft', value: loading ? '—' : stats.draft, hint: 'Belum tayang' },
+    { key: 'views', label: 'Total Dilihat', value: loading ? '—' : formatCompact(stats.views), hint: 'Akumulasi kunjungan' },
+  ];
 
   return (
     <AdminLayout active="dashboard" title="Dashboard">
@@ -57,7 +122,6 @@ export default function DashboardPage() {
               label={stat.label}
               value={stat.value}
               hint={stat.hint}
-              trend={stat.key === 'views' ? { dir: 'up', text: '18%' } : undefined}
             />
           );
         })}
@@ -80,27 +144,33 @@ export default function DashboardPage() {
             </a>
           </div>
 
-          <ul className="divide-y divide-slate-100">
-            {latest.map(project => (
-              <li key={project.id} className="flex items-center gap-4 py-3.5 first:pt-0 last:pb-0">
-                <img
-                  src={project.image}
-                  alt=""
-                  className="h-12 w-16 shrink-0 rounded-lg border border-slate-200 object-cover"
-                />
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-[#1A2E4C]">{project.title}</p>
-                  <p className="mt-0.5 text-xs text-slate-400">
-                    {project.categoryName.id} &middot; Diperbarui {project.updatedAt}
-                  </p>
-                </div>
-                <span className="hidden text-xs font-medium text-slate-400 sm:block">
-                  {formatCompact(project.views)} dilihat
-                </span>
-                <StatusBadge status={project.status} />
-              </li>
-            ))}
-          </ul>
+          {loading ? (
+            <p className="py-6 text-center text-sm text-slate-400">Memuat...</p>
+          ) : latest.length === 0 ? (
+            <p className="py-6 text-center text-sm text-slate-400">Belum ada proyek portfolio.</p>
+          ) : (
+            <ul className="divide-y divide-slate-100">
+              {latest.map(project => (
+                <li key={project.id} className="flex items-center gap-4 py-3.5 first:pt-0 last:pb-0">
+                  <img
+                    src={project.image}
+                    alt=""
+                    className="h-12 w-16 shrink-0 rounded-lg border border-slate-200 object-cover"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-[#1A2E4C]">{project.title}</p>
+                    <p className="mt-0.5 text-xs text-slate-400">
+                      {project.categoryName?.id || 'Tanpa kategori'} &middot; Diperbarui {formatDate(project.updatedAt)}
+                    </p>
+                  </div>
+                  <span className="hidden text-xs font-medium text-slate-400 sm:block">
+                    {formatCompact(project.views)} dilihat
+                  </span>
+                  <StatusBadge status={project.status} />
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
 
         <section aria-labelledby="activity" className={`${cardCls} p-6`}>
@@ -109,23 +179,29 @@ export default function DashboardPage() {
           </h2>
           <p className="text-xs text-slate-400">Perubahan pada portfolio Anda</p>
 
-          <ol className="mt-5 space-y-5">
-            {recentActivity.map(item => {
-              const meta = ACTIVITY_ICON[item.type] || ACTIVITY_ICON.edit;
-              const Icon = meta.icon;
-              return (
-                <li key={item.id} className="relative flex gap-3">
-                  <span className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${meta.cls}`}>
-                    <Icon className="h-4 w-4" aria-hidden="true" />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-sm leading-snug text-[#1A2E4C]">{item.text}</p>
-                    <p className="mt-0.5 text-xs text-slate-400">{item.time}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
+          {loading ? (
+            <p className="py-6 text-center text-sm text-slate-400">Memuat...</p>
+          ) : activity.length === 0 ? (
+            <p className="py-6 text-center text-sm text-slate-400">Belum ada aktivitas.</p>
+          ) : (
+            <ol className="mt-5 space-y-5">
+              {activity.map(item => {
+                const meta = ACTIVITY_ICON[item.type] || ACTIVITY_ICON.edit;
+                const Icon = meta.icon;
+                return (
+                  <li key={item.id} className="relative flex gap-3">
+                    <span className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${meta.cls}`}>
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-sm leading-snug text-[#1A2E4C]">{item.text}</p>
+                      <p className="mt-0.5 text-xs text-slate-400">{item.time}</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          )}
         </section>
       </div>
 
