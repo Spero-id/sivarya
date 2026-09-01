@@ -3,37 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { projectsData, categories } from '../data/projects.js';
 import { getUi, langPath } from '../i18n/ui.js';
 
-type GridCategory = {
-  id: string;
-  name: string;
-};
-
-type GridProject = {
-  id: number | string;
-  slug?: string;
-  category: string;
-  categoryName: Record<string, string>;
-  title: string;
-  client: string;
-  image: string | null;
-  aspect?: string;
-  summary: Record<string, string>;
-  challenge?: Record<string, string> | null;
-  strategy?: Record<string, string> | null;
-  result?: Record<string, string> | null;
-};
-
-type Props = {
-  lang?: string;
-  projects?: GridProject[];
-  categories?: GridCategory[];
-};
-
-export default function CaseStudiesGrid({
-  lang = 'id',
-  projects = projectsData,
-  categories: categoriesProp = categories,
-}: Props) {
+export default function CaseStudiesGrid({ lang = 'id', projects = projectsData, categories: categoriesProp = categories }) {
   const t = getUi(lang);
   const [activeFilter, setActiveFilter] = useState("all");
 
