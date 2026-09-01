@@ -5,6 +5,8 @@ import Footer from '../../components/Footer.jsx';
 import { projectsData } from '../../data/projects.js';
 import { getUi, langPath } from '../../i18n/ui.js';
 
+export const prerender = true;
+
 export function getStaticPaths() {
   return projectsData.map(project => ({
     params: { id: project.id },

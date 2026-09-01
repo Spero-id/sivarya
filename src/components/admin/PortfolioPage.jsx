@@ -15,8 +15,6 @@ import StatusBadge from './ui/StatusBadge.jsx';
 import EmptyState from './ui/EmptyState.jsx';
 import ConfirmDialog from './ui/ConfirmDialog.jsx';
 import Toast from './ui/Toast.jsx';
-import { portfolioItems, formatCompact } from '../../data/adminData.js';
-import { categories } from '../../data/projects.js';
 import {
   btnPrimary,
   inputCls,
@@ -38,7 +36,8 @@ const SORT_OPTIONS = [
 ];
 
 export default function PortfolioPage() {
-  const [items, setItems] = useState(portfolioItems);
+  const [items, setItems] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
@@ -46,11 +45,32 @@ export default function PortfolioPage() {
   const [sort, setSort] = useState('updated');
   const [menuFor, setMenuFor] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
   const [toast, setToast] = useState(null);
 
+  const load = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/portfolio');
+      const data = await res.json();
+      if (!res.ok) {
+        setToast({ type: 'error', message: data.error || 'Gagal memuat portfolio.' });
+        return;
+      }
+      setItems(Array.isArray(data) ? data : []);
+    } catch {
+      setToast({ type: 'error', message: 'Gagal terhubung ke server.' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const timer = window.setTimeout(() => setLoading(false), 700);
-    return () => window.clearTimeout(timer);
+    load();
+    fetch('/api/categories')
+      .then(res => (res.ok ? res.json() : []))
+      .then(setCategories)
+      .catch(() => setCategories([]));
   }, []);
 
   useEffect(() => {
@@ -59,32 +79,59 @@ export default function PortfolioPage() {
     return () => window.removeEventListener('click', onDoc);
   }, []);
 
+  const formatDate = value => {
+    if (!value) return '—';
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return value;
+    return d.toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
+  };
+
+  const formatCompact = value => {
+    value = Number(value) || 0;
+    if (value >= 1000000) return `${(value / 1000000).toFixed(1).replace('.', ',')} jt`;
+    if (value >= 1000) return `${(value / 1000).toFixed(1).replace('.', ',')} rb`;
+    return String(value);
+  };
+
   const visibleItems = useMemo(() => {
     const q = search.trim().toLowerCase();
     let result = items.filter(item => {
-      const matchCategory = category === 'all' || item.category === category;
+      const matchCategory = category === 'all' || item.categorySlug === category;
       const matchStatus = status === 'all' || item.status === status;
       const matchSearch =
         !q ||
         item.title.toLowerCase().includes(q) ||
         item.client.toLowerCase().includes(q) ||
-        item.categoryName.id.toLowerCase().includes(q);
+        (item.categoryName?.id || '').toLowerCase().includes(q);
       return matchCategory && matchStatus && matchSearch;
     });
 
     result = [...result].sort((a, b) => {
       if (sort === 'title') return a.title.localeCompare(b.title);
-      if (sort === 'category') return b.category - a.category;
-      return b.updatedAt.localeCompare(a.updatedAt);
+      if (sort === 'category') return (b.views || 0) - (a.views || 0);
+      return String(b.updatedAt).localeCompare(String(a.updatedAt));
     });
 
     return result;
   }, [items, search, category, status, sort]);
 
-  const handleDelete = () => {
-    setItems(prev => prev.filter(item => item.id !== deleteTarget.id));
-    setDeleteTarget(null);
-    setToast({ type: 'success', message: `\u201C${deleteTarget.title}\u201D telah dihapus.` });
+  const handleDelete = async () => {
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/portfolio/${deleteTarget.id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (!res.ok) {
+        setToast({ type: 'error', message: data.error || 'Gagal menghapus proyek.' });
+        return;
+      }
+      setItems(prev => prev.filter(item => item.id !== deleteTarget.id));
+      setToast({ type: 'success', message: `\u201C${deleteTarget.title}\u201D telah dihapus.` });
+    } catch {
+      setToast({ type: 'error', message: 'Gagal terhubung ke server.' });
+    } finally {
+      setDeleting(false);
+      setDeleteTarget(null);
+    }
   };
 
   const toolbar = (
@@ -103,8 +150,8 @@ export default function PortfolioPage() {
       <div className="flex items-center gap-3">
         <select value={category} onChange={e => setCategory(e.target.value)} aria-label="Filter kategori" className={inputCls}>
           <option value="all">Semua kategori</option>
-          {categories.filter(c => c.id !== 'all').map(c => (
-            <option key={c.id} value={c.id}>{c.name}</option>
+          {categories.map(c => (
+            <option key={c.id} value={c.slug}>{c.name.id}</option>
           ))}
         </select>
         <select value={status} onChange={e => setStatus(e.target.value)} aria-label="Filter status" className={inputCls}>
@@ -220,8 +267,8 @@ export default function PortfolioPage() {
                       <td className="py-3">
                         <StatusBadge status={item.status} />
                       </td>
-                      <td className="py-3 font-medium text-slate-600 text-xs">{formatCompact(item.category)}</td>
-                      <td className="py-3 text-xs text-slate-500">{item.updatedAt}</td>
+                      <td className="py-3 font-medium text-slate-600 text-xs">{formatCompact(item.views)}</td>
+                      <td className="py-3 text-xs text-slate-500">{formatDate(item.updatedAt)}</td>
                       <td className="relative py-3 pr-6 text-right">
                         <button
                           type="button"
@@ -252,7 +299,7 @@ export default function PortfolioPage() {
                             </a>
                             <a
                               role="menuitem"
-                              href="/admin/add-portfolio"
+                              href={`/admin/add-portfolio?id=${item.id}`}
                               className="flex items-center gap-2.5 px-3.5 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-[#1A2E4C]"
                               onClick={e => e.stopPropagation()}
                             >
@@ -290,7 +337,7 @@ export default function PortfolioPage() {
                     <p className="mt-0.5 truncate text-xs text-slate-400">{item.categoryName.id}</p>
                     <div className="mt-1.5 flex items-center gap-2">
                       <StatusBadge status={item.status} />
-                      <span className="text-xs text-slate-400">{formatCompact(item.category)} lihat</span>
+                      <span className="text-xs text-slate-400">{formatCompact(item.views)} lihat</span>
                     </div>
                   </div>
                   <div className="flex shrink-0 gap-1">
@@ -302,7 +349,7 @@ export default function PortfolioPage() {
                       <Eye className="h-4 w-4" aria-hidden="true" />
                     </a>
                     <a
-                      href="/admin/add-portfolio"
+                      href={`/admin/add-portfolio?id=${item.id}`}
                       aria-label={`Edit ${item.title}`}
                       className={`${iconBtn} h-8 w-8`}
                     >

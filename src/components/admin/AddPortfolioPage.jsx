@@ -1,9 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, Send, Save, Loader2, Image as ImageIcon, Sparkles } from 'lucide-react';
 import AdminLayout from './layout/AdminLayout.jsx';
 import ImageUpload from './ui/ImageUpload.jsx';
 import Toast from './ui/Toast.jsx';
-import { categories } from '../../data/projects.js';
 import {
   btnPrimary,
   btnSecondary,
@@ -15,7 +14,7 @@ import {
 
 const EMPTY_FORM = {
   title: '',
-  category: '',
+  categoryId: '',
   client: '',
   aspect: '4/5',
   status: 'draft',
@@ -146,12 +145,51 @@ export default function AddPortfolioPage() {
   const [saving, setSaving] = useState(false);
   const [resetKey, setResetKey] = useState(0);
   const [cover, setCover] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [editId, setEditId] = useState(null);
+  const [loadingEdit, setLoadingEdit] = useState(false);
 
-  const categoriesList = useMemo(() => categories.filter(c => c.id !== 'all'), []);
+  useEffect(() => {
+    fetch('/api/categories')
+      .then(res => (res.ok ? res.json() : []))
+      .then(setCategories)
+      .catch(() => setCategories([]));
+
+    const id = new URLSearchParams(window.location.search).get('id');
+    if (id) {
+      setEditId(id);
+      setLoadingEdit(true);
+      fetch(`/api/portfolio/${id}`)
+        .then(res => (res.ok ? res.json() : null))
+        .then(project => {
+          if (project) {
+            setForm({
+              title: project.title,
+              categoryId: String(project.categoryId),
+              client: project.client,
+              aspect: project.aspect || '4/5',
+              status: project.status,
+              featured: project.featured,
+              summary: project.summary || { id: '', en: '' },
+              challenge: project.challenge || { id: '', en: '' },
+              strategy: project.strategy || { id: '', en: '' },
+              result: project.result || { id: '', en: '' },
+            });
+            if (project.image) setCover(project.image);
+          }
+        })
+        .finally(() => setLoadingEdit(false));
+    }
+  }, []);
+
+  const categoriesList = useMemo(
+    () => categories.map(c => ({ id: c.id, value: c.id, name: c.name.id })),
+    [categories]
+  );
 
   const categoryName = useMemo(
-    () => categoriesList.find(c => c.id === form.category)?.name || '',
-    [categoriesList, form.category]
+    () => categories.find(c => c.id === Number(form.categoryId))?.name?.id || '',
+    [categories, form.categoryId]
   );
 
   const errorField = key => (errors[key] ? 'border-red-300 focus:border-red-400 focus:ring-red-300/30' : '');
@@ -170,31 +208,52 @@ export default function AddPortfolioPage() {
     const next = {};
     if (!form.title.trim()) next.title = 'Judul proyek wajib diisi.';
     if (!form.summary.id.trim()) next.summary = 'Ringkasan (bahasa Indonesia) wajib diisi.';
-    if (!form.category) next.category = 'Pilih salah satu kategori.';
+    if (!form.categoryId) next.categoryId = 'Pilih salah satu kategori.';
     if (!form.client.trim()) next.client = 'Nama klien wajib diisi.';
     setErrors(next);
     return Object.keys(next).length === 0;
   };
 
-  const submit = mode => {
+  const submit = async mode => {
     if (!validate()) {
       setToast({ type: 'error', message: 'Periksa kembali kolom yang wajib diisi.' });
       return;
     }
     setSaving(true);
-    window.setTimeout(() => {
-      setSaving(false);
+    try {
+      const res = await fetch(editId ? `/api/portfolio/${editId}` : '/api/portfolio', {
+        method: editId ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...form,
+          categoryId: Number(form.categoryId),
+          status: mode === 'publish' ? 'published' : form.status,
+          image: cover || '',
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setToast({ type: 'error', message: data.error || 'Gagal menyimpan proyek.' });
+        return;
+      }
       setForm(EMPTY_FORM);
       setResetKey(key => key + 1);
       setCover(null);
+      setEditId(null);
       setToast({
         type: 'success',
         message:
           mode === 'publish'
             ? 'Portfolio berhasil diterbitkan. Proyek kini tampil di situs.'
-            : 'Draft berhasil disimpan. Anda dapat menerbitkannya nanti.',
+            : editId
+              ? 'Perubahan berhasil disimpan.'
+              : 'Draft berhasil disimpan. Anda dapat menerbitkannya nanti.',
       });
-    }, 900);
+    } catch {
+      setToast({ type: 'error', message: 'Gagal terhubung ke server.' });
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -210,10 +269,10 @@ export default function AddPortfolioPage() {
       <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <h1 className="font-heading text-3xl font-extrabold tracking-tight text-[#1A2E4C]">
-            Tambah Portfolio
+            {editId ? 'Edit Portfolio' : 'Tambah Portfolio'}
           </h1>
           <p className="mt-1.5 text-sm text-slate-500">
-            Buat proyek baru untuk portfolio Sivarya.
+            {editId ? 'Perbarui detail proyek yang sudah ada.' : 'Buat proyek baru untuk portfolio Sivarya.'}
           </p>
         </div>
         <div className="flex shrink-0 flex-wrap items-center gap-3">
@@ -376,17 +435,17 @@ export default function AddPortfolioPage() {
                 </label>
                 <select
                   id="setting-category"
-                  value={form.category}
-                  onChange={e => set('category', e.target.value)}
-                  aria-invalid={Boolean(errors.category)}
-                  className={`${inputCls} ${errorField('category')}`}
+                  value={form.categoryId}
+                  onChange={e => set('categoryId', e.target.value)}
+                  aria-invalid={Boolean(errors.categoryId)}
+                  className={`${inputCls} ${errorField('categoryId')}`}
                 >
                   <option value="" disabled>Pilih kategori...</option>
                   {categoriesList.map(c => (
-                    <option key={c.id} value={c.id}>{c.name}</option>
+                    <option key={c.id} value={c.value}>{c.name}</option>
                   ))}
                 </select>
-                {errors.category && <p className={`${helperCls} text-red-600`}>{errors.category}</p>}
+                {errors.categoryId && <p className={`${helperCls} text-red-600`}>{errors.categoryId}</p>}
               </div>
 
               <div>
