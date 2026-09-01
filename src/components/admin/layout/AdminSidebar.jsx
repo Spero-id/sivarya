@@ -5,7 +5,7 @@ const NAV = [
   { key: 'dashboard', label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
   { key: 'portfolio', label: 'Portfolio', href: '/admin/portfolio', icon: FolderKanban },
   { key: 'add', label: 'Tambah Portfolio', href: '/admin/add-portfolio', icon: PlusSquare },
-  { key: 'detail', label: 'Detail Portfolio', href: '/admin/portfolio-detail', icon: Eye },
+  // { key: 'detail', label: 'Detail Portfolio', href: '/admin/portfolio-detail', icon: Eye },
   { key: 'users', label: 'Users', href: '/admin/users', icon: Users },
 ];
 
