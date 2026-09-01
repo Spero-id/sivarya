@@ -75,7 +75,7 @@ export default function Footer({ lang = 'id' }) {
             &copy; {currentYear} <strong className="text-[#1A2E4C] font-bold">{t.footer.copyright}</strong>. All rights reserved. Built with precision.
           </p>
 
-          <div className="flex items-center gap-3">
+          {/* <div className="flex items-center gap-3">
             <a href="#" className="w-9 h-9 rounded-full bg-white border border-slate-200 text-[#1A2E4C] flex items-center justify-center hover:bg-[#D87939] hover:text-white hover:border-[#D87939] transition-all shadow-sm" aria-label="Website">
               <Globe className="w-4 h-4" />
             </a>
@@ -85,7 +85,7 @@ export default function Footer({ lang = 'id' }) {
             <a href="#" className="w-9 h-9 rounded-full bg-white border border-slate-200 text-[#1A2E4C] flex items-center justify-center hover:bg-[#D87939] hover:text-white hover:border-[#D87939] transition-all shadow-sm" aria-label="Video Channel">
               <Video className="w-4 h-4" />
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>

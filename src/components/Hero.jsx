@@ -76,7 +76,7 @@ export default function Hero({ lang = 'id' }) {
         </div>
       </div>
 
-      <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 z-4 w-full max-w-3xl px-4">
+      {/* <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 z-4 w-full max-w-3xl px-4">
         <div className="hero-rise" style={{ animationDelay: '880ms' }}>
           <div
             className="rounded-2xl px-5 py-4 sm:px-8 sm:py-4 bg-white shadow-xl"
@@ -104,7 +104,7 @@ export default function Hero({ lang = 'id' }) {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 }

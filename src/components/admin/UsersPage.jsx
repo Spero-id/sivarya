@@ -295,7 +295,7 @@ export default function UsersPage() {
                         <p className="mt-0.5 text-xs text-slate-400">@{item.username}</p>
                       </td>
                       <td className="py-3 text-xs text-slate-500">{item.email}</td>
-                      <td className="py-3"><RoleBadge role={item.role} /></td>
+                      <td className="py-3">{item.role}</td>
                       <td className="py-3 text-xs text-slate-500">{formatDate(item.lastLoginAt)}</td>
                       <td className="relative py-3 pr-6 text-right">
                         <button

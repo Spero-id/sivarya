@@ -14,15 +14,19 @@
   "dependencies": {
     "@astrojs/node": "^11.1.5",
     "@astrojs/react": "^6.0.3",
+    "@better-auth/drizzle-adapter": "^1.7.2",
+    "@better-auth/infra": "^0.4.5",
     "@tailwindcss/cli": "^4.3.3",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.2.3",
+    "better-auth": "^1.7.2",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
     "lucide-react": "^1.32.0",
     "mysql2": "^3.24.2",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "resend": "^6.25.0",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {

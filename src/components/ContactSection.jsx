@@ -16,18 +16,29 @@ export default function ContactSection({ lang = 'id' }) {
 
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const waText = encodeURIComponent(
-      `Halo Sivarya,\n\nSaya ${formData.name} dari ${formData.company}.\nEmail: ${formData.email}\nMinat Layanan: ${formData.service}\n\nBrief Proyek:\n${formData.brief}`
-    );
+  try {
+    await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
+  } catch (err) {
+    console.error('Gagal kirim email:', err);
+  }
 
-    setTimeout(() => {
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`, '_blank');
-    }, 1200);
-  };
+  setSubmitted(true);
+
+  const waText = encodeURIComponent(
+    `Halo Sivarya,\n\nSaya ${formData.name} dari ${formData.company}.\nEmail: ${formData.email}\nMinat Layanan: ${formData.service}\n\nBrief Proyek:\n${formData.brief}`
+  );
+
+  setTimeout(() => {
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`, '_blank');
+  }, 1200);
+};
 
   return (
     <section className="py-24 bg-white relative" id="contact">

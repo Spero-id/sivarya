@@ -5,9 +5,6 @@ import {
   FileEdit,
   Eye,
   Plus,
-  Send,
-  BookOpen,
-  TrendingUp,
   Rocket,
 } from 'lucide-react';
 import AdminLayout from './layout/AdminLayout.jsx';
@@ -15,13 +12,6 @@ import PageHeader from './ui/PageHeader.jsx';
 import StatCard from './ui/StatCard.jsx';
 import StatusBadge from './ui/StatusBadge.jsx';
 import { btnPrimary, cardCls, focusRingVisible } from './ui/styles.js';
-
-const ACTIVITY_ICON = {
-  publish: { icon: Send, cls: 'bg-emerald-50 text-emerald-600' },
-  edit: { icon: FileEdit, cls: 'bg-slate-100 text-slate-500' },
-  draft: { icon: BookOpen, cls: 'bg-amber-50 text-amber-600' },
-  view: { icon: TrendingUp, cls: 'bg-[#D87939]/10 text-[#D87939]' },
-};
 
 const STAT_CARD_META = {
   total: { icon: FolderOpen, tone: 'brand' },
@@ -74,21 +64,6 @@ export default function DashboardPage() {
     return [...items]
       .sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0))
       .slice(0, 4);
-  }, [items]);
-
-  const activity = useMemo(() => {
-    return [...items]
-      .sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0))
-      .slice(0, 5)
-      .map(item => ({
-        id: item.id,
-        type: item.status === 'published' ? 'publish' : 'draft',
-        text:
-          item.status === 'published'
-            ? `Menerbitkan \u201c${item.title}\u201d`
-            : `${item.title} disimpan sebagai draft`,
-        time: formatDate(item.updatedAt),
-      }));
   }, [items]);
 
   const dashboardStats = [
@@ -179,33 +154,13 @@ export default function DashboardPage() {
           </h2>
           <p className="text-xs text-slate-400">Perubahan pada portfolio Anda</p>
 
-          {loading ? (
-            <p className="py-6 text-center text-sm text-slate-400">Memuat...</p>
-          ) : activity.length === 0 ? (
-            <p className="py-6 text-center text-sm text-slate-400">Belum ada aktivitas.</p>
-          ) : (
-            <ol className="mt-5 space-y-5">
-              {activity.map(item => {
-                const meta = ACTIVITY_ICON[item.type] || ACTIVITY_ICON.edit;
-                const Icon = meta.icon;
-                return (
-                  <li key={item.id} className="relative flex gap-3">
-                    <span className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${meta.cls}`}>
-                      <Icon className="h-4 w-4" aria-hidden="true" />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="text-sm leading-snug text-[#1A2E4C]">{item.text}</p>
-                      <p className="mt-0.5 text-xs text-slate-400">{item.time}</p>
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
-          )}
+          <p className="mt-5 rounded-lg bg-slate-50 px-4 py-6 text-center text-sm text-slate-400">
+            Belum ada aktivitas terbaru.
+          </p>
         </section>
       </div>
 
-      <section aria-labelledby="quick-actions" className={`${cardCls} mt-6 p-6`}>
+      {/* <section aria-labelledby="quick-actions" className={`${cardCls} mt-6 p-6`}>
         <h2 id="quick-actions" className="font-heading text-base font-bold text-[#1A2E4C]">
           Tindakan Cepat
         </h2>
@@ -248,7 +203,7 @@ export default function DashboardPage() {
             </span>
           </a>
         </div>
-      </section>
+      </section> */}
     </AdminLayout>
   );
 }

@@ -8,6 +8,20 @@
       "when": 1788159057940,
       "tag": "0000_opposite_valeria_richards",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1788246977435,
+      "tag": "0001_supreme_paibok",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1788254219745,
+      "tag": "0002_right_living_tribunal",
+      "breakpoints": true
     }
   ]
 }

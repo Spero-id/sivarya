@@ -1,12 +1,26 @@
 import { useState } from 'react';
-import { Menu, Bell, ChevronDown, LogOut, Globe, ChevronRight } from 'lucide-react';
+import { Menu, Bell, ChevronDown, LogOut, Globe } from 'lucide-react';
 import { notifications } from '../../../data/adminData.js';
+import { authClient } from '../../../lib/auth-client';
 import { focusRingVisible } from '../ui/styles.js';
 
 export default function AdminNavbar({ title, onMenu }) {
   const [bellOpen, setBellOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [unread, setUnread] = useState(notifications.length);
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  const displayName = user?.name || 'Admin Sivarya';
+  const displayUsername = user?.username || user?.email?.split('@')[0] || '';
+  const roleLabel = user?.role === 'editor' ? 'Editor' : 'Admin';
+  const initials = (user?.name || 'Admin Sivarya')
+    .trim()
+    .split(/\s+/)
+    .map(w => w[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join('')
+    .toUpperCase() || 'AD';
 
   const closeAll = () => {
     setBellOpen(false);
@@ -100,7 +114,7 @@ export default function AdminNavbar({ title, onMenu }) {
               className={`flex items-center gap-2 rounded-lg p-1 pr-1 transition-colors hover:bg-slate-100 sm:pr-2 ${focusRingVisible}`}
             >
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#1A2E4C] font-heading text-xs font-bold text-white">
-                SA
+                {initials}
               </span>
               <ChevronDown className="hidden h-4 w-4 text-slate-400 sm:block" aria-hidden="true" />
             </button>
@@ -109,8 +123,8 @@ export default function AdminNavbar({ title, onMenu }) {
                 <button type="button" aria-label="Tutup" className="fixed inset-0 z-40 cursor-default" onClick={closeAll} tabIndex={-1} />
                 <div className="absolute right-0 z-50 mt-2 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
                   <div className="border-b border-slate-100 px-4 py-3">
-                    <p className="text-sm font-bold text-[#1A2E4C]">Admin Sivarya</p>
-                    <p className="text-xs text-slate-400">Super Admin</p>
+                    <p className="text-sm font-bold text-[#1A2E4C]">{displayName}</p>
+                    <p className="text-xs text-slate-400">{roleLabel}</p>
                   </div>
                   <ul className="p-1.5">
                     <li>
@@ -132,14 +146,18 @@ export default function AdminNavbar({ title, onMenu }) {
                       </a>
                     </li>
                     <li>
-                      <a
-                        href="/admin/login"
-                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
-                        onClick={closeAll}
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          closeAll();
+                          await authClient.signOut();
+                          window.location.href = '/admin/login';
+                        }}
+                        className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
                       >
                         <LogOut className="h-4 w-4" aria-hidden="true" />
                         Keluar
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </div>

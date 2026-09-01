@@ -1,5 +1,6 @@
 import { LayoutDashboard, FolderKanban, PlusSquare, Eye, Users, LogOut, PanelLeftClose, PanelLeftOpen, ArrowLeft } from 'lucide-react';
 import { focusRingVisible } from '../ui/styles.js';
+import { authClient } from '../../../lib/auth-client';
 
 const NAV = [
   { key: 'dashboard', label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
@@ -10,6 +11,26 @@ const NAV = [
 ];
 
 export default function AdminSidebar({ active, collapsed, mobileOpen, onClose, onToggle }) {
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  const displayName = user?.name || 'Admin Sivarya';
+  const displayUsername = user?.username || user?.email?.split('@')[0] || '';
+  const roleLabel = user?.role === 'editor' ? 'Editor' : 'Admin';
+  const initials = (user?.name || 'Admin Sivarya')
+    .trim()
+    .split(/\s+/)
+    .map(w => w[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join('')
+    .toUpperCase() || 'AD';
+
+  const handleSignOut = async () => {
+    onClose();
+    await authClient.signOut();
+    window.location.href = '/admin/login';
+  };
+
   return (
     <aside
       aria-label="Navigation admin"
@@ -78,11 +99,11 @@ export default function AdminSidebar({ active, collapsed, mobileOpen, onClose, o
           }`}
         >
           <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#1A2E4C] font-heading text-xs font-bold text-white">
-            SA
+            {initials}
           </span>
           <div className={`min-w-0 ${collapsed ? 'lg:hidden' : ''}`}>
-            <p className="truncate text-sm font-semibold text-[#1A2E4C]">Admin Sivarya</p>
-            <p className="truncate text-xs text-slate-400">Super Admin</p>
+            <p className="truncate text-sm font-semibold text-[#1A2E4C]">{displayName}</p>
+            <p className="truncate text-xs text-slate-400">{roleLabel}</p>
           </div>
         </div>
         <div className={`mt-2 space-y-1 ${collapsed ? 'lg:text-center' : ''}`}>
@@ -94,14 +115,15 @@ export default function AdminSidebar({ active, collapsed, mobileOpen, onClose, o
             <ArrowLeft className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
             <span className={`whitespace-nowrap ${collapsed ? 'lg:hidden' : ''}`}>Lihat Situs</span>
           </a>
-          <a
-            href="/admin/login"
+          <button
+            type="button"
+            onClick={handleSignOut}
             title="Keluar"
             className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-500 transition-colors hover:bg-red-50 hover:text-red-600 ${focusRingVisible} ${collapsed ? 'lg:justify-center lg:px-0' : ''}`}
           >
             <LogOut className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
             <span className={`whitespace-nowrap ${collapsed ? 'lg:hidden' : ''}`}>Keluar</span>
-          </a>
+          </button>
         </div>
       </div>
 
