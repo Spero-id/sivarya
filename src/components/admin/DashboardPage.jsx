@@ -205,7 +205,7 @@ export default function DashboardPage() {
         </section>
       </div>
 
-      <section aria-labelledby="quick-actions" className={`${cardCls} mt-6 p-6`}>
+      {/* <section aria-labelledby="quick-actions" className={`${cardCls} mt-6 p-6`}>
         <h2 id="quick-actions" className="font-heading text-base font-bold text-[#1A2E4C]">
           Tindakan Cepat
         </h2>
@@ -248,7 +248,7 @@ export default function DashboardPage() {
             </span>
           </a>
         </div>
-      </section>
+      </section> */}
     </AdminLayout>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { authClient } from '../../lib/auth-client';
 
 const PLACEHOLDER_EMAIL = 'Alamat email';
 const PLACEHOLDER_PASSWORD = 'Kata sandi';
@@ -8,13 +9,22 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
-      window.location.href = '/admin/dashboard';
-    }, 800);
+    setError('');
+    const { error: signInError } = await authClient.signIn.email({
+      email,
+      password,
+    });
+    setIsLoading(false);
+    if (signInError) {
+      setError('Email atau kata sandi salah.');
+      return;
+    }
+    window.location.href = '/admin/dashboard';
   };
 
   return (
@@ -81,6 +91,12 @@ export default function AdminLogin() {
               </a>
             </div>
 
+            {error && (
+              <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-600">
+                {error}
+              </p>
+            )}
+
             <button
               type="submit"
               className={`w-full py-3 px-6 bg-primary-600 text-white bg-[#1A2E4C] hover:bg-[#C26527] transition-colors rounded-xl font-semibold hover:bg-primary-700 transition-colors shadow-lg shadow-primary-500/20 ${isLoading ? 'opacity-70 cursor-not-allowed' : ''} disabled=${isLoading}`}
@@ -90,9 +106,6 @@ export default function AdminLogin() {
             </button>
           </form>
 
-          <p className="mt-6 text-center text-slate-500 text-sm">
-            Belum punya akun? <a href="#" className="ml-1 text-primary-600 hover:text-primary-700 transition-colors font-medium">Daftar</a>
-          </p>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { mysqlTable, mysqlSchema, primaryKey, unique, bigint, varchar, int, tinyint, index, foreignKey, timestamp, text, date, mysqlEnum } from "drizzle-orm/mysql-core"
+import { mysqlTable, mysqlSchema, primaryKey, unique, bigint, varchar, int, tinyint, index, foreignKey, timestamp, text, date, mysqlEnum, boolean, datetime } from "drizzle-orm/mysql-core"
 import { sql } from "drizzle-orm"
 
 export const categories = mysqlTable("categories", {
@@ -87,15 +87,55 @@ export const projects = mysqlTable("projects", {
 export const users = mysqlTable("users", {
     id: bigint({ mode: "number", unsigned: true }).autoincrement().notNull(),
     name: varchar({ length: 100 }).notNull(),
-    username: varchar({ length: 50 }).notNull(),
+    username: varchar({ length: 50 }),
     email: varchar({ length: 190 }).notNull(),
-    passwordHash: varchar("password_hash", { length: 255 }).notNull(),
+    password: varchar({ length: 255 }),
     role: mysqlEnum(['admin','editor']).default('admin').notNull(),
     lastLoginAt: timestamp("last_login_at", { mode: 'string' }),
+    emailVerified: boolean("email_verified").default(false).notNull(),
+    image: varchar({ length: 500 }),
     createdAt: timestamp("created_at", { mode: 'string' }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: 'string' }),
 },
 (table) => [
     primaryKey({ columns: [table.id], name: "users_id"}),
     unique("uq_users_username").on(table.username),
     unique("uq_users_email").on(table.email),
 ]);
+
+export const session = mysqlTable("session", {
+    id: varchar({ length: 128 }).primaryKey(),
+    userId: bigint({ mode: "number", unsigned: true }).notNull(),
+    token: varchar({ length: 128 }).notNull().unique(),
+    expiresAt: timestamp("expires_at", { mode: "string" }).notNull(),
+    ipAddress: varchar("ip_address", { length: 64 }),
+    userAgent: varchar("user_agent", { length: 255 }),
+    createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "string" }),
+});
+
+export const account = mysqlTable("account", {
+    id: varchar({ length: 128 }).primaryKey(),
+    userId: bigint({ mode: "number", unsigned: true }).notNull(),
+    accountId: varchar("account_id", { length: 255 }).notNull(),
+    providerId: varchar("provider_id", { length: 255 }).notNull(),
+    accessToken: text("access_token"),
+    refreshToken: text("refresh_token"),
+    idToken: text("id_token"),
+    accessTokenExpiresAt: timestamp("access_token_expires_at", { mode: "string" }),
+    refreshTokenExpiresAt: timestamp("refresh_token_expires_at", { mode: "string" }),
+    scope: text("scope"),
+    issuer: text("issuer"),
+    password: text("password"),
+    createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "string" }),
+});
+
+export const verification = mysqlTable("verification", {
+    id: varchar({ length: 128 }).primaryKey(),
+    identifier: varchar({ length: 255 }).notNull(),
+    value: text("value").notNull(),
+    expiresAt: timestamp("expires_at", { mode: "string" }).notNull(),
+    createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "string" }),
+});
