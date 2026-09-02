@@ -39,6 +39,15 @@ export const auth = betterAuth({
       maxAge: 60 * 60,
     },
   },
+  rateLimit: {
+    enabled: true,
+    window: 60,
+    max: 100,
+    customRules: {
+      "/sign-in/email": { window: 60 * 15, max: 10 },
+      "/sign-up/email": { window: 60 * 60, max: 5 },
+    },
+  },
   emailAndPassword: {
     enabled: true,
     signUp: {
@@ -60,3 +69,4 @@ export const auth = betterAuth({
 });
 
 export type AuthSession = typeof auth.$Infer.Session;
+export type Auth = typeof auth;

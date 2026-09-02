@@ -1,8 +1,10 @@
 /// <reference types="astro/client" />
 
+import type { Auth } from "./lib/auth";
+
 declare namespace App {
   interface Locals {
-    user: import("better-auth").User | null;
-    session: import("better-auth").Session | null;
+    user: NonNullable<Awaited<ReturnType<Auth["api"]["getSession"]>>>["user"] | null;
+    session: NonNullable<Awaited<ReturnType<Auth["api"]["getSession"]>>>["session"] | null;
   }
 }
