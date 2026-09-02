@@ -33,7 +33,7 @@ export default function AdminSidebar({ active, collapsed, mobileOpen, onClose, o
       } ${mobileOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
     >
       <div className="flex h-16 items-center justify-between bg-[#1A2E4C] px-4">
-        <a href="/" className="flex min-w-0 items-center gap-3" title="Lihat situs Sivarya">
+        <a  href="/" className={`flex min-w-0 items-center gap-3 ${collapsed ? 'sm:hidden' : ''}`} title="Lihat situs Sivarya">
           <img src="/sivarya_logo_2.png" alt="Sivarya" className="h-9 w-auto shrink-0" />
         </a>
         <button
