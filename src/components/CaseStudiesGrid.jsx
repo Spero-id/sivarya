@@ -3,6 +3,8 @@ import { ArrowRight } from 'lucide-react';
 import { projectsData, categories } from '../data/projects.js';
 import { getUi, langPath } from '../i18n/ui.js';
 
+const ALL_LABEL = { id: 'Semua', en: 'All' };
+
 export default function CaseStudiesGrid({ lang = 'id', projects = projectsData, categories: categoriesProp = categories }) {
   const t = getUi(lang);
   const [activeFilter, setActiveFilter] = useState("all");
@@ -10,6 +12,11 @@ export default function CaseStudiesGrid({ lang = 'id', projects = projectsData, 
   const filteredProjects = activeFilter === "all"
     ? projects
     : projects.filter(p => p.category === activeFilter);
+
+  const noResults = !filteredProjects.length;
+  const filterButtons = categoriesProp
+    .filter(cat => cat.id !== 'all')
+    .map(cat => ({ id: cat.id, label: cat.name }));
 
   return (
     <section className="py-20 bg-white relative" id="works">
@@ -24,7 +31,17 @@ export default function CaseStudiesGrid({ lang = 'id', projects = projectsData, 
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-2 mb-14">
-          {categoriesProp.map(cat => (
+          <button
+            className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
+              activeFilter === 'all'
+                ? 'bg-[#1A2E4C] text-white'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+            onClick={() => setActiveFilter('all')}
+          >
+            {ALL_LABEL[lang]}
+          </button>
+          {filterButtons.map(cat => (
             <button
               key={cat.id}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
@@ -34,10 +51,18 @@ export default function CaseStudiesGrid({ lang = 'id', projects = projectsData, 
               }`}
               onClick={() => setActiveFilter(cat.id)}
             >
-              {cat.name}
+              {cat.label}
             </button>
           ))}
         </div>
+
+        {noResults && (
+          <p className="mb-6 text-center text-sm font-medium text-slate-500">
+            {lang === 'en'
+              ? `No projects found in this category.`
+              : 'Tidak ada proyek pada kategori ini.'}
+          </p>
+        )}
 
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-6">
           {filteredProjects.map((proj) => (
