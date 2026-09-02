@@ -1,6 +1,7 @@
 import { Eye, Pencil, Trash2, MoreVertical } from 'lucide-react';
 import StatusBadge from './StatusBadge.jsx';
 import RowMenu from './RowMenu.jsx';
+import { formatCompact, formatDate } from './format.js';
 import { iconBtn } from './styles.js';
 
 function RowActions({ item, onDelete, onClose }) {
@@ -22,7 +23,7 @@ function RowActions({ item, onDelete, onClose }) {
   );
 }
 
-export function PortfolioTableRow({ item, formatCompact, formatDate, menuOpen, onToggleMenu, onCloseMenu, onDelete, buttonRef }) {
+export function PortfolioTableRow({ item, menuOpen, onToggleMenu, onCloseMenu, onDelete, buttonRef }) {
   return (
     <tr className="group border-b border-slate-100 transition-colors last:border-0 hover:bg-slate-50/70">
       <td className="py-3 pl-6">
@@ -54,7 +55,7 @@ export function PortfolioTableRow({ item, formatCompact, formatDate, menuOpen, o
   );
 }
 
-export function PortfolioMobileCard({ item, formatCompact, onView, onDelete }) {
+export function PortfolioMobileCard({ item, onView, onDelete }) {
   return (
     <li className="flex items-center gap-3 p-4">
       <img src={item.image} alt="" className="h-14 w-20 shrink-0 rounded-lg border border-slate-200 object-cover" />

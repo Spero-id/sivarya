@@ -1,10 +1,41 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AdminSidebar from './AdminSidebar.jsx';
 import AdminNavbar from './AdminNavbar.jsx';
+import { authClient } from '../../../lib/auth-client';
 
 export default function AdminLayout({ active, title, children }) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    let timer;
+
+    const check = async () => {
+      try {
+        const { data } = await authClient.getSession();
+        if (!data?.session) {
+          window.location.href = '/admin/login';
+          return;
+        }
+
+        const expiresAt = new Date(data.session.expiresAt).getTime();
+        const remaining = expiresAt - Date.now();
+        if (remaining <= 0) {
+          authClient.signOut().finally(() => {
+            window.location.href = '/admin/login';
+          });
+          return;
+        }
+
+        timer = setTimeout(check, Math.min(remaining, 60 * 1000));
+      } catch {
+        timer = setTimeout(check, 60 * 1000);
+      }
+    };
+
+    check();
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-50/70">

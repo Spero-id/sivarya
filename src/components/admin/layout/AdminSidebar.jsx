@@ -1,6 +1,7 @@
 import { LayoutDashboard, FolderKanban, PlusSquare, Eye, Users, LogOut, PanelLeftClose, PanelLeftOpen, ArrowLeft } from 'lucide-react';
 import { focusRingVisible } from '../ui/styles.js';
 import { authClient } from '../../../lib/auth-client';
+import { getInitials } from '../ui/format.js';
 
 const NAV = [
   { key: 'dashboard', label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
@@ -16,14 +17,7 @@ export default function AdminSidebar({ active, collapsed, mobileOpen, onClose, o
   const displayName = user?.name || 'Admin Sivarya';
   const displayUsername = user?.username || user?.email?.split('@')[0] || '';
   const roleLabel = user?.role === 'editor' ? 'Editor' : 'Admin';
-  const initials = (user?.name || 'Admin Sivarya')
-    .trim()
-    .split(/\s+/)
-    .map(w => w[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join('')
-    .toUpperCase() || 'AD';
+  const initials = getInitials(user?.name, 'AD');
 
   const handleSignOut = async () => {
     onClose();
@@ -34,19 +28,19 @@ export default function AdminSidebar({ active, collapsed, mobileOpen, onClose, o
   return (
     <aside
       aria-label="Navigation admin"
-      className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-slate-200 bg-white transition-[width,transform] duration-200 ease-out ${
+      className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-gray-200 bg-white transition-[width,transform] duration-200 ease-out ${
         collapsed ? 'lg:w-[4.25rem]' : 'lg:w-64'
       } ${mobileOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
     >
-      <div className="flex h-16 items-center justify-between border-b border-slate-100 px-4">
-        <a href="/" className="flex min-w-0 items-center gap-3" title="Lihat situs Sivarya">
-          <img src="/sivarya_logo.png" alt="Sivarya" className="h-8 w-auto shrink-0" />
+      <div className="flex h-16 items-center justify-between bg-[#1A2E4C] px-4">
+        <a  href="/" className={`flex min-w-0 items-center gap-3 ${collapsed ? 'sm:hidden' : ''}`} title="Lihat situs Sivarya">
+          <img src="/sivarya_logo_2.png" alt="Sivarya" className="h-9 w-auto shrink-0" />
         </a>
         <button
           type="button"
           onClick={onToggle}
           aria-label={collapsed ? 'Perluas sidebar' : 'Ciutkan sidebar'}
-          className={`hidden h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-[#1A2E4C] lg:inline-flex ${focusRingVisible}`}
+          className={`hidden h-8 w-8 items-center justify-center rounded-lg text-white transition-colors hover:bg-[#D87939] hover:text-white lg:inline-flex ${focusRingVisible}`}
         >
           {collapsed ? (
             <PanelLeftOpen className="h-4 w-4" aria-hidden="true" />
@@ -93,19 +87,6 @@ export default function AdminSidebar({ active, collapsed, mobileOpen, onClose, o
       </nav>
 
       <div className="border-t border-slate-100 p-3">
-        <div
-          className={`flex items-center gap-3 rounded-lg px-3 py-2.5 ${
-            collapsed ? 'lg:flex-col' : ''
-          }`}
-        >
-          <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#1A2E4C] font-heading text-xs font-bold text-white">
-            {initials}
-          </span>
-          <div className={`min-w-0 ${collapsed ? 'lg:hidden' : ''}`}>
-            <p className="truncate text-sm font-semibold text-[#1A2E4C]">{displayName}</p>
-            <p className="truncate text-xs text-slate-400">{roleLabel}</p>
-          </div>
-        </div>
         <div className={`mt-2 space-y-1 ${collapsed ? 'lg:text-center' : ''}`}>
           <a
             href="/"
