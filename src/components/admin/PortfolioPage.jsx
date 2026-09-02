@@ -20,19 +20,6 @@ const SORT_OPTIONS = [
   { value: 'category', label: 'Tampilan terbanyak' },
 ];
 
-const formatDate = value => {
-  if (!value) return '—';
-  const d = new Date(value);
-  return Number.isNaN(d.getTime()) ? value : d.toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
-};
-
-const formatCompact = value => {
-  value = Number(value) || 0;
-  if (value >= 1000000) return `${(value / 1000000).toFixed(1).replace('.', ',')} jt`;
-  if (value >= 1000) return `${(value / 1000).toFixed(1).replace('.', ',')} rb`;
-  return String(value);
-};
-
 export default function PortfolioPage() {
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -174,8 +161,6 @@ export default function PortfolioPage() {
                       <PortfolioTableRow
                         key={item.id}
                         item={item}
-                        formatCompact={formatCompact}
-                        formatDate={formatDate}
                         menuOpen={menuFor === item.id}
                         onToggleMenu={id => setMenuFor(cur => (cur === id ? null : id))}
                         onCloseMenu={() => setMenuFor(null)}
@@ -190,7 +175,7 @@ export default function PortfolioPage() {
 
             <ul className="divide-y divide-slate-100 md:hidden">
               {visibleItems.map(item => (
-                <PortfolioMobileCard key={item.id} item={item} formatCompact={formatCompact} onDelete={setDeleteTarget} />
+                <PortfolioMobileCard key={item.id} item={item} onDelete={setDeleteTarget} />
               ))}
             </ul>
           </>

@@ -3,6 +3,7 @@ import { Menu, Bell, ChevronDown, LogOut, Globe } from 'lucide-react';
 import { notifications } from '../../../data/adminData.js';
 import { authClient } from '../../../lib/auth-client';
 import { focusRingVisible } from '../ui/styles.js';
+import { getInitials } from '../ui/format.js';
 
 export default function AdminNavbar({ title, onMenu }) {
   const [bellOpen, setBellOpen] = useState(false);
@@ -13,14 +14,7 @@ export default function AdminNavbar({ title, onMenu }) {
   const displayName = user?.name || 'Admin Sivarya';
   const displayUsername = user?.username || user?.email?.split('@')[0] || '';
   const roleLabel = user?.role === 'editor' ? 'Editor' : 'Admin';
-  const initials = (user?.name || 'Admin Sivarya')
-    .trim()
-    .split(/\s+/)
-    .map(w => w[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join('')
-    .toUpperCase() || 'AD';
+  const initials = getInitials(user?.name, 'AD');
 
   const closeAll = () => {
     setBellOpen(false);
@@ -28,7 +22,7 @@ export default function AdminNavbar({ title, onMenu }) {
   };
 
   return (
-    <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-slate-200 bg-[#1A2E4C] backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
         <div className="flex min-w-0 items-center gap-3">
           <button
@@ -47,7 +41,7 @@ export default function AdminNavbar({ title, onMenu }) {
           <a
             href="/"
             title="Lihat situs"
-            className={`hidden h-9 items-center gap-1.5 rounded-lg px-3 text-sm font-medium text-slate-500 transition-colors hover:bg-slate-100 hover:text-[#1A2E4C] md:inline-flex ${focusRingVisible}`}
+            className={`hidden h-9 items-center gap-1.5 rounded-lg px-3 text-sm font-medium text-white transition-colors hover:bg-[#D87939] hover:text-white md:inline-flex ${focusRingVisible}`}
           >
             <Globe className="h-4 w-4" aria-hidden="true" />
             Lihat Situs
@@ -57,66 +51,16 @@ export default function AdminNavbar({ title, onMenu }) {
             <button
               type="button"
               onClick={() => {
-                setProfileOpen(false);
-                setBellOpen(prev => !prev);
-              }}
-              aria-label={`Notifikasi${unread ? `, ${unread} belum dibaca` : ''}`}
-              className={`relative inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-[#1A2E4C] ${focusRingVisible}`}
-            >
-              <Bell className="h-5 w-5" aria-hidden="true" />
-              {unread > 0 && (
-                <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-[#D87939] ring-2 ring-white" aria-hidden="true" />
-              )}
-            </button>
-            {bellOpen && (
-              <>
-                <button type="button" aria-label="Tutup" className="fixed inset-0 z-40 cursor-default" onClick={closeAll} tabIndex={-1} />
-                <div className="absolute right-0 z-50 mt-2 w-80 max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
-                  <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-                    <p className="text-sm font-bold text-[#1A2E4C]">Notifikasi</p>
-                    {unread > 0 && (
-                      <button
-                        type="button"
-                        onClick={() => setUnread(0)}
-                        className="text-xs font-medium text-[#D87939] transition-colors hover:text-[#C26527]"
-                      >
-                        Tandai semua dibaca
-                      </button>
-                    )}
-                  </div>
-                  <ul className="max-h-80 overflow-y-auto">
-                    {notifications.map(n => (
-                      <li key={n.id}>
-                        <button
-                          type="button"
-                          className="block w-full px-4 py-3 text-left transition-colors hover:bg-slate-50"
-                          onClick={closeAll}
-                        >
-                          <p className="text-sm font-medium leading-snug text-[#1A2E4C]">{n.title}</p>
-                          <p className="mt-0.5 text-xs text-slate-400">{n.time}</p>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </>
-            )}
-          </div>
-
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => {
                 setBellOpen(false);
                 setProfileOpen(prev => !prev);
               }}
               aria-label="Menu profil admin"
-              className={`flex items-center gap-2 rounded-lg p-1 pr-1 transition-colors hover:bg-slate-100 sm:pr-2 ${focusRingVisible}`}
+              className={`flex items-center gap-2 rounded-lg p-1 pr-1 transition-colors hover:bg-[#D87939] sm:pr-2 ${focusRingVisible}`}
             >
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#1A2E4C] font-heading text-xs font-bold text-white">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white font-heading text-xs font-bold text-[#1A2E4C] sm:h-9 sm:w-9">
                 {initials}
               </span>
-              <ChevronDown className="hidden h-4 w-4 text-slate-400 sm:block" aria-hidden="true" />
+              <ChevronDown className="hidden h-4 w-4 text-white sm:block" aria-hidden="true" />
             </button>
             {profileOpen && (
               <>

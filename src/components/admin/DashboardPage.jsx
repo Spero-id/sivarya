@@ -12,26 +12,13 @@ import PageHeader from './ui/PageHeader.jsx';
 import StatCard from './ui/StatCard.jsx';
 import StatusBadge from './ui/StatusBadge.jsx';
 import { btnPrimary, cardCls, focusRingVisible } from './ui/styles.js';
+import { formatDate, formatCompact } from './ui/format.js';
 
 const STAT_CARD_META = {
   total: { icon: FolderOpen, tone: 'brand' },
   published: { icon: CheckCircle2, tone: 'emerald' },
   draft: { icon: FileEdit, tone: 'amber' },
   views: { icon: Eye, tone: 'default' },
-};
-
-const formatDate = value => {
-  if (!value) return '—';
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return value;
-  return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-};
-
-const formatCompact = value => {
-  value = Number(value) || 0;
-  if (value >= 1000000) return `${(value / 1000000).toFixed(1).replace('.', ',')} jt`;
-  if (value >= 1000) return `${(value / 1000).toFixed(1).replace('.', ',')} rb`;
-  return String(value);
 };
 
 export default function DashboardPage() {
