@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { eq } from "drizzle-orm";
 import { db } from "../../db";
 import { users } from "../../db/schema";
+import { auth } from "../../lib/auth";
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
 
@@ -57,7 +58,9 @@ export const POST: APIRoute = async ({ request }) => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return error("Format email tidak valid.", 400);
     if (!password || password.length < 6) return error("Password minimal 6 karakter.", 400);
 
-    const data: UserInsert = { name, username, email, passwordHash: password, role };
+    const ctx = await auth.$context;
+    const passwordHash = await ctx.password.hash(password);
+    const data: UserInsert = { name, username, email, passwordHash, role };
 
     const inserted = await db.insert(users).values(data);
     const id = Number(inserted[0].insertId);

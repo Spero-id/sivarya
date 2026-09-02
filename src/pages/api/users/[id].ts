@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { eq } from "drizzle-orm";
 import { db } from "../../../db";
 import { users } from "../../../db/schema";
+import { auth } from "../../../lib/auth";
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
 
@@ -69,7 +70,8 @@ export const PUT: APIRoute = async ({ params, request }) => {
     if (role === "admin" || role === "editor") patch.role = role;
     if (body.password) {
       if (String(body.password).length < 6) return error("Password minimal 6 karakter.", 400);
-      patch.passwordHash = String(body.password);
+      const ctx = await auth.$context;
+      patch.passwordHash = await ctx.password.hash(String(body.password));
     }
 
     await db.update(users).set(patch).where(eq(users.id, id));
