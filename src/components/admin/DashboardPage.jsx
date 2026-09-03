@@ -23,6 +23,7 @@ const STAT_CARD_META = {
 
 export default function DashboardPage() {
   const [items, setItems] = useState([]);
+  const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,6 +35,13 @@ export default function DashboardPage() {
       })
       .catch(() => {})
       .finally(() => active && setLoading(false));
+
+    fetch('/api/dashboard')
+      .then(async res => {
+        const data = await res.json();
+        if (active && res.ok && data?.activities) setActivities(data.activities);
+      })
+      .catch(() => {});
     return () => {
       active = false;
     };
@@ -141,9 +149,43 @@ export default function DashboardPage() {
           </h2>
           <p className="text-xs text-slate-400">Perubahan pada portfolio Anda</p>
 
-          <p className="mt-5 rounded-lg bg-slate-50 px-4 py-6 text-center text-sm text-slate-400">
-            Belum ada aktivitas terbaru.
-          </p>
+          {activities.length === 0 ? (
+            <p className="mt-5 rounded-lg bg-slate-50 px-4 py-6 text-center text-sm text-slate-400">
+              Belum ada aktivitas terbaru.
+            </p>
+          ) : (
+            <ul className="mt-4 space-y-4">
+              {activities.map(activity => {
+                const createdTime = new Date(activity.createdAt || 0).getTime();
+                const updatedTime = new Date(activity.updatedAt || 0).getTime();
+                const isNew = updatedTime - createdTime < 60 * 1000;
+                return (
+                  <li key={activity.id} className="flex items-start gap-3">
+                    <span
+                      className={`mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                        isNew
+                          ? 'bg-[#D87939]/10 text-[#D87939]'
+                          : 'bg-slate-100 text-slate-500'
+                      }`}
+                    >
+                      {isNew ? <Plus className="h-4 w-4" aria-hidden="true" /> : <FileEdit className="h-4 w-4" aria-hidden="true" />}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <a
+                        href={`/admin/add-portfolio?id=${activity.id}`}
+                        className="block truncate text-sm font-semibold text-[#1A2E4C] transition-colors hover:text-[#D87939]"
+                      >
+                        {activity.title}
+                      </a>
+                      <p className="mt-0.5 text-xs text-slate-400">
+                        {isNew ? 'Ditambahkan' : 'Diperbarui'} &middot; {formatDate(activity.updatedAt)}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </section>
       </div>
 

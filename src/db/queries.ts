@@ -85,6 +85,38 @@ export async function getProjectById(id: number) {
   return rows.length ? mapPublicProject(rows[0]) : null;
 }
 
+export async function getRecentActivities(limit = 6) {
+  const rows = await db
+    .select({
+      id: projects.id,
+      title: projects.title,
+      slug: projects.slug,
+      status: projects.status,
+      views: projects.views,
+      createdAt: projects.createdAt,
+      updatedAt: projects.updatedAt,
+      categoryNameId: categories.nameId,
+      categoryNameEn: categories.nameEn,
+    })
+    .from(projects)
+    .leftJoin(categories, eq(projects.categoryId, categories.id))
+    .orderBy(desc(projects.updatedAt), desc(projects.id))
+    .limit(limit);
+
+  return rows.map(row => ({
+    id: Number(row.id),
+    title: row.title,
+    slug: row.slug,
+    status: row.status,
+    views: Number(row.views ?? 0),
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+    categoryName: row.categoryNameId
+      ? { id: row.categoryNameId, en: row.categoryNameEn }
+      : null,
+  }));
+}
+
 export async function getPublicCategories() {
   const rows = await db
     .select()
