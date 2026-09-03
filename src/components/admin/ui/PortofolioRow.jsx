@@ -36,7 +36,7 @@ export function PortfolioTableRow({ item, menuOpen, onToggleMenu, onCloseMenu, o
         <p className="mt-0.5 max-w-full truncate text-xs text-slate-400">{item.client}</p>
       </td>
       <td className="py-3"><StatusBadge status={item.status} /></td>
-      <td className="py-3 text-xs font-medium text-slate-600">{formatCompact(item.views)}</td>
+      <td className="py-3 text-xs font-medium text-slate-600">{item.categoryName?.id ?? '—'}</td>
       <td className="py-3 text-xs text-slate-500">{formatDate(item.updatedAt)}</td>
       <td className="relative py-3 pr-6 text-right">
         <button type="button" ref={buttonRef} aria-label={`Aksi untuk ${item.title}`}
@@ -61,7 +61,7 @@ export function PortfolioMobileCard({ item, onView, onDelete }) {
       <img src={item.image} alt="" className="h-14 w-20 shrink-0 rounded-lg border border-slate-200 object-cover" />
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold text-[#1A2E4C]">{item.title}</p>
-        <p className="mt-0.5 truncate text-xs text-slate-400">{item.categoryName.id}</p>
+        <p className="mt-0.5 truncate text-xs text-slate-400">{item.categoryName?.id ?? '—'}</p>
         <div className="mt-1.5 flex items-center gap-2">
           <StatusBadge status={item.status} />
           <span className="text-xs text-slate-400">{formatCompact(item.views)} lihat</span>
