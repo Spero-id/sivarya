@@ -26,6 +26,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
     pathname.startsWith("/api/portfolio") ||
     pathname.startsWith("/api/categories") ||
     pathname.startsWith("/api/users") ||
+    pathname === "/api/dashboard" ||
+    pathname === "/api/dashboard/" ||
     pathname === "/api/upload" ||
     pathname === "/api/upload/";
 
