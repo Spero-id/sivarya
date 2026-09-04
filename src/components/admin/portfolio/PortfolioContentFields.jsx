@@ -17,7 +17,7 @@ export default function PortfolioContentFields({ form, errors, lang, onLang, onF
         <label
           id="hero-title-label"
           htmlFor="hero-title"
-          className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400"
+          className="text-[11px] font-bold uppercase tracking-[0.2em] text-black"
         >
           Judul Proyek <span className="text-[#D87939]">*</span>
         </label>
@@ -34,7 +34,7 @@ export default function PortfolioContentFields({ form, errors, lang, onLang, onF
       </section>
 
       <section aria-labelledby="lang-toggle-label" className="flex items-center gap-3">
-        <span id="lang-toggle-label" className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
+        <span id="lang-toggle-label" className="text-[11px] font-bold uppercase tracking-[0.2em] text-black">
           Bahasa konten
         </span>
         <LangToggle lang={lang} onChange={onLang} />
