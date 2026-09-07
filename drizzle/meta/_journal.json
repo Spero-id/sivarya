@@ -22,6 +22,20 @@
       "when": 1788254219745,
       "tag": "0002_right_living_tribunal",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1788760650272,
+      "tag": "0003_user_role",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1788770450000,
+      "tag": "0004_remove_editor_role",
+      "breakpoints": true
     }
   ]
 }

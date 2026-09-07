@@ -17,6 +17,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const isLoginPage = pathname === "/admin/login" || pathname === "/admin/login/";
   const isRegisterPage = pathname === "/admin/register" || pathname === "/admin/register/";
   const isForbiddenPage = pathname === "/admin/forbidden" || pathname === "/admin/forbidden/";
+  const isNotRegisteredPage = pathname === "/admin/not-registered" || pathname === "/admin/not-registered/";
   const isLogoutOrAuthApi =
     pathname.startsWith("/api/auth") ||
     pathname === "/admin/logout" ||
@@ -40,7 +41,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return next();
   }
 
-  if (isAdminRoute && !isForbiddenPage && !isLogoutOrAuthApi && !isAdmin) {
+  if (isAdminRoute && !isForbiddenPage && !isNotRegisteredPage && !isLogoutOrAuthApi && !isAdmin) {
     return context.redirect("/admin/forbidden");
   }
 

@@ -16,7 +16,7 @@ export default function AdminSidebar({ active, collapsed, mobileOpen, onClose, o
   const user = session?.user;
   const displayName = user?.name || 'Admin Sivarya';
   const displayUsername = user?.username || user?.email?.split('@')[0] || '';
-  const roleLabel = user?.role === 'editor' ? 'Editor' : 'Admin';
+  const roleLabel = 'Admin';
   const initials = getInitials(user?.name, 'AD');
 
   const handleSignOut = async () => {

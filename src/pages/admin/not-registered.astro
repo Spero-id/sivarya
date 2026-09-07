@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const error = Astro.url.searchParams.get('error');
+const subtitle =
+  error === 'signup_disabled'
+    ? 'Akun Google Anda belum terdaftar sebagai pengguna di sistem ini. Hubungi administrator untuk membuatkan akun Anda.'
+    : 'Login Google gagal. Silakan coba lagi atau hubungi administrator.';
+---
+
+<Layout title="Akun Belum Terdaftar">
+  <main class="flex min-h-screen items-center justify-center bg-slate-50 px-6">
+    <div class="w-full max-w-md rounded-2xl border border-slate-200 bg-white px-8 py-12 text-center shadow-sm">
+      <p class="font-heading text-7xl font-black text-[#1A2E4C]">!</p>
+      <h1 class="mt-4 font-heading text-2xl font-extrabold text-[#1A2E4C]">Akun Belum Terdaftar</h1>
+      <p class="mt-2 text-sm leading-relaxed text-slate-500">{subtitle}</p>
+      <a
+        href="/admin/login"
+        class="mt-8 inline-flex items-center justify-center rounded-xl bg-[#1A2E4C] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#C26527]"
+      >
+        Kembali ke Halaman Masuk
+      </a>
+    </div>
+  </main>
+</Layout>

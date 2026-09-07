@@ -11,7 +11,7 @@ import UsersTable, { UsersTableSkeleton } from './UsersTable.jsx';
 import UsersMobileList from './UsersMobileList.jsx';
 import UserFormDialog from './UserFormDialog.jsx';
 
-const EMPTY_FORM = { name: '', username: '', email: '', password: '', role: 'editor' };
+const EMPTY_FORM = { name: '', username: '', email: '', password: '', role: 'admin' };
 
 export default function UsersPage() {
   const [items, setItems] = useState([]);
@@ -74,18 +74,27 @@ export default function UsersPage() {
 
   const openEdit = item => {
     setEditing(item);
-    setForm({ name: item.name, username: item.username, email: item.email, password: '', role: item.role });
+    setForm({
+      name: item.name ?? '',
+      username: item.username ?? '',
+      email: item.email ?? '',
+      password: '',
+      role: item.role ?? 'user',
+    });
     setErrors({});
     setModalOpen(true);
   };
 
   const validate = () => {
     const next = {};
-    if (!form.name.trim()) next.name = 'Nama wajib diisi.';
-    if (!form.username.trim()) next.username = 'Username wajib diisi.';
-    if (!form.email.trim()) next.email = 'Email wajib diisi.';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = 'Format email tidak valid.';
-    if ((!editing || form.password) && (!form.password || form.password.length < 6)) {
+    const name = (form.name ?? '').trim();
+    const username = (form.username ?? '').trim();
+    const email = (form.email ?? '').trim();
+    if (!name) next.name = 'Nama wajib diisi.';
+    if (!username) next.username = 'Username wajib diisi.';
+    if (!email) next.email = 'Email wajib diisi.';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.email = 'Format email tidak valid.';
+    if ((!editing || form.password) && (!form.password || String(form.password).length < 6)) {
       next.password = 'Password minimal 6 karakter.';
     }
     if (!form.role) next.role = 'Pilih role.';
@@ -148,7 +157,7 @@ export default function UsersPage() {
     <AdminLayout active="users" title="Users">
       <PageHeader
         title="Users"
-        description="Kelola akses akun admin dan editor di ekosistem Sivarya."
+        description="Kelola akses akun admin di ekosistem Sivarya."
         actions={
           <button type="button" className={btnPrimary} onClick={openAdd}>
             <Plus className="h-4 w-4" aria-hidden="true" />
@@ -190,7 +199,7 @@ export default function UsersPage() {
             description={
               search
                 ? 'Tidak ada user yang cocok dengan kata kunci saat ini.'
-                : 'Mulai tambahkan user pertama untuk mengelola akun admin & editor.'
+                : 'Mulai tambahkan user pertama untuk mengelola akun admin.'
             }
             action={
               !search && (

@@ -28,7 +28,7 @@ export const GET: APIRoute = async ({ url }) => {
 
     let query = db.select().from(users).$dynamic();
 
-    if (role === "admin" || role === "editor") {
+    if (role === "admin") {
       query = query.where(eq(users.role, role));
     } else if (email) {
       query = query.where(eq(users.email, email));
@@ -50,7 +50,7 @@ export const POST: APIRoute = async ({ request }) => {
     const username = String(body.username ?? "").trim();
     const email = String(body.email ?? "").trim();
     const password = body.password ? String(body.password) : "";
-    const role = body.role === "editor" ? "editor" : "admin";
+    const role = body.role === "user" ? "user" : "admin";
 
     if (!name) return error("Nama wajib diisi.", 400);
     if (!username) return error("Username wajib diisi.", 400);

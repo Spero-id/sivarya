@@ -72,8 +72,8 @@ export default function UserFormDialog({ open, editing, form, errors, saving, on
                 onChange={e => onChange({ ...form, role: e.target.value })}
                 className={`${inputCls} ${inputErr('role')}`}
               >
-                <option value="editor">Editor</option>
                 <option value="admin">Admin</option>
+                <option value="user">User</option>
               </select>
               {errors.role && <p className="mt-1.5 text-xs text-red-600">{errors.role}</p>}
             </div>

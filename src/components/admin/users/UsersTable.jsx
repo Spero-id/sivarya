@@ -76,7 +76,7 @@ export default function UsersTable({ items, menuFor, onToggleMenu, onEdit, onDel
               </td>
               <td className="py-3 pl-2">
                 <p className="font-semibold text-[#1A2E4C]">{item.name}</p>
-                <p className="mt-0.5 text-xs text-slate-400">@{item.username}</p>
+                {/* <p className="mt-0.5 text-xs text-slate-400">@{item.username}</p> */}
               </td>
               <td className="py-3 text-xs text-slate-500">{item.email}</td>
               <td className="py-3">{item.role}</td>
