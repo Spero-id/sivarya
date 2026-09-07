@@ -90,7 +90,7 @@ export const users = mysqlTable("users", {
     username: varchar({ length: 50 }),
     email: varchar({ length: 190 }).notNull(),
     password: varchar({ length: 255 }),
-    role: mysqlEnum(['admin','editor']).default('admin').notNull(),
+    role: mysqlEnum(['admin','user']).default('user').notNull(),
     lastLoginAt: timestamp("last_login_at", { mode: 'string' }),
     emailVerified: boolean("email_verified").default(false).notNull(),
     image: varchar({ length: 500 }),

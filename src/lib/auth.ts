@@ -21,7 +21,7 @@ export const auth = betterAuth({
       role: {
         type: "string",
         required: false,
-        defaultValue: "admin",
+        defaultValue: "user",
         input: false,
       },
       lastLoginAt: {
@@ -54,6 +54,14 @@ export const auth = betterAuth({
       enabled: true,
     },
     minPasswordLength: 6,
+  },
+  socialProviders: {
+    google: {
+      clientId: import.meta.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: import.meta.env.GOOGLE_CLIENT_SECRET ?? "",
+      enabled: !!(import.meta.env.GOOGLE_CLIENT_ID && import.meta.env.GOOGLE_CLIENT_SECRET),
+      disableImplicitSignUp: true,
+    },
   },
   advanced: {
     useSecureCookies: import.meta.env.PROD,

@@ -67,7 +67,7 @@ export const PUT: APIRoute = async ({ params, request }) => {
     if (name) patch.name = name;
     if (username) patch.username = username;
     if (email) patch.email = email;
-    if (role === "admin" || role === "editor") patch.role = role;
+    if (role === "admin" || role === "user") patch.role = role;
     if (body.password) {
       if (String(body.password).length < 6) return error("Password minimal 6 karakter.", 400);
       const ctx = await auth.$context;

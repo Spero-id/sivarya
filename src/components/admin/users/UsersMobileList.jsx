@@ -11,7 +11,7 @@ function RoleBadge({ role }) {
       }`}
     >
       {isAdmin ? <ShieldCheck className="h-3 w-3" aria-hidden="true" /> : <Shield className="h-3 w-3" aria-hidden="true" />}
-      {isAdmin ? 'Admin' : 'Editor'}
+      {isAdmin ? 'Admin' : 'User'}
     </span>
   );
 }

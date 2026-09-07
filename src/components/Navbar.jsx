@@ -11,9 +11,11 @@ import {
   ArrowRight,
   ArrowUpRight,
   Menu,
-  X
+  X,
+  LogOut
 } from 'lucide-react';
 import { ui, langPath } from '../i18n/ui.js';
+import { authClient } from '../lib/auth-client';
 
 const serviceMeta = [
   { slug: 'digital-infra', icon: Code },
@@ -27,6 +29,13 @@ const serviceMeta = [
 
 export default function Navbar({ transparent = false, lang = 'id' }) {
   const t = ui[lang];
+  const { data: session } = authClient.useSession();
+
+  const handleSignOut = async () => {
+    setMobileOpen(false);
+    await authClient.signOut();
+    window.location.href = '/admin/login';
+  };
 
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -159,6 +168,17 @@ export default function Navbar({ transparent = false, lang = 'id' }) {
             <span>{t.nav.letsTalk}</span>
             <ArrowRight className="w-4 h-4" />
           </a>
+
+          {session && (
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="w-full border border-red-200 text-red-600 font-semibold text-center py-3 rounded-xl flex items-center justify-center gap-2 mt-2 hover:bg-red-50 transition-colors"
+            >
+              <LogOut className="w-4 h-4" aria-hidden="true" />
+              Logout
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -353,6 +373,23 @@ export default function Navbar({ transparent = false, lang = 'id' }) {
               <span>{t.nav.letsTalk}</span>
               <ArrowRight className="w-4 h-4" />
             </a>
+
+
+            {session && (
+              <button
+                type="button"
+                onClick={handleSignOut}
+                title="Logout"
+                className={`hidden sm:inline-flex items-center gap-2 font-semibold text-sm px-3 py-2.5 rounded-sm border transition-all hover:-translate-y-0.5 ${
+                  isWhite
+                    ? 'border-[#1A2E4C]/20 text-white bg-[#1A2E4C] hover:bg-white hover:text-[#1A2E4C]'
+                    : 'border-white/40 hover:border-none text-[#1A2E4C] hover:text-white hover:bg-[#1A2E4C] bg-white'
+                }`}
+              >
+                <LogOut className="w-4 h-4" aria-hidden="true" />
+
+              </button>
+            )}
 
             <button
               className={`lg:hidden p-1 transition-colors ${
