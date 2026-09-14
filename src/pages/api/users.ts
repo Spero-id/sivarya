@@ -1,7 +1,8 @@
+import { randomUUID } from "node:crypto";
 import type { APIRoute } from "astro";
 import { eq } from "drizzle-orm";
 import { db } from "../../db";
-import { users } from "../../db/schema";
+import { account, users } from "../../db/schema";
 import { auth } from "../../lib/auth";
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
@@ -14,10 +15,8 @@ function error(message: string, status = 500): Response {
   return json({ error: message }, status);
 }
 
-type UserInsert = typeof users.$inferInsert;
-
 function sanitize(user: any): any {
-  const { passwordHash, ...rest } = user;
+  const { password: _password, ...rest } = user;
   return { ...rest, id: Number(user.id) };
 }
 
@@ -60,10 +59,21 @@ export const POST: APIRoute = async ({ request }) => {
 
     const ctx = await auth.$context;
     const passwordHash = await ctx.password.hash(password);
-    const data: UserInsert = { name, username, email, passwordHash, role };
 
-    const inserted = await db.insert(users).values(data);
-    const id = Number(inserted[0].insertId);
+    const id = await db.transaction(async (tx) => {
+      const inserted = await tx.insert(users).values({ name, username, email, role });
+      const newId = Number(inserted[0].insertId);
+      await tx.insert(account).values({
+        id: randomUUID(),
+        userId: newId,
+        accountId: String(newId),
+        providerId: "credential",
+        issuer: "local:credential",
+        password: passwordHash,
+      });
+      return newId;
+    });
+
     const rows = await db.select().from(users).where(eq(users.id, id)).limit(1);
 
     return json(sanitize(rows[0]), 201);
