@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { projectsData, categories } from '../data/projects.js';
 import { getUi, langPath } from '../i18n/ui.js';
 
 const ALL_LABEL = { id: 'Semua', en: 'All' };
+const PAGE_SIZE = 6;
 
 const getTitle = (p, lang) =>
   p.title && typeof p.title === 'object'
@@ -13,11 +14,35 @@ const getTitle = (p, lang) =>
 export default function CaseStudiesGrid({ lang = 'id', projects = projectsData, categories: categoriesProp = categories }) {
   const t = getUi(lang);
   const [activeFilter, setActiveFilter] = useState("all");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const sentinelRef = useRef(null);
 
   const filteredProjects = activeFilter === "all"
     ? projects
     : projects.filter(p => p.category === activeFilter);
 
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [activeFilter]);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount(prev =>
+            prev < filteredProjects.length ? prev + PAGE_SIZE : prev
+          );
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [filteredProjects.length]);
+
+  const hasMore = visibleCount < filteredProjects.length;
   const noResults = !filteredProjects.length;
   const filterButtons = categoriesProp
     .filter(cat => cat.id !== 'all')
@@ -70,7 +95,7 @@ export default function CaseStudiesGrid({ lang = 'id', projects = projectsData, 
         )}
 
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-6">
-          {filteredProjects.map((proj) => (
+          {filteredProjects.slice(0, visibleCount).map((proj) => (
             <a
               key={proj.id}
               href={langPath(lang, `/work/${proj.slug || proj.id}`)}
@@ -107,6 +132,23 @@ export default function CaseStudiesGrid({ lang = 'id', projects = projectsData, 
               </div>
             </a>
           ))}
+        </div>
+
+        <div className="flex flex-col items-center gap-4 pt-4">
+          {hasMore && (
+            <button
+              onClick={() => setVisibleCount(prev => prev + PAGE_SIZE)}
+              className="px-6 py-2.5 rounded-full text-xs font-bold bg-[#1A2E4C] text-white hover:bg-[#D87939] transition-colors"
+            >
+              {lang === 'en' ? 'Load More' : 'Muat Lebih Banyak'}
+            </button>
+          )}
+          <div ref={sentinelRef} className="h-px w-full" />
+          {!hasMore && !noResults && (
+            <p className="text-xs font-medium text-slate-400">
+              {lang === 'en' ? 'All projects are shown' : 'Semua portfolio sudah tampil'}
+            </p>
+          )}
         </div>
       </div>
     </section>

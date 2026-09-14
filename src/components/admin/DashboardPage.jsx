@@ -61,6 +61,19 @@ export default function DashboardPage() {
       .slice(0, 4);
   }, [items]);
 
+  const recentlyCreated = useMemo(() => {
+    return [...items]
+      .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+      .slice(0, 5);
+  }, [items]);
+
+  const recentlyPublished = useMemo(() => {
+    return items
+      .filter(p => p.status === 'published')
+      .sort((a, b) => new Date(b.publishedAt || b.updatedAt || 0) - new Date(a.publishedAt || a.updatedAt || 0))
+      .slice(0, 5);
+  }, [items]);
+
   const dashboardStats = [
     { key: 'total', label: 'Total Portfolio', value: loading ? '—' : stats.total, hint: 'Semua proyek' },
     { key: 'published', label: 'Published', value: loading ? '—' : stats.published, hint: 'Sudah tayang' },
@@ -184,6 +197,72 @@ export default function DashboardPage() {
                   </li>
                 );
               })}
+            </ul>
+          )}
+        </section>
+      </div>
+
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <section aria-labelledby="recent-created" className={`${cardCls} p-6`}>
+          <h2 id="recent-created" className="font-heading text-base font-bold text-[#1A2E4C]">
+            Portfolio Ter-Created
+          </h2>
+          <p className="text-xs text-slate-400">Proyek yang baru saja dibuat</p>
+
+          {loading ? (
+            <p className="py-6 text-center text-sm text-slate-400">Memuat...</p>
+          ) : recentlyCreated.length === 0 ? (
+            <p className="py-6 text-center text-sm text-slate-400">Belum ada proyek portfolio.</p>
+          ) : (
+            <ul className="mt-3 divide-y divide-slate-100">
+              {recentlyCreated.map(project => (
+                <li key={project.id} className="flex items-center gap-4 py-3 first:pt-0 last:pb-0">
+                  <img
+                    src={project.image}
+                    alt=""
+                    className="h-12 w-16 shrink-0 rounded-lg border border-slate-200 object-cover"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-[#1A2E4C]">{project.title.id}</p>
+                    <p className="mt-0.5 text-xs text-slate-400">
+                      Dibuat {formatDate(project.createdAt)}
+                    </p>
+                  </div>
+                  <StatusBadge status={project.status} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section aria-labelledby="recent-published" className={`${cardCls} p-6`}>
+          <h2 id="recent-published" className="font-heading text-base font-bold text-[#1A2E4C]">
+            Portfolio Ter-Published
+          </h2>
+          <p className="text-xs text-slate-400">Proyek yang baru saja diterbitkan</p>
+
+          {loading ? (
+            <p className="py-6 text-center text-sm text-slate-400">Memuat...</p>
+          ) : recentlyPublished.length === 0 ? (
+            <p className="py-6 text-center text-sm text-slate-400">Belum ada proyek terbit.</p>
+          ) : (
+            <ul className="mt-3 divide-y divide-slate-100">
+              {recentlyPublished.map(project => (
+                <li key={project.id} className="flex items-center gap-4 py-3 first:pt-0 last:pb-0">
+                  <img
+                    src={project.image}
+                    alt=""
+                    className="h-12 w-16 shrink-0 rounded-lg border border-slate-200 object-cover"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-[#1A2E4C]">{project.title.id}</p>
+                    <p className="mt-0.5 text-xs text-slate-400">
+                      Terbit {formatDate(project.publishedAt || project.updatedAt)}
+                    </p>
+                  </div>
+                  <StatusBadge status={project.status} />
+                </li>
+              ))}
             </ul>
           )}
         </section>

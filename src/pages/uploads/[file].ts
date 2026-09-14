@@ -1,9 +1,7 @@
 import type { APIRoute } from "astro";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const UPLOAD_DIR = fileURLToPath(new URL("../../../storage/uploads/", import.meta.url));
+import { getUploadDir } from "../../lib/storage";
 
 const MIME: Record<string, string> = {
   ".jpg": "image/jpeg",
@@ -21,7 +19,7 @@ export const GET: APIRoute = async ({ params }) => {
       return new Response("Not found", { status: 404 });
     }
 
-    const filePath = path.join(UPLOAD_DIR, name);
+    const filePath = path.join(getUploadDir(), name);
     const data = await fs.readFile(filePath);
     const ext = path.extname(name).toLowerCase();
 

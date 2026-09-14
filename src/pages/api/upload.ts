@@ -1,11 +1,9 @@
 import type { APIRoute } from "astro";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { ensureUploadDir, getUploadDir } from "../../lib/storage";
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
-
-const UPLOAD_DIR = fileURLToPath(new URL("../../../storage/uploads/", import.meta.url));
 
 const ALLOWED = new Set(["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"]);
 const EXT: Record<string, string> = {
@@ -24,10 +22,6 @@ function error(message: string, status = 400): Response {
   return json({ error: message }, status);
 }
 
-async function ensureDir() {
-  await fs.mkdir(UPLOAD_DIR, { recursive: true });
-}
-
 export const POST: APIRoute = async ({ request }) => {
   try {
     const form = await request.formData();
@@ -40,9 +34,9 @@ export const POST: APIRoute = async ({ request }) => {
       return error("Tipe file tidak diizinkan. Gunakan JPG, PNG, WebP, GIF, atau AVIF.");
     }
 
-    await ensureDir();
+    const uploadDir = await ensureUploadDir();
     const name = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${EXT[file.type] || ".jpg"}`;
-    const dest = path.join(UPLOAD_DIR, name);
+    const dest = path.join(uploadDir, name);
     const buffer = Buffer.from(await file.arrayBuffer());
     await fs.writeFile(dest, buffer);
 
