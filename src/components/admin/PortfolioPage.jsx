@@ -59,11 +59,11 @@ export default function PortfolioPage() {
     const filtered = items.filter(item => {
       const matchCategory = category === 'all' || item.categorySlug === category;
       const matchStatus = status === 'all' || item.status === status;
-      const matchSearch = !q || item.title.toLowerCase().includes(q) || item.client.toLowerCase().includes(q) || (item.categoryName?.id || '').toLowerCase().includes(q);
+      const matchSearch = !q || (item.title.id || '').toLowerCase().includes(q) || (item.title.en || '').toLowerCase().includes(q) || item.client.toLowerCase().includes(q) || (item.categoryName?.id || '').toLowerCase().includes(q);
       return matchCategory && matchStatus && matchSearch;
     });
     return [...filtered].sort((a, b) => {
-      if (sort === 'title') return a.title.localeCompare(b.title);
+      if (sort === 'title') return a.title.id.localeCompare(b.title.id);
       if (sort === 'category') return (b.views || 0) - (a.views || 0);
       return String(b.updatedAt).localeCompare(String(a.updatedAt));
     });
@@ -76,7 +76,7 @@ export default function PortfolioPage() {
       const data = await res.json();
       if (!res.ok) return setToast({ type: 'error', message: data.error || 'Gagal menghapus proyek.' });
       setItems(prev => prev.filter(i => i.id !== deleteTarget.id));
-      setToast({ type: 'success', message: `\u201C${deleteTarget.title}\u201D telah dihapus.` });
+      setToast({ type: 'success', message: `\u201C${deleteTarget.title.id}\u201D telah dihapus.` });
     } catch {
       setToast({ type: 'error', message: 'Gagal terhubung ke server.' });
     } finally {
@@ -183,7 +183,7 @@ export default function PortfolioPage() {
       </div>
 
       <ConfirmDialog open={Boolean(deleteTarget)} title="Hapus portfolio ini?"
-        body={deleteTarget ? `\u201C${deleteTarget.title}\u201D akan dihapus permanen dan tidak dapat dikembalikan.` : ''}
+        body={deleteTarget ? `\u201C${deleteTarget.title.id}\u201D akan dihapus permanen dan tidak dapat dikembalikan.` : ''}
         confirmLabel="Hapus" onCancel={() => setDeleteTarget(null)} onConfirm={handleDelete} />
 
       <Toast show={Boolean(toast)} type={toast?.type} message={toast?.message} onClose={() => setToast(null)} />

@@ -11,7 +11,7 @@ import PortfolioPreviewCard from './portfolio/PortfolioPreviewCard.jsx';
 import SettingsGroup from './portfolio/SettingsGroup.jsx';
 
 const EMPTY_FORM = {
-  title: '',
+  title: { id: '', en: '' },
   categoryId: '',
   client: '',
   status: 'draft',
@@ -82,12 +82,12 @@ export default function AddPortfolioPage() {
 
   const setContent = (field, value) => {
     setForm(prev => ({ ...prev, [field]: { ...prev[field], [lang]: value } }));
-    if (field === 'summary') setErrors(prev => ({ ...prev, summary: undefined }));
+    setErrors(prev => ({ ...prev, [field]: undefined }));
   };
 
   const validate = () => {
     const next = {};
-    if (!form.title.trim()) next.title = 'Judul proyek wajib diisi.';
+    if (!(form.title?.id || '').trim()) next.title = 'Judul proyek (bahasa Indonesia) wajib diisi.';
     if (!form.summary.id.trim()) next.summary = 'Ringkasan (bahasa Indonesia) wajib diisi.';
     if (!form.categoryId) next.categoryId = 'Pilih salah satu kategori.';
     if (!form.client.trim()) next.client = 'Nama klien wajib diisi.';
@@ -234,8 +234,8 @@ export default function AddPortfolioPage() {
             </SettingsGroup>
 
             <PortfolioPreviewCard
-              title={form.title}
-              description={form.summary.id}
+              title={form.title[lang] || form.title.id}
+              description={form.summary[lang] || form.summary.id}
               categoryName={categoryName}
               cover={cover}
               status={form.status}

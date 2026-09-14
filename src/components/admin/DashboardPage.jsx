@@ -128,7 +128,7 @@ export default function DashboardPage() {
                     className="h-12 w-16 shrink-0 rounded-lg border border-slate-200 object-cover"
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold text-[#1A2E4C]">{project.title}</p>
+                    <p className="truncate text-sm font-semibold text-[#1A2E4C]">{project.title.id}</p>
                     <p className="mt-0.5 text-xs text-slate-400">
                       {project.categoryName?.id || 'Tanpa kategori'} &middot; Diperbarui {formatDate(project.updatedAt)}
                     </p>

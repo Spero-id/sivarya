@@ -13,7 +13,13 @@ const CONTENT_FIELDS = [
 export default function PortfolioContentFields({ form, errors, lang, onLang, onField, onContent, onCover, resetKey, errorField }) {
   return (
     <div className="space-y-4">
-      <section aria-labelledby="hero-title-label" className="space-y-2">
+      <section aria-labelledby="hero-title-label" className="space-y-1">
+        <section aria-labelledby="lang-toggle-label" className="flex items-center gap-3">
+          <span id="lang-toggle-label" className="text-[11px] font-bold uppercase tracking-[0.2em] text-black">
+            Bahasa konten
+          </span>
+          <LangToggle lang={lang} onChange={onLang} />
+        </section>
         <label
           id="hero-title-label"
           htmlFor="hero-title"
@@ -24,20 +30,13 @@ export default function PortfolioContentFields({ form, errors, lang, onLang, onF
         <input
           id="hero-title"
           type="text"
-          value={form.title}
-          onChange={e => onField('title', e.target.value)}
-          placeholder="Project title goes here..."
+          value={form.title[lang] || ''}
+          onChange={e => onContent('title', e.target.value)}
+          placeholder={lang === 'en' ? 'Project title goes here...' : 'Judul proyek di sini...'}
           aria-invalid={Boolean(errors.title)}
           className={`w-full border-0 border-b border-slate-200 bg-transparent pb-3 font-heading text-3xl font-extrabold tracking-tight text-[#1A2E4C] placeholder:text-slate-300 transition-colors focus:border-[#D87939] focus:outline-none sm:text-4xl ${errorField('title')}`}
         />
         {errors.title && <p className={`${helperCls} text-red-600`}>{errors.title}</p>}
-      </section>
-
-      <section aria-labelledby="lang-toggle-label" className="flex items-center gap-3">
-        <span id="lang-toggle-label" className="text-[11px] font-bold uppercase tracking-[0.2em] text-black">
-          Bahasa konten
-        </span>
-        <LangToggle lang={lang} onChange={onLang} />
       </section>
 
       {CONTENT_FIELDS.map(field => (
