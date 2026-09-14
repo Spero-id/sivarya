@@ -16,6 +16,12 @@ Admin cover images are uploaded through `POST /api/upload` (multipart) and saved
 break outside the creating tab). On the landing grid, cards render images at natural
 height (`w-full h-auto`, no forced aspect) so the masonry staggers by image height.
 
+The upload dir resolves via `getUploadDir()` in `src/lib/storage.ts`: `UPLOAD_DIR` env var
+if set, else `process.cwd()/storage/uploads` (not `import.meta.url`-relative — on a node
+standalone build that resolves into `dist/` and gets wiped on redeploy). On the domain, set
+`UPLOAD_DIR` to a stable absolute path and allow large request bodies (e.g. nginx
+`client_max_body_size 20m`) or uploads >1MB may fail at the reverse proxy.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build

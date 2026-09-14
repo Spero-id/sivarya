@@ -5,10 +5,12 @@ export default function ImageUpload({ label = 'Upload cover image', helper, prev
   const inputRef = useRef(null);
   const [status, setStatus] = useState(previewSrc ? 'preview' : 'empty');
   const [src, setSrc] = useState(previewSrc || null);
+  const [errMsg, setErrMsg] = useState('');
   const [dragOver, setDragOver] = useState(false);
 
   const handleFile = async file => {
     if (!file) return;
+    setErrMsg('');
     if (!file.type.startsWith('image/')) {
       setStatus('error');
       return;
@@ -20,6 +22,7 @@ export default function ImageUpload({ label = 'Upload cover image', helper, prev
       const res = await fetch('/api/upload', { method: 'POST', body });
       const data = await res.json();
       if (!res.ok || !data.url) {
+        setErrMsg(data?.error || '');
         setStatus('error');
         return;
       }
@@ -27,6 +30,7 @@ export default function ImageUpload({ label = 'Upload cover image', helper, prev
       setStatus('preview');
       onChange?.({ status: 'preview', src: data.url });
     } catch {
+      setErrMsg('');
       setStatus('error');
     }
   };
@@ -90,7 +94,9 @@ export default function ImageUpload({ label = 'Upload cover image', helper, prev
             <AlertCircle className="h-6 w-6" aria-hidden="true" />
           </span>
           <p className="text-sm font-semibold text-red-700">Upload gagal</p>
-          <p className="mt-1 text-xs text-red-600">Pastikan file berupa gambar (JPG, PNG, WebP).</p>
+          <p className="mt-1 text-xs text-red-600">
+            {errMsg || 'Pastikan file berupa gambar (JPG, PNG, WebP).'}
+          </p>
           <label
             htmlFor={label.replace(/\s+/g, '-').toLowerCase()}
             className="mt-4 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-700 transition-colors hover:bg-red-50"

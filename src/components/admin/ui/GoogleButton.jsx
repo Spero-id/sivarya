@@ -21,7 +21,8 @@ export default function GoogleButton({ label = 'Lanjutkan dengan Google', regist
           : {}),
       });
       if (signInError) {
-        setError('Google OAuth belum dikonfigurasi. Tambahkan GOOGLE_CLIENT_ID dan GOOGLE_CLIENT_SECRET di file .env, lalu restart server.');
+        console.error('Google sign-in error:', signInError);
+        setError('Login dengan Google gagal. Silakan coba lagi.');
       }
     } catch {
       setError('Tidak dapat terhubung ke Google. Silakan coba lagi.');
