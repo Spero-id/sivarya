@@ -21,7 +21,7 @@ export function mapPublicProject(row: any) {
     categoryName: row.categoryNameId
       ? { id: row.categoryNameId, en: row.categoryNameEn }
       : { id: "", en: "" },
-    title: row.title,
+    title: { id: row.title, en: row.titleEn },
     client: row.client,
     image: row.coverImage,
     aspect: toAspectClass(row.aspect),
@@ -39,6 +39,7 @@ const PUBLIC_COLS = {
   categoryNameId: categories.nameId,
   categoryNameEn: categories.nameEn,
   title: projects.title,
+  titleEn: projects.titleEn,
   client: projects.client,
   coverImage: projects.coverImage,
   aspect: projects.aspect,

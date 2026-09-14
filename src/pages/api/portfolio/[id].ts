@@ -31,7 +31,7 @@ function mapProject(row: any) {
     categoryId: Number(row.categoryId),
     categorySlug: row.categorySlug ?? null,
     categoryName: category,
-    title: row.title,
+    title: { id: row.title, en: row.titleEn },
     client: row.client,
     image: row.coverImage,
     aspect: row.aspect,
@@ -54,6 +54,7 @@ const SELECT_COLS = {
   slug: projects.slug,
   categoryId: projects.categoryId,
   title: projects.title,
+  titleEn: projects.titleEn,
   client: projects.client,
   coverImage: projects.coverImage,
   aspect: projects.aspect,
@@ -109,8 +110,10 @@ export const PUT: APIRoute = async ({ params, request }) => {
     const s = (v: any) => String(v ?? "").trim();
 
     if ("title" in body) {
-      if (s(body.title) === "") return error("Judul proyek tidak boleh kosong.", 400);
-      patch.title = s(body.title);
+      const titleId = s(body.title?.id ?? (typeof body.title === "string" ? body.title : ""));
+      if (titleId === "") return error("Judul proyek tidak boleh kosong.", 400);
+      patch.title = titleId;
+      patch.titleEn = s(body.title?.en);
     }
     if ("slug" in body && s(body.slug)) patch.slug = s(body.slug);
     if ("image" in body) patch.coverImage = s(body.image);

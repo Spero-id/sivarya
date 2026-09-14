@@ -1,7 +1,8 @@
+import { randomUUID } from "node:crypto";
 import type { APIRoute } from "astro";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "../../../db";
-import { users } from "../../../db/schema";
+import { account, users } from "../../../db/schema";
 import { auth } from "../../../lib/auth";
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
@@ -17,7 +18,7 @@ function error(message: string, status = 500): Response {
 type UserInsert = typeof users.$inferInsert;
 
 function sanitize(user: any): any {
-  const { passwordHash, ...rest } = user;
+  const { password: _password, ...rest } = user;
   return { ...rest, id: Number(user.id) };
 }
 
@@ -71,10 +72,32 @@ export const PUT: APIRoute = async ({ params, request }) => {
     if (body.password) {
       if (String(body.password).length < 6) return error("Password minimal 6 karakter.", 400);
       const ctx = await auth.$context;
-      patch.passwordHash = await ctx.password.hash(String(body.password));
+      const passwordHash = await ctx.password.hash(String(body.password));
+      const existing = await db
+        .select()
+        .from(account)
+        .where(and(eq(account.userId, id), eq(account.providerId, "credential")))
+        .limit(1);
+      if (existing.length) {
+        await db
+          .update(account)
+          .set({ password: passwordHash, updatedAt: new Date() })
+          .where(eq(account.id, existing[0].id));
+      } else {
+        await db.insert(account).values({
+          id: randomUUID(),
+          userId: id,
+          accountId: String(id),
+          providerId: "credential",
+          issuer: "local:credential",
+          password: passwordHash,
+        });
+      }
     }
 
-    await db.update(users).set(patch).where(eq(users.id, id));
+    if (Object.keys(patch).length) {
+      await db.update(users).set(patch).where(eq(users.id, id));
+    }
     const updated = await db.select().from(users).where(eq(users.id, id)).limit(1);
     return json(sanitize(updated[0]));
   } catch (e: any) {
@@ -92,6 +115,7 @@ export const DELETE: APIRoute = async ({ params }) => {
     const rows = await db.select().from(users).where(eq(users.id, id)).limit(1);
     if (!rows.length) return error("Data user tidak ditemukan.", 404);
 
+    await db.delete(account).where(eq(account.userId, id));
     await db.delete(users).where(eq(users.id, id));
     return json({ ok: true, id });
   } catch (e: any) {

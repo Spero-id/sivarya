@@ -57,6 +57,7 @@ export const projects = mysqlTable("projects", {
 	slug: varchar({ length: 120 }).notNull(),
 	categoryId: bigint("category_id", { mode: "number", unsigned: true }).notNull().references(() => categories.id, { onDelete: "restrict", onUpdate: "cascade" } ),
 	title: varchar({ length: 255 }).notNull(),
+	titleEn: varchar("title_en", { length: 255 }).notNull().default(""),
 	client: varchar({ length: 255 }).default('').notNull(),
 	coverImage: varchar("cover_image", { length: 500 }).default('').notNull(),
 	aspect: varchar({ length: 20 }).default('4/5').notNull(),

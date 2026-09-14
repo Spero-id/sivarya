@@ -5,6 +5,11 @@ import { getUi, langPath } from '../i18n/ui.js';
 
 const ALL_LABEL = { id: 'Semua', en: 'All' };
 
+const getTitle = (p, lang) =>
+  p.title && typeof p.title === 'object'
+    ? (p.title[lang] || p.title.id || '')
+    : (p.title || '');
+
 export default function CaseStudiesGrid({ lang = 'id', projects = projectsData, categories: categoriesProp = categories }) {
   const t = getUi(lang);
   const [activeFilter, setActiveFilter] = useState("all");
@@ -74,7 +79,7 @@ export default function CaseStudiesGrid({ lang = 'id', projects = projectsData, 
               <div className="relative overflow-hidden rounded-xl mb-4">
                 <img
                   src={proj.image}
-                  alt={proj.title}
+                  alt={getTitle(proj, lang)}
                   loading="lazy"
                   className="w-full h-auto block group-hover:scale-105 transition-transform duration-500"
                 />
@@ -94,7 +99,7 @@ export default function CaseStudiesGrid({ lang = 'id', projects = projectsData, 
                   {proj.client}
                 </span>
                 <h3 className="font-heading font-bold text-base text-[#1A2E4C] leading-snug mb-1.5 group-hover:text-[#D87939] transition-colors">
-                  {proj.title}
+                  {getTitle(proj, lang)}
                 </h3>
                 <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">
                   {proj.summary[lang]}

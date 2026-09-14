@@ -363,7 +363,7 @@ export default function Navbar({ transparent = false, lang = 'id' }) {
             </div>
 
             <a
-              href={langPath(lang, '/contact')}
+              href={langPath(lang, '#contact')}
               className={`hidden sm:inline-flex items-center gap-2 font-semibold text-sm px-5 py-2.5 rounded-full border transition-all hover:-translate-y-0.5 ${
                 isWhite
                   ? 'border-[#1A2E4C]/20 text-white bg-[#1A2E4C] hover:bg-white hover:text-[#1A2E4C]'

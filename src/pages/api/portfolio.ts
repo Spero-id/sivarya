@@ -25,7 +25,7 @@ function mapProject(row: any) {
     categoryId: Number(row.categoryId),
     categorySlug: row.categorySlug ?? null,
     categoryName: category,
-    title: row.title,
+    title: { id: row.title, en: row.titleEn },
     client: row.client,
     image: row.coverImage,
     aspect: row.aspect,
@@ -48,6 +48,7 @@ const SELECT_COLS = {
   slug: projects.slug,
   categoryId: projects.categoryId,
   title: projects.title,
+  titleEn: projects.titleEn,
   client: projects.client,
   coverImage: projects.coverImage,
   aspect: projects.aspect,
@@ -96,7 +97,8 @@ export const GET: APIRoute = async ({ url }) => {
     if (q) {
       result = result.filter(
         item =>
-          item.title.toLowerCase().includes(q) ||
+          item.title.id.toLowerCase().includes(q) ||
+          item.title.en.toLowerCase().includes(q) ||
           item.client.toLowerCase().includes(q) ||
           item.categoryName?.id.toLowerCase().includes(q)
       );
@@ -113,14 +115,15 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
 
-    const s = (v: string | undefined) => String(v ?? "").trim();
-    const title = s(body.title);
-    const slug = s(body.slug || slugify(title));
+    const s = (v: any) => String(v ?? "").trim();
+    const titleId = s(body.title?.id ?? (typeof body.title === "string" ? body.title : ""));
+    const titleEn = s(body.title?.en);
+    const slug = s(body.slug || slugify(titleId));
     const client = s(body.client);
     const coverImage = s(body.image);
     const aspect = s(body.aspect || "4/5");
 
-    if (!title) return error("Judul proyek wajib diisi.", 400);
+    if (!titleId) return error("Judul proyek (bahasa Indonesia) wajib diisi.", 400);
     if (!body.categoryId) return error("Kategori wajib diisi.", 400);
     const summaryId = String(body.summary?.id ?? "").trim();
     if (!summaryId) return error("Ringkasan (bahasa Indonesia) wajib diisi.", 400);
@@ -128,7 +131,8 @@ export const POST: APIRoute = async ({ request }) => {
     const data: ProjectInsert = {
       slug,
       categoryId: Number(body.categoryId),
-      title,
+      title: titleId,
+      titleEn,
       client,
       coverImage,
       aspect,

@@ -67,10 +67,6 @@ export default function PortfolioDetailPage() {
                   {m.label}
                 </span>
               ))}
-              <span className="inline-flex items-center gap-2 text-sm text-slate-500">
-                <Eye className="h-4 w-4 text-[#D87939]" aria-hidden="true" />
-                {formatCompact(project.views)} tampilan
-              </span>
             </div>
 
             <h2 className="mt-5 font-heading text-xl font-extrabold tracking-tight text-[#1A2E4C]">{project.title}</h2>
@@ -126,29 +122,13 @@ export default function PortfolioDetailPage() {
                     Hapus Proyek
                   </span>
                 </button>
+                <div className="pb-6">
+                  <a href="/admin/add-portfolio" className={`${btnPrimary} w-full`}>
+                    <Pencil className="h-4 w-4" aria-hidden="true" />
+                    Edit Proyek
+                  </a>
+                </div>
               </div>
-            </div>
-          </section>
-
-          <section aria-label="Informasi cepat" className={cardCls}>
-            <div className="border-b border-slate-100 px-6 py-4">
-              <p className="font-heading text-sm font-bold text-[#1A2E4C]">Informasi Cepat</p>
-            </div>
-            <div className="grid grid-cols-2 gap-4 p-6">
-              <div>
-                <p className="font-heading text-xl font-extrabold text-[#1A2E4C]">{project.views}</p>
-                <p className="text-xs text-slate-400">Total tampilan</p>
-              </div>
-              <div>
-                <p className="font-heading text-xl font-extrabold text-[#1A2E4C]">{project.year}</p>
-                <p className="text-xs text-slate-400">Tahun proyek</p>
-              </div>
-            </div>
-            <div className="px-6 pb-6">
-              <a href="/admin/add-portfolio" className={`${btnPrimary} w-full`}>
-                <Pencil className="h-4 w-4" aria-hidden="true" />
-                Edit Proyek
-              </a>
             </div>
           </section>
         </div>
