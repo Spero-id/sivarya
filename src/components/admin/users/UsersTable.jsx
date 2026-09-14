@@ -1,7 +1,8 @@
+import { useRef } from 'react';
 import { Pencil, Trash2, MoreVertical } from 'lucide-react';
+import RowMenu from '../ui/RowMenu.jsx';
 import { iconBtn } from '../ui/styles.js';
-import { getInitials } from '../ui/format.js';
-import { formatDate } from '../ui/format.js';
+import { getInitials, formatDate } from '../ui/format.js';
 
 export function UsersTableSkeleton({ colSpan = 6 }) {
   const cells = ['pl-6', '', '', '', '', 'pr-6'];
@@ -24,16 +25,13 @@ export function UsersTableSkeleton({ colSpan = 6 }) {
   );
 }
 
-function UsersRowMenu({ item, onEdit, onDelete }) {
+function UsersRowActions({ item, onEdit, onDelete, onClose }) {
   return (
-    <div
-      role="menu"
-      className="absolute right-6 top-12 z-20 w-40 overflow-hidden rounded-xl border border-slate-200 bg-white py-1.5 shadow-xl"
-    >
+    <>
       <button
         type="button"
         role="menuitem"
-        onClick={e => { e.stopPropagation(); onEdit(item); }}
+        onClick={() => { onClose(); onEdit(item); }}
         className="flex w-full items-center gap-2.5 px-3.5 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-[#1A2E4C]"
       >
         <Pencil className="h-4 w-4 text-slate-400" aria-hidden="true" />
@@ -42,17 +40,19 @@ function UsersRowMenu({ item, onEdit, onDelete }) {
       <button
         type="button"
         role="menuitem"
-        onClick={e => { e.stopPropagation(); onDelete(item); }}
+        onClick={() => { onClose(); onDelete(item); }}
         className="flex w-full items-center gap-2.5 px-3.5 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
       >
         <Trash2 className="h-4 w-4" aria-hidden="true" />
         Hapus
       </button>
-    </div>
+    </>
   );
 }
 
 export default function UsersTable({ items, menuFor, onToggleMenu, onEdit, onDelete }) {
+  const btnRefs = useRef({});
+
   return (
     <div className="hidden md:block overflow-x-auto">
       <table className="w-full table-fixed text-left text-sm">
@@ -76,7 +76,6 @@ export default function UsersTable({ items, menuFor, onToggleMenu, onEdit, onDel
               </td>
               <td className="py-3 pl-2">
                 <p className="font-semibold text-[#1A2E4C]">{item.name}</p>
-                {/* <p className="mt-0.5 text-xs text-slate-400">@{item.username}</p> */}
               </td>
               <td className="py-3 text-xs text-slate-500">{item.email}</td>
               <td className="py-3">{item.role}</td>
@@ -84,6 +83,7 @@ export default function UsersTable({ items, menuFor, onToggleMenu, onEdit, onDel
               <td className="relative py-3 pr-6 text-right">
                 <button
                   type="button"
+                  ref={el => { btnRefs.current[item.id] = el; }}
                   aria-label={`Aksi untuk ${item.name}`}
                   aria-haspopup="menu"
                   aria-expanded={menuFor === item.id}
@@ -93,7 +93,14 @@ export default function UsersTable({ items, menuFor, onToggleMenu, onEdit, onDel
                   <MoreVertical className="h-4 w-4" aria-hidden="true" />
                 </button>
                 {menuFor === item.id && (
-                  <UsersRowMenu item={item} onEdit={() => onEdit(item)} onDelete={() => onDelete(item)} />
+                  <RowMenu anchorEl={btnRefs.current[item.id]} onClose={() => onToggleMenu(item.id)}>
+                    <UsersRowActions
+                      item={item}
+                      onEdit={onEdit}
+                      onDelete={onDelete}
+                      onClose={() => onToggleMenu(item.id)}
+                    />
+                  </RowMenu>
                 )}
               </td>
             </tr>
