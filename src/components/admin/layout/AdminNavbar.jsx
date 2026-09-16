@@ -31,7 +31,7 @@ export default function AdminNavbar({ title, onMenu }) {
             aria-label="Buka menu navigasi"
             className={`inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 lg:hidden ${focusRingVisible}`}
           >
-            <Menu className="h-5 w-5" aria-hidden="true" />
+            <Menu className="h-5 w-5 text-white hover:text-[#1A2E4C]" aria-hidden="true" />
           </button>
          
           <span className="truncate font-semibold text-[#1A2E4C] sm:hidden">{title}</span>

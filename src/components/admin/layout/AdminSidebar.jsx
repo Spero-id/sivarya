@@ -107,17 +107,6 @@ export default function AdminSidebar({ active, collapsed, mobileOpen, onClose, o
           </button>
         </div>
       </div>
-
-      <button
-        type="button"
-        onClick={onClose}
-        aria-label="Tutup menu"
-        className="absolute right-[-2.75rem] top-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white text-[#1A2E4C] shadow-md ring-1 ring-slate-200 lg:hidden"
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" className="h-5 w-5" aria-hidden="true">
-          <path d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
     </aside>
   );
 }
