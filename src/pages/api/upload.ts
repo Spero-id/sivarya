@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { ensureUploadDir, getUploadDir } from "../../lib/storage";
+import { ensureUploadDir } from "../../lib/storage";
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
 
