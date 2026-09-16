@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { projectsData, categories } from '../data/projects.js';
 import { getUi, langPath } from '../i18n/ui.js';
@@ -14,39 +14,35 @@ const getTitle = (p, lang) =>
 export default function CaseStudiesGrid({ lang = 'id', projects = projectsData, categories: categoriesProp = categories }) {
   const t = getUi(lang);
   const [activeFilter, setActiveFilter] = useState("all");
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-  const sentinelRef = useRef(null);
+  const [expanded, setExpanded] = useState(false);
+  const [closing, setClosing] = useState(false);
 
   const filteredProjects = activeFilter === "all"
     ? projects
     : projects.filter(p => p.category === activeFilter);
 
   useEffect(() => {
-    setVisibleCount(PAGE_SIZE);
+    setExpanded(false);
+    setClosing(false);
   }, [activeFilter]);
 
-  useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (!sentinel) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setVisibleCount(prev =>
-            prev < filteredProjects.length ? prev + PAGE_SIZE : prev
-          );
-        }
-      },
-      { rootMargin: '200px' }
-    );
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, [filteredProjects.length]);
-
-  const hasMore = visibleCount < filteredProjects.length;
+  const hasMore = filteredProjects.length > PAGE_SIZE;
   const noResults = !filteredProjects.length;
   const filterButtons = categoriesProp
     .filter(cat => cat.id !== 'all')
     .map(cat => ({ id: cat.id, label: cat.name }));
+
+  const handleToggle = () => {
+    if (expanded) {
+      setClosing(true);
+      setTimeout(() => {
+        setExpanded(false);
+        setClosing(false);
+      }, 250);
+    } else {
+      setExpanded(true);
+    }
+  };
 
   return (
     <section className="py-20 bg-white relative" id="works">
@@ -95,61 +91,64 @@ export default function CaseStudiesGrid({ lang = 'id', projects = projectsData, 
         )}
 
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-6">
-          {filteredProjects.slice(0, visibleCount).map((proj) => (
-            <a
-              key={proj.id}
-              href={langPath(lang, `/work/${proj.slug || proj.id}`)}
-              className="break-inside-avoid mb-6 group block"
-            >
-              <div className="relative overflow-hidden rounded-xl mb-4">
-                <img
-                  src={proj.image}
-                  alt={getTitle(proj, lang)}
-                  loading="lazy"
-                  className="w-full h-auto block group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {filteredProjects.map((proj, index) => {
+            const isExtra = index >= PAGE_SIZE;
+            if (isExtra && !expanded) return null;
+            return (
+              <a
+                key={proj.id}
+                href={langPath(lang, `/work/${proj.slug || proj.id}`)}
+                className={`break-inside-avoid mb-6 group block ${isExtra ? (closing ? 'card-out' : 'card-in') : ''}`}
+                style={isExtra && !closing ? { animationDelay: `${(index - PAGE_SIZE) * 80}ms` } : undefined}
+              >
+                <div className="relative overflow-hidden rounded-xl mb-4">
+                  <img
+                    src={proj.image}
+                    alt={getTitle(proj, lang)}
+                    loading="lazy"
+                    className="w-full h-auto block group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                <span className="absolute top-3 left-3 font-semibold text-[10px] font-bold bg-white/90 backdrop-blur-sm text-[#1A2E4C] px-2.5 py-1 rounded-md">
-                  {proj.categoryName[lang]}
-                </span>
+                  <span className="absolute top-3 left-3 font-semibold text-[10px] font-bold bg-white/90 backdrop-blur-sm text-[#1A2E4C] px-2.5 py-1 rounded-md">
+                    {proj.categoryName[lang]}
+                  </span>
 
-                <div className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
-                  <ArrowRight className="w-4 h-4 text-[#1A2E4C]" />
+                  <div className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+                    <ArrowRight className="w-4 h-4 text-[#1A2E4C]" />
+                  </div>
                 </div>
-              </div>
 
-              <div className="px-1">
-                <span className="text-[11px] font-bold text-[#D87939] uppercase tracking-wider block mb-1">
-                  {proj.client}
-                </span>
-                <h3 className="font-heading font-bold text-base text-[#1A2E4C] leading-snug mb-1.5 group-hover:text-[#D87939] transition-colors">
-                  {getTitle(proj, lang)}
-                </h3>
-                <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">
-                  {proj.summary[lang]}
-                </p>
-              </div>
-            </a>
-          ))}
+                <div className="px-1">
+                  <span className="text-[11px] font-bold text-[#D87939] uppercase tracking-wider block mb-1">
+                    {proj.client}
+                  </span>
+                  <h3 className="font-heading font-bold text-base text-[#1A2E4C] leading-snug mb-1.5 group-hover:text-[#D87939] transition-colors">
+                    {getTitle(proj, lang)}
+                  </h3>
+                  <p className="text-slate-500 text-sm leading-relaxed line-clamp-2">
+                    {proj.summary[lang]}
+                  </p>
+                </div>
+              </a>
+            );
+          })}
         </div>
 
-        <div className="flex flex-col items-center gap-4 pt-4">
-          {hasMore && (
+        {hasMore && (
+          <div className="flex justify-center pt-4">
             <button
-              onClick={() => setVisibleCount(prev => prev + PAGE_SIZE)}
+              onClick={handleToggle}
               className="px-6 py-2.5 rounded-full text-xs font-bold bg-[#1A2E4C] text-white hover:bg-[#D87939] transition-colors"
             >
-              {lang === 'en' ? 'Load More' : 'Muat Lebih Banyak'}
+              {expanded
+                ? (lang === 'en' ? 'Close' : 'Tutup')
+                : (lang === 'en'
+                    ? `Show More (${filteredProjects.length - PAGE_SIZE})`
+                    : `Muat Lebih Banyak (${filteredProjects.length - PAGE_SIZE})`)}
             </button>
-          )}
-          <div ref={sentinelRef} className="h-px w-full" />
-          {!hasMore && !noResults && (
-            <p className="text-xs font-medium text-slate-400">
-              {lang === 'en' ? 'All projects are shown' : 'Semua portfolio sudah tampil'}
-            </p>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );
