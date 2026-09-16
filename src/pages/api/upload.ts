@@ -14,6 +14,7 @@ const EXT: Record<string, string> = {
   "image/avif": ".avif",
 };
 
+
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 }
