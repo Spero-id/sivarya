@@ -1,4 +1,4 @@
-import { eq, asc, desc } from "drizzle-orm";
+import { eq, asc, desc, sql } from "drizzle-orm";
 import { db } from "./index";
 import { projects, categories } from "./schema";
 
@@ -116,6 +116,13 @@ export async function getRecentActivities(limit = 6) {
       ? { id: row.categoryNameId, en: row.categoryNameEn }
       : null,
   }));
+}
+
+export async function incrementProjectViews(slug: string) {
+  await db
+    .update(projects)
+    .set({ views: sql`${projects.views} + 1` })
+    .where(eq(projects.slug, slug));
 }
 
 export async function getPublicCategories() {
