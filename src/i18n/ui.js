@@ -34,7 +34,7 @@ export const ui = {
     },
     expertise: {
       heading: 'Solusi Terpadu Ekosistem Sivarya',
-      sub: '7 pilar spesialisasi yang terorkestrasi untuk menjawab seluruh kebutuhan presensi, konten, dan mobilitas brand Anda.',
+      sub: '6 pilar spesialisasi yang terorkestrasi untuk menjawab seluruh kebutuhan presensi, konten, dan mobilitas brand Anda.',
       readMore: 'Selengkapnya',
       close: 'Tutup',
       detail: 'Detail',
