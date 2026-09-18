@@ -42,7 +42,7 @@ export default function PortfolioContentFields({ form, errors, lang, onLang, onF
       {CONTENT_FIELDS.map(field => (
         <EditorBlock
           key={field.key}
-          label={field.required ? `${field.label} *` : field.label}
+          label={field.required ? `${field.label}` : field.label}
           hint={
             field.key === 'summary'
               ? 'Tampil sebagai deskripsi di card portfolio & halaman detail.'

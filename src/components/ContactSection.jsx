@@ -59,7 +59,7 @@ export default function ContactSection({ lang = 'id' }) {
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">{t.contact.nameLabel}</label>
+                <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">{t.contact.nameLabel} <span className="text-[#D87939]">*</span></label>
                 <input 
                   type="text" 
                   required 
@@ -72,7 +72,7 @@ export default function ContactSection({ lang = 'id' }) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">{t.contact.emailLabel}</label>
+                  <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">{t.contact.emailLabel} <span className="text-[#D87939]">*</span></label>
                   <input 
                     type="email" 
                     required 
@@ -84,7 +84,7 @@ export default function ContactSection({ lang = 'id' }) {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">{t.contact.companyLabel}</label>
+                  <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">{t.contact.companyLabel} <span className="text-[#D87939]">*</span></label>
                   <input 
                     type="text" 
                     required 
@@ -97,7 +97,7 @@ export default function ContactSection({ lang = 'id' }) {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">{t.contact.serviceLabel}</label>
+                <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">{t.contact.serviceLabel} <span className="text-[#D87939]">*</span></label>
                 <select 
                   required 
                   value={formData.service}
@@ -112,7 +112,7 @@ export default function ContactSection({ lang = 'id' }) {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">{t.contact.briefLabel}</label>
+                <label className="text-xs font-bold text-[#1A2E4C] uppercase tracking-wider">{t.contact.briefLabel} <span className="text-[#D87939]">*</span></label>
                 <textarea 
                   rows={4} 
                   required 
