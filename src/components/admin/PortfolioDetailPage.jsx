@@ -86,7 +86,7 @@ export default function PortfolioDetailPage() {
           </div>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-6 lg:sticky lg:top-24 lg:self-start">
           <section aria-label="Tindakan" className={cardCls}>
             <div className="border-b border-slate-100 px-6 py-4">
               <p className="font-heading text-sm font-bold text-[#1A2E4C]">Publikasi</p>

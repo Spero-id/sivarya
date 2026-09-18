@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/Navbar.jsx';
 import Footer from '../../components/Footer.jsx';
-import { getProjectBySlug } from '../../db/queries.js';
+import { getProjectBySlug, incrementProjectViews } from '../../db/queries.js';
 import { getUi, langPath } from '../../i18n/ui.js';
 
 const lang = 'id';
@@ -12,6 +12,8 @@ const project = await getProjectBySlug(Astro.params.id ?? '');
 if (!project) {
   return Astro.redirect('/');
 }
+
+await incrementProjectViews(Astro.params.id ?? '');
 ---
 
 <Layout title={`${project.title[lang] || project.title.id} | Sivarya`}>

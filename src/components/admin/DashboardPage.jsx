@@ -28,13 +28,16 @@ export default function DashboardPage() {
 
   useEffect(() => {
     let active = true;
-    fetch('/api/portfolio')
-      .then(async res => {
-        const data = await res.json();
-        if (active && res.ok) setItems(Array.isArray(data) ? data : []);
-      })
-      .catch(() => {})
-      .finally(() => active && setLoading(false));
+
+    const loadPortfolio = () =>
+      fetch('/api/portfolio')
+        .then(async res => {
+          const data = await res.json();
+          if (active && res.ok) setItems(Array.isArray(data) ? data : []);
+        })
+        .catch(() => {});
+
+    loadPortfolio().finally(() => active && setLoading(false));
 
     fetch('/api/dashboard')
       .then(async res => {
@@ -42,8 +45,12 @@ export default function DashboardPage() {
         if (active && res.ok && data?.activities) setActivities(data.activities);
       })
       .catch(() => {});
+
+    const interval = setInterval(loadPortfolio, 5000);
+
     return () => {
       active = false;
+      clearInterval(interval);
     };
   }, []);
 
