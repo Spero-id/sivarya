@@ -4,6 +4,8 @@ import { getUi } from '../i18n/ui.js';
 
 const WHATSAPP_NUMBER = import.meta.env.PUBLIC_WHATSAPP_NUMBER;
 
+const RED_BORDER = 'border-red-300 focus:border-red-400 focus:ring-red-300/30';
+
 export default function ContactSection({ lang = 'id' }) {
   const t = getUi(lang);
   const [formData, setFormData] = useState({
@@ -13,11 +15,30 @@ export default function ContactSection({ lang = 'id' }) {
     service: '',
     brief: ''
   });
+  const [errors, setErrors] = useState({});
 
   const [submitted, setSubmitted] = useState(false);
 
+  const validate = () => {
+    const next = {};
+    if (!formData.name.trim()) next.name = true;
+    if (!formData.email.trim()) next.email = true;
+    if (!formData.company.trim()) next.company = true;
+    if (!formData.service.trim()) next.service = true;
+    if (!formData.brief.trim()) next.brief = true;
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
+
+  const setField = (key, value) => {
+    setFormData(prev => ({ ...prev, [key]: value }));
+    setErrors(prev => ({ ...prev, [key]: undefined }));
+  };
+
   const handleSubmit = async (e) => {
   e.preventDefault();
+
+  if (!validate()) return;
 
   try {
     await fetch('/api/contact', {
@@ -65,9 +86,11 @@ export default function ContactSection({ lang = 'id' }) {
                   required 
                   placeholder={t.contact.namePlaceholder}
                   value={formData.name}
-                  onChange={e => setFormData({...formData, name: e.target.value})}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[#1A2E4C] text-sm font-medium focus:outline-none focus:border-[#D87939] focus:bg-white focus:ring-2 focus:ring-[#D87939]/20 transition-all"
+                  onChange={e => setField('name', e.target.value)}
+                  aria-invalid={Boolean(errors.name)}
+                  className={`w-full px-4 py-3 bg-slate-50 border rounded-xl text-[#1A2E4C] text-sm font-medium focus:outline-none focus:border-[#D87939] focus:bg-white focus:ring-2 focus:ring-[#D87939]/20 transition-all ${errors.name ? RED_BORDER : 'border-slate-200'}`}
                 />
+                {errors.name && <p className="text-xs text-red-600 mt-1">{t.contact.nameLabel} wajib diisi.</p>}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -78,9 +101,11 @@ export default function ContactSection({ lang = 'id' }) {
                     required 
                     placeholder="name@company.com"
                     value={formData.email}
-                    onChange={e => setFormData({...formData, email: e.target.value})}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[#1A2E4C] text-sm font-medium focus:outline-none focus:border-[#D87939] focus:bg-white focus:ring-2 focus:ring-[#D87939]/20 transition-all"
+                    onChange={e => setField('email', e.target.value)}
+                    aria-invalid={Boolean(errors.email)}
+                    className={`w-full px-4 py-3 bg-slate-50 border rounded-xl text-[#1A2E4C] text-sm font-medium focus:outline-none focus:border-[#D87939] focus:bg-white focus:ring-2 focus:ring-[#D87939]/20 transition-all ${errors.email ? RED_BORDER : 'border-slate-200'}`}
                   />
+                  {errors.email && <p className="text-xs text-red-600 mt-1">{t.contact.emailLabel} wajib diisi.</p>}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -90,9 +115,11 @@ export default function ContactSection({ lang = 'id' }) {
                     required 
                     placeholder="PT Jaya Bersama"
                     value={formData.company}
-                    onChange={e => setFormData({...formData, company: e.target.value})}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[#1A2E4C] text-sm font-medium focus:outline-none focus:border-[#D87939] focus:bg-white focus:ring-2 focus:ring-[#D87939]/20 transition-all"
+                    onChange={e => setField('company', e.target.value)}
+                    aria-invalid={Boolean(errors.company)}
+                    className={`w-full px-4 py-3 bg-slate-50 border rounded-xl text-[#1A2E4C] text-sm font-medium focus:outline-none focus:border-[#D87939] focus:bg-white focus:ring-2 focus:ring-[#D87939]/20 transition-all ${errors.company ? RED_BORDER : 'border-slate-200'}`}
                   />
+                  {errors.company && <p className="text-xs text-red-600 mt-1">{t.contact.companyLabel} wajib diisi.</p>}
                 </div>
               </div>
 
@@ -101,14 +128,16 @@ export default function ContactSection({ lang = 'id' }) {
                 <select 
                   required 
                   value={formData.service}
-                  onChange={e => setFormData({...formData, service: e.target.value})}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[#1A2E4C] text-sm font-medium focus:outline-none focus:border-[#D87939] focus:bg-white focus:ring-2 focus:ring-[#D87939]/20 transition-all"
+                  onChange={e => setField('service', e.target.value)}
+                  aria-invalid={Boolean(errors.service)}
+                  className={`w-full px-4 py-3 bg-slate-50 border rounded-xl text-[#1A2E4C] text-sm font-medium focus:outline-none focus:border-[#D87939] focus:bg-white focus:ring-2 focus:ring-[#D87939]/20 transition-all ${errors.service ? RED_BORDER : 'border-slate-200'}`}
                 >
                   <option value="" disabled>{t.contact.servicePlaceholder}</option>
                   {t.contact.serviceOptions.map((opt, i) => (
                     <option key={i} value={opt}>{opt}</option>
                   ))}
                 </select>
+                {errors.service && <p className="text-xs text-red-600 mt-1">{t.contact.serviceLabel} wajib diisi.</p>}
               </div>
 
               <div className="flex flex-col gap-2">
@@ -118,9 +147,11 @@ export default function ContactSection({ lang = 'id' }) {
                   required 
                   placeholder={t.contact.briefPlaceholder}
                   value={formData.brief}
-                  onChange={e => setFormData({...formData, brief: e.target.value})}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[#1A2E4C] text-sm font-medium focus:outline-none focus:border-[#D87939] focus:bg-white focus:ring-2 focus:ring-[#D87939]/20 transition-all"
+                  onChange={e => setField('brief', e.target.value)}
+                  aria-invalid={Boolean(errors.brief)}
+                  className={`w-full px-4 py-3 bg-slate-50 border rounded-xl text-[#1A2E4C] text-sm font-medium focus:outline-none focus:border-[#D87939] focus:bg-white focus:ring-2 focus:ring-[#D87939]/20 transition-all ${errors.brief ? RED_BORDER : 'border-slate-200'}`}
                 />
+                {errors.brief && <p className="text-xs text-red-600 mt-1">{t.contact.briefLabel} wajib diisi.</p>}
               </div>
 
               <button type="submit" className="w-full bg-[#D87939] hover:bg-[#C26527] text-white font-semibold py-4 rounded-xl transition-all shadow-md shadow-[#D87939]/30 flex items-center justify-center gap-2 mt-2">
