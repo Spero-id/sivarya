@@ -112,7 +112,7 @@ export default function WhySivarya({ lang = 'id' }) {
 
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { value: "7", label: t.why.statPillars },
+                  { value: "6", label: t.why.statPillars },
                   { value: "100%", label: "End-to-End" },
                   { value: "B2B", label: "Enterprise" },
                 ].map((s) => (

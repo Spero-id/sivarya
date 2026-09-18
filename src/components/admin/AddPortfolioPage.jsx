@@ -73,7 +73,7 @@ export default function AddPortfolioPage() {
     [categories, form.categoryId]
   );
 
-  const errorField = key => (errors[key] ? 'border-red-300 focus:border-red-400 focus:ring-red-300/30' : '');
+  const errorField = key => (errors[key] ? 'border-red-300! focus:border-red-400! focus:ring-red-300/30!' : '');
 
   const set = (key, value) => {
     setForm(prev => ({ ...prev, [key]: value }));
